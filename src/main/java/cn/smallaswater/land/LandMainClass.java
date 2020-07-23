@@ -1,8 +1,9 @@
 package cn.smallaswater.land;
 
+import cn.nukkit.Server;
 import cn.nukkit.plugin.PluginBase;
 import cn.smallaswater.land.module.LandModule;
-
+import updata.AutoData;
 
 
 /**
@@ -16,6 +17,11 @@ public class LandMainClass extends PluginBase {
     @Override
     public void onEnable() {
         MAIN_CLASS = this;
+        if(Server.getInstance().getPluginManager().getPlugin("AutoUpData") != null){
+            if(AutoData.defaultUpData(this,getFile(),"SmallasWater","Land")){
+                return;
+            }
+        }
         module = new LandModule();
         module.moduleRegister();
 
