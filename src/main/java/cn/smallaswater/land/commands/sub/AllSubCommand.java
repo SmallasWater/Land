@@ -19,13 +19,14 @@ public class AllSubCommand extends BaseSubCommand {
     @Override
     public boolean execute(CommandSender commandSender, String s, String[] strings) {
         if(commandSender instanceof Player){
+            int page = 1;
             if(strings.length > 1){
-                int page = 1;
                 try {
                     page = Integer.parseInt(strings[1]);
                 }catch (Exception ignore){}
-                CreateWindow.PAGES.put((Player) commandSender,page);
+
             }
+            CreateWindow.PAGES.put((Player) commandSender,page);
             CreateWindow.sendLandDataList((Player) commandSender);
             return true;
         }

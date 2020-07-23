@@ -49,8 +49,9 @@ public class LandCommand extends BaseCommand {
         sender.sendMessage("§e/领地 §7help §a查看插件帮助");
         sender.sendMessage("§e/领地 §7my§a显示自己的领地列表");
         sender.sendMessage("§e/领地 §7sell§a显示正在出售的领地列表");
-        sender.sendMessage("§e/领地 §7all <页数> (当前共有%i%页) 显示所有领地列表");
+        sender.sendMessage("§e/领地 §7all <页数> (当前共有 "+CreateWindow.getPages()+" 页) 显示所有领地列表");
         sender.sendMessage("§e/领地 §7pos <1/2> §a设置领地坐标");
+//        sender.sendMessage("§e/领地 §7screen §a打开领地查找GUI");
         sender.sendMessage("§e/领地 §7subpos <1/2> §a设置子领地坐标");
         sender.sendMessage("§e/领地 §7create <name> §a创建领地 p.s每个方块: $"+ String.format("%2f",LandModule.getModule().getConfig().getLandMoney()));
         sender.sendMessage("§e/领地 §7subcreate <name> §a创建子领地 p.s每个方块: $"+ String.format("%2f",LandModule.getModule().getConfig().getSubLandMoney()));

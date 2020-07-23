@@ -261,8 +261,8 @@ public class WindowListener implements Listener {
                     return;
                 }
                 if(formId == CreateWindow.IS_SELL_MENU){
-                    String message = custom.getResponse().getInputResponse(0);
-                    String money = custom.getResponse().getInputResponse(1);
+                    String message = custom.getResponse().getInputResponse(1);
+                    String money = custom.getResponse().getInputResponse(0);
                     double m = -1.0;
                     if("".equalsIgnoreCase(money)){
                         p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.integerError);
@@ -285,13 +285,14 @@ public class WindowListener implements Listener {
                         }
                         data.setSell(true);
                         data.setSellDay(DataTool.getDateToString(new Date()));
-                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellText.replace("%name%",data.getLandName())
-                                .replace("%day%",LandModule.getModule().getConfig().getShowTime()+""));
                         if(m != -1){
                             data.setSellMoney(m);
                             p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellMoneyMessage.replace("%name%",data.getLandName())
                                     .replace("%money%",String.format("%.2f",m).replace("%name%",data.getLandName())));
                         }
+                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellText.replace("%name%",data.getLandName())
+                                .replace("%day%",LandModule.getModule().getConfig().getShowTime()+""));
+
                     }
 
                 }
@@ -637,7 +638,7 @@ public class WindowListener implements Listener {
 
                 }
                 if(formId == CreateWindow.LIST){
-                    data = CreateWindow.getPageLandDatas(p).get(simple.getResponse().getClickedButtonId());
+                    data = CreateWindow.getPageLandDataList(p).get(simple.getResponse().getClickedButtonId());
                     lastData.put(p,data);
                     type.put(p,4);
                     putDefaultClickData(p, data, language);

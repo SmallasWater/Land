@@ -53,6 +53,8 @@ public class CreateWindow {
 
     public static LinkedHashMap<Player,Integer> PAGES = new LinkedHashMap<>();
 
+    public static LinkedHashMap<Player,LandData> SCREEN_LAND_LIST = new LinkedHashMap<>();
+
     /**
      * 玩家领地菜单
      * */
@@ -117,6 +119,11 @@ public class CreateWindow {
             simple.addButton(getBackButton());
             player.showFormWindow(simple,SETTING);
         }
+    }
+
+    /**TODO 领地查找*/
+    static void sendScreenMenu(Player player){
+
     }
 
     private static ElementButton getBackButton(){
@@ -210,7 +217,7 @@ public class CreateWindow {
         player.showFormWindow(simple,IS_SELL_MENU);
     }
 
-    static LinkedList<LandData> getPageLandDatas(Player player){
+    static LinkedList<LandData> getPageLandDataList(Player player){
         LinkedList<LandData> landDataList = new LinkedList<>();
         if(!PAGES.containsKey(player)){
             PAGES.put(player,1);
@@ -226,7 +233,7 @@ public class CreateWindow {
         return landDataList;
     }
 
-    private static int getPages(){
+    public static int getPages(){
         if(LandModule.getModule().getList().getData().size() % 10 != 0){
             return LandModule.getModule().getList().getData().size() / 10 + 1;
         }else{
@@ -239,7 +246,7 @@ public class CreateWindow {
      * */
     public static void sendLandDataList(Player player){
         FormWindowSimple simple = new FormWindowSimple(LandModule.getModule().getConfig().getTitle(), "");
-        for(LandData data: getPageLandDatas(player)){
+        for(LandData data: getPageLandDataList(player)){
             simple.addButton(getButton(player,data));
         }
         if(simple.getButtons().size() == 0){
