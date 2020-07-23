@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>cn.smallaswater.land</groupId>
+    <artifactId>Land</artifactId>
+    <version>1.4.5</version>
+    <dependencies>
+        <dependency>
+            <groupId>cn.nukkit</groupId>
+            <artifactId>nukkit</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath> F:/Maven/.m2/repository/cn/nukkit/nukkit/1.0-SNAPSHOT/nukkit-1.0-20200308.181528-752.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>money</groupId>
+            <artifactId>money</artifactId>
+            <version>1.1.7</version> <!-- 记得修改到已经安装到本地库最新版本 -->
+            <scope>system</scope>
+            <systemPath>F:/Nukkit驱动/[经济前置]Money-3.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>me.onebone</groupId>
+            <artifactId>economyapi</artifactId>
+            <version>1.1.7</version> <!-- 记得修改到已经安装到本地库最新版本 -->
+            <scope>system</scope>
+            <systemPath>F:/Nukkit驱动/EconomyAPI.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.player</groupId>
+            <artifactId>PlayerPoint</artifactId>
+            <version>1.1.7</version> <!-- 记得修改到已经安装到本地库最新版本 -->
+            <scope>system</scope>
+            <systemPath>F:/Nukkit开服/plugins/PlayerPoints_v1.1.3.jar</systemPath>
+        </dependency>
+
+    </dependencies>
+    <build>
+        <finalName>${project.artifactId}_v${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+
+</project>
