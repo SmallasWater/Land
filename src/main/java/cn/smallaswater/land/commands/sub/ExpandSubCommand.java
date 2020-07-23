@@ -133,17 +133,18 @@ public class ExpandSubCommand extends BaseSubCommand {
         }else{
             Position position1 = commandSender.getPosition();
             Position position2 = position1.getSide(commandSender.getDirection(), i);
+            // -5                -1
             x = position2.x - position1.x;
             z = position2.z - position1.z;
-            if (x > 0){
-                vector.addEndX((int)x);
+            if(x > 0){
+                vector.addEndX(i);
             }else{
-                vector.addStartX((int)x);
+                vector.addStartX( 0 - i);
             }
-            if (z > 0) {
-                vector.addEndZ((int)z);
+            if(z > 0){
+                vector.addEndZ(i);
             }else{
-                vector.addStartZ((int)z);
+                vector.addStartZ( 0 - i);
             }
         }
         return vector;
