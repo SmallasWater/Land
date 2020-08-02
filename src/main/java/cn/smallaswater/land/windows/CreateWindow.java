@@ -226,6 +226,9 @@ public class CreateWindow {
         int i = (page - 1) * 10;
         for(int x = 0; x < LandModule.getModule().getList().getData().size();x++){
             if(i < page * 10){
+                if(i == LandModule.getModule().getList().getData().size()){
+                    break;
+                }
                 landDataList.add(LandModule.getModule().getList().getData().get(i));
             }
             i++;

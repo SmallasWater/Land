@@ -7,6 +7,7 @@ import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
+import cn.nukkit.utils.TextFormat;
 import cn.smallaswater.land.commands.base.BaseSubCommand;
 import cn.smallaswater.land.event.land.LandCreateEvent;
 import cn.smallaswater.land.event.player.PlayerCreateLandEvent;
@@ -37,7 +38,7 @@ public class CreateSubCommand extends BaseSubCommand {
             if (strings.length > 1) {
                 String name = strings[1];
                 if(!isValidFileName(name)){
-                    sender.sendMessage(LandModule.getModule().getConfig().getTitle() + "领地名称异常 请更换名称");
+                    sender.sendMessage(LandModule.getModule().getConfig().getTitle() + TextFormat.RED+"领地名称含有\\/:*?\"<>| 非法字符 请更换名称");
                     return true;
                 }
                 if(getPos().containsKey(sender.getName())){
@@ -112,7 +113,7 @@ public class CreateSubCommand extends BaseSubCommand {
         if (fileName == null || fileName.length() > 255) {
             return false;
         } else {
-            return fileName.matches("[^./<>*?|\"]+.[^./<>*?|\"]+");
+            return fileName.matches("[^\\s\\\\/:*?\"<>|]*[^\\s\\\\/:*?\"<>|.]$");
         }
     }
 
