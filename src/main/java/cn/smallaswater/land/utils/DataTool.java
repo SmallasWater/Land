@@ -83,6 +83,7 @@ public class DataTool {
     public static LandData checkOverlap(Vector vector){
         return checkOverlap(vector,null);
     }
+
     public static double getLandMoney(Vector vector,boolean sub){
         LandData data = getLand(vector, sub);
         if(data != null){

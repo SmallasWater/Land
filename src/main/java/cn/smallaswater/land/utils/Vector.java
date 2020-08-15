@@ -188,6 +188,9 @@ public class Vector implements Cloneable{
 
     @Override
     public boolean equals(Object obj) {
+        if(obj == null){
+            return false;
+        }
         if(obj instanceof Vector){
             return (((Vector) obj).getLevel().getFolderName().equalsIgnoreCase(level.getFolderName())
                     && startX == ((Vector) obj).startX
