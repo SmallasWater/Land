@@ -62,6 +62,7 @@ public class Language {
     public String acceptErrorMaxMaster = "玩家 %p% 的领地已经到达上限 无法加入 %name%领地";
     public String acceptErrorMaxTarget = "你的的领地已经到达上限啦..无法加入%n%的 %name%领地";
     public String acceptMessageMember = "你加入了 %p% 的%name%领地...";
+    public String inviteTimeOut = "邀请 %p% 加入 %name% 领地的请求已超时";
     public String denyMessageMaster = "玩家 %p% 拒绝了你的 %name% 领地邀请..";
     public String denyMessageMember = "你拒绝了 %p% 的领地邀请...";
     public String notHaveInvite = "你没有任何领地邀请";
@@ -253,6 +254,7 @@ public class Language {
         this.buyLandMe = TextFormat.colorize('&', this.locale.getString("buyLandMe", buyLandMe));
         this.buyLandTrue = TextFormat.colorize('&', this.locale.getString("buyLandTrue", buyLandTrue));
         this.buyLandMaster = TextFormat.colorize('&',this.locale.getString("buyLandMaster",buyLandMaster));
+        this.inviteTimeOut = TextFormat.colorize('&',this.locale.getString("inviteTimeOut",inviteTimeOut));
 
 
         this.masterSellHaveLandSell = TextFormat.colorize('&', this.locale.getString("masterSellHaveLandSell", masterSellHaveLandSell));

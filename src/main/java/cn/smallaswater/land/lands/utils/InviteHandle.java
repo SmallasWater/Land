@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.smallaswater.land.event.player.PlayerAcceptLandInviteEvent;
 import cn.smallaswater.land.event.player.PlayerDenyLandInviteEvent;
+import cn.smallaswater.land.event.player.PlayerInviteTimeOutEvent;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
 import cn.smallaswater.land.utils.DataTool;
@@ -61,6 +62,7 @@ public class InviteHandle {
                     if (m != null) {
                         m.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().dataNotExists.replace("%name%",this.data.getLandName()));
                     }
+                    this.close();
                     return;
                 }
             }else{
@@ -68,6 +70,7 @@ public class InviteHandle {
                     if (m != null) {
                         m.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().dataNotExists.replace("%name%",this.data.getLandName()));
                     }
+                    this.close();
                     return;
                 }
             }
@@ -75,6 +78,7 @@ public class InviteHandle {
                 PlayerAcceptLandInviteEvent event = new PlayerAcceptLandInviteEvent(m,this.data);
                 Server.getInstance().getPluginManager().callEvent(event);
                 if(event.isCancelled()){
+                    this.close();
                     return;
                 }
             }
@@ -113,11 +117,17 @@ public class InviteHandle {
 
     }
 
-    public void timeOut(){
+    public void close(){
         LinkedList<InviteHandle> handles = LandModule.getModule().inviteLands.get(member);
         if(handles != null){
             handles.remove(this);
         }
+    }
+
+    public void timeOut(){
+        PlayerInviteTimeOutEvent event = new PlayerInviteTimeOutEvent(master,member,data);
+        Server.getInstance().getPluginManager().callEvent(event);
+        this.close();
     }
 
     public void setData(LandData data) {
@@ -130,6 +140,7 @@ public class InviteHandle {
             PlayerDenyLandInviteEvent event = new PlayerDenyLandInviteEvent(m,data);
             Server.getInstance().getPluginManager().callEvent(event);
             if(event.isCancelled()){
+                this.close();
                 return;
             }
             m.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().denyMessageMaster
@@ -140,7 +151,7 @@ public class InviteHandle {
             m.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().denyMessageMember
                     .replace("%p%", member).replace("%name%", this.data.getLandName()));
         }
-       this.timeOut();
+        this.close();
     }
 
     @Override

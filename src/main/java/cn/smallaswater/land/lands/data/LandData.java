@@ -27,6 +27,8 @@ import java.util.LinkedList;
  */
 public class LandData  {
 
+    private int landId = 0;
+
     private String landName;
 
     private String master;
@@ -57,10 +59,11 @@ public class LandData  {
 
     private String sellMessage = "领地出售中~~~";
 
-    public LandData(String landName,String master,Vector vector,
+    public LandData(int landId,String landName,String master,Vector vector,
                     MemberSetting member,
                     PlayerSetting defaultSetting,
                     String joinMessage,String quitMessage,Position transfer){
+        this.landId = landId;
         this.landName = landName;
         this.master = master;
         this.vector = vector;
@@ -81,6 +84,14 @@ public class LandData  {
 
     public Vector getVector() {
         return vector;
+    }
+
+    public int getLandId() {
+        return landId;
+    }
+
+    public void setLandId(int landId) {
+        this.landId = landId;
     }
 
     public Position getTransfer() {
@@ -158,6 +169,7 @@ public class LandData  {
 
     protected LinkedHashMap<String,Object> getSaves(){
         LinkedHashMap<String,Object> obj = new LinkedHashMap<>();
+        obj.put("landId",landId);
         obj.put("landName",getLandName().trim());
         obj.put("master",getMaster().trim());
         obj.put("vector",getVector().getConfig());
@@ -381,6 +393,8 @@ public class LandData  {
     public int hashCode() {
         return getLandName().hashCode();
     }
+
+
 }
 
 

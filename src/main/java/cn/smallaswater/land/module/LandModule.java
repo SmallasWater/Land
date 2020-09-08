@@ -186,13 +186,17 @@ public class LandModule {
             Config config;
             LinkedList<LandData> data = new LinkedList<>();
             if(getDefaultFiles().length > 0) {
+                int landId = 1;
                 for (String name : getDefaultFiles()) {
                     try {
                         config = new Config(getModuleInfo().getDataFolder() + "/lands/" + name + ".yml", 2);
-                        Map m = config.getAll();
+                        Map<String,Object> m = config.getAll();
                         if (m != null) {
                             LandData data1 = getDataByMap(m);
                             if (data1 != null) {
+                                if(data1.getLandId() == 0){
+                                    data1.setLandId(landId);
+                                }
                                 data1.setConfig(config);
                                 if (m.containsKey("subLand")) {
                                     List list = (List) m.get("subLand");
@@ -223,18 +227,35 @@ public class LandModule {
                         } else {
                             getModuleInfo().getLogger().info("异常文件" + name + " 删除成功");
                         }
+                        landId++;
                     }
                 }
             }
-            landList = new LandList(data);
+
+
+            landList = new LandList(sqrtLand(data));
         }
         return landList;
 
     }
+    public static LinkedList<LandData> sqrtLand(LinkedList<LandData> data){
+        LinkedList<LandData> landClass = new LinkedList<>();
+        LinkedHashMap<LandData,Integer> map = new LinkedHashMap<>();
+        for(LandData c:data){
+            map.put(c,c.getLandId());
+        }
+        List<Map.Entry<LandData,Integer>> list = new ArrayList<>(map.entrySet());
+        list.sort(Map.Entry.comparingByValue());
+        for(Map.Entry<LandData,Integer> mapping:list){
+            landClass.add(mapping.getKey());
+        }
+        return landClass;
+    }
 
     private LandData getDataByMap(Map m){
         try {
-            LandData data = new LandData(m.get("landName").toString(),
+            LandData data = new LandData(m.containsKey("landId")?Integer.parseInt(m.get("landId").toString()):0
+                    ,m.get("landName").toString(),
                     m.get("master").toString(),
                     Vector.getVectorByMap((Map) m.get("vector")),
                     new MemberSetting((Map) m.get("member")),
@@ -259,16 +280,20 @@ public class LandModule {
             LandSubData subData1;
             String last;
             Map m;
+            int landId = 1;
             for(Object o:list){
                 m = (Map) o;
                 last = m.get("mastLandData").toString();
                 LandData data = getDataByMap(m);
                 if(data != null) {
-                    subData1 = LandSubData.getSubDataByLand(last,data);
+                    if(m.containsKey("landId")){
+                        landId = Integer.parseInt(m.get("landId").toString());
+                    }
+                    subData1 = LandSubData.getSubDataByLand(landId,last,data);
                     subData1.setSellPlayer(m.containsKey("sellPlayer") && (boolean) m.get("sellPlayer"));
-
                     subData.add(subData1);
                 }
+                landId++;
             }
         }
         return subData;

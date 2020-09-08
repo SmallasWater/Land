@@ -22,10 +22,10 @@ public class LandSubData extends LandData{
 
     private boolean isSellPlayer;
 
-    public LandSubData(String masterData, String landName, String master, Vector vector, MemberSetting member,
+    public LandSubData(int landId,String masterData, String landName, String master, Vector vector, MemberSetting member,
                        PlayerSetting defaultSetting,
                        String joinMessage, String quitMessage, Position transfer) {
-        super(landName, master, vector, member, defaultSetting, joinMessage, quitMessage, transfer);
+        super(landId,landName, master, vector, member, defaultSetting, joinMessage, quitMessage, transfer);
         this.masterData = masterData;
     }
 
@@ -34,8 +34,8 @@ public class LandSubData extends LandData{
     }
 
 
-    public static LandSubData getSubDataByLand(String landName,LandData data){
-        return new LandSubData(landName,data.getLandName(),data.getMaster(),
+    public static LandSubData getSubDataByLand(int landId,String landName,LandData data){
+        return new LandSubData(landId,landName,data.getLandName(),data.getMaster(),
                 data.getVector(),data.getMember(),data.getDefaultSetting(),data.getJoinMessage(),data.getQuitMessage(),data.getTransfer());
     }
 

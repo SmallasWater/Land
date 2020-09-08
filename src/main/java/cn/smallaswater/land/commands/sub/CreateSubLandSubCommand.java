@@ -31,7 +31,7 @@ public class CreateSubLandSubCommand extends CreateSubCommand {
 
     @Override
     protected boolean createLandData(String name, Player sender, Vector vector, Language language) {
-        LandSubData data = new LandSubData(this.data.getLandName(),
+        LandSubData data = new LandSubData(this.data.getSubData().size(),this.data.getLandName(),
                 name,sender.getName(),vector, new MemberSetting(new LinkedHashMap<>())
                 , PlayerSetting.getDefaultSetting(),this.data.getJoinMessage(),this.data.getQuitMessage(), DataTool.getDefaultPosition(vector));
         PlayerCreateLandEvent event = new PlayerCreateLandEvent(sender, data);

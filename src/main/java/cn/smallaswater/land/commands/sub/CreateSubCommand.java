@@ -125,7 +125,7 @@ public class CreateSubCommand extends BaseSubCommand {
         return LandModule.getModule().getConfig().getMaxLand();
     }
     protected boolean createLandData(String name,Player sender,Vector vector,Language language){
-        LandData data = new LandData(name, sender.getName(), vector
+        LandData data = new LandData(LandModule.getModule().getList().size(),name, sender.getName(), vector
                 , new MemberSetting(new LinkedHashMap<>()),
                 PlayerSetting.getDefaultSetting(), language.playerJoinMessage, language.playerQuitMessage, DataTool.getDefaultPosition(vector));
         PlayerCreateLandEvent event = new PlayerCreateLandEvent(sender, data);

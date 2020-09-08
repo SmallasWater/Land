@@ -38,6 +38,7 @@ public class CreateWindow {
     static int SELL_LANDS = 0x125Ac21;
     static int BUY_LAND_MENU = 0x125Ac22;
     static int IS_SELL_MENU = 0x125Ac23;
+    static int SCREEN_MENU = 0x125Ac24;
 
     static int inviteButton = 0;
     static int kickButton = 1;
@@ -83,6 +84,7 @@ public class CreateWindow {
             FormWindowSimple simple = new FormWindowSimple(LandModule.getModule().getConfig().getTitle(), "");
             simple.setContent(LandModule.getModule().getLanguage()
                     .landSettingMessage
+                    .replace("%id%",data.getLandId()+"")
                     .replace("%name%",data.getLandName())
                     .replace("%master%",data.getMaster())
                     .replace("%member%",data.getMember().keySet().toString())
@@ -123,6 +125,13 @@ public class CreateWindow {
 
     /**TODO 领地查找*/
     static void sendScreenMenu(Player player){
+        FormWindowCustom custom = new FormWindowCustom(LandModule.getModule().getConfig().getTitle());
+        custom.addElement(new ElementDropdown("选择筛选条件",new LinkedList<String>(){
+            {
+                add("普通查找");
+                add("ID查找");
+            }
+        }));
 
 
     }
@@ -186,6 +195,7 @@ public class CreateWindow {
             }
             FormWindowSimple simple = new FormWindowSimple(LandModule.getModule().getConfig().getTitle(), "");
             String content = LandModule.getModule().getLanguage().showSellLandMenu
+                    .replace("%id%",data.getLandId()+"")
                     .replace("%name%", data.getLandName())
                     .replace("%size%", data.getVector().size() + "")
                     .replace("%pos%", LandModule.getModule().getLanguage().pos

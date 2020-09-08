@@ -49,10 +49,8 @@ public class LandListener implements Listener {
                     moveJoinEvent(player, data, newData);
                 }
             }
-
         }else{
             if(move.containsKey(player)){
-
                 data = move.get(player);
                 if(data != null) {
                     String message = data.getQuitMessage();
@@ -74,6 +72,16 @@ public class LandListener implements Listener {
                     .replace("%n%", data.getLandName())
                     .replace("%master%", data.getMaster())
                     .replace("%member%", data.getMember().keySet().toString())+"\n\n\n\n");
+        }
+    }
+
+    @EventHandler
+    public void onInviteTimeOut(PlayerInviteTimeOutEvent event){
+        Player master = Server.getInstance().getPlayer(event.getMasterPlayerName());
+        if(master != null){
+            master.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().inviteTimeOut
+                    .replace("%p%",event.getMemberPlayerName())
+                    .replace("%name%",event.data.getLandName()));
         }
     }
 
