@@ -158,19 +158,19 @@ public class LandData  {
 
     protected LinkedHashMap<String,Object> getSaves(){
         LinkedHashMap<String,Object> obj = new LinkedHashMap<>();
-        obj.put("landName",getLandName());
-        obj.put("master",getMaster());
+        obj.put("landName",getLandName().trim());
+        obj.put("master",getMaster().trim());
         obj.put("vector",getVector().getConfig());
         obj.put("member",getMember().getMember());
         obj.put("defaultSetting",getDefaultSetting().getSettings());
-        obj.put("joinMessage",getJoinMessage());
-        obj.put("quitMessage",getQuitMessage());
+        obj.put("joinMessage",getJoinMessage().trim());
+        obj.put("quitMessage",getQuitMessage().trim());
         obj.put("transfer", DataTool.getMapByTransfer(getTransfer()));
         obj.put("isSell",isSell());
         obj.put("sellDay",getSellDay());
         obj.put("money",getMoney());
         obj.put("sellMoney",getSellMoney());
-        obj.put("sellMessage",getSellMessage());
+        obj.put("sellMessage",getSellMessage().trim());
         return obj;
     }
 
@@ -178,7 +178,7 @@ public class LandData  {
 
     public void save(){
         if(config == null){
-            config = new Config(LandModule.getModule().getModuleInfo().getDataFolder()+"/lands/"+landName+".yml",2);
+            config = new Config(LandModule.getModule().getModuleInfo().getDataFolder()+"/lands/"+(landName).trim()+".yml",2);
         }
         config.setAll(getAll());
         config.save();

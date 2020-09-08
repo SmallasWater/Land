@@ -36,7 +36,7 @@ public class CreateSubCommand extends BaseSubCommand {
         Language language = LandModule.getModule().getLanguage();
         if(sender instanceof Player) {
             if (strings.length > 1) {
-                String name = strings[1];
+                String name = strings[1].trim();
                 if(!isValidFileName(name)){
                     sender.sendMessage(LandModule.getModule().getConfig().getTitle() + TextFormat.RED+"领地名称含有\\/:*?\"<>| 非法字符 请更换名称");
                     return true;

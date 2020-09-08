@@ -11,6 +11,8 @@ import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.event.entity.EntityExplodeEvent;
+import cn.nukkit.event.entity.ExplosionPrimeEvent;
 import cn.nukkit.event.player.*;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Position;
@@ -19,6 +21,7 @@ import cn.smallaswater.land.lands.data.sub.LandSubData;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.players.LandSetting;
+
 
 import java.util.LinkedHashMap;
 
@@ -35,6 +38,7 @@ public class LandListener implements Listener {
         if(data != null) {
             if (notHasPermission(player, player.getPosition(), LandSetting.MOVE)) {
                 event.setCancelled();
+                player.knockBack(player,0,(player.x - player.getLocation().x),(player.z - player.getLocation().z),0.8);
                 return;
             }
             if (!move.containsKey(player)) {
@@ -43,7 +47,6 @@ public class LandListener implements Listener {
                 LandData newData = move.get(player);
                 if(!data.equals(newData)){
                     moveJoinEvent(player, data, newData);
-
                 }
             }
 
@@ -318,4 +321,21 @@ public class LandListener implements Listener {
             }
         }
     }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onExplosionPrime(ExplosionPrimeEvent event) {
+        event.setCancelled(canTnt(event.getEntity()));
+    }
+
+    private boolean canTnt(Position pos){
+        return DataTool.getPlayerTouchArea(pos) != null;
+    }
+
+
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityExplode(EntityExplodeEvent event) {
+        event.setCancelled(canTnt(event.getEntity()));
+    }
+
+
 }

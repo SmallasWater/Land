@@ -57,6 +57,18 @@ public class PosSubCommand extends BaseSubCommand {
                         }
                         positions.add(position);
                         getPos().put(sender.getName(),positions);
+                        //进行一次空值检测
+                        try{
+                            if(position1.getLevel() == null || position.getLevel() == null){
+                                getPos().remove(sender.getName());
+                                sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos2ErrorLevel);
+                                return true;
+                            }
+                        }catch (Exception e){
+                            getPos().remove(sender.getName());
+                            sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos2ErrorLevel);
+                            return true;
+                        }
                         double money = getLandMoney(new Vector(position1,position));
                         sender.sendMessage(LandModule.getModule().getConfig().getTitle()+getPos2String().replace("%pos%",getPos(position)).replace("%money%",
                                 String.format("%.2f", money)));

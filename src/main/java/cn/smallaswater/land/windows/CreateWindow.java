@@ -124,6 +124,7 @@ public class CreateWindow {
     /**TODO 领地查找*/
     static void sendScreenMenu(Player player){
 
+
     }
 
     private static ElementButton getBackButton(){
@@ -237,11 +238,8 @@ public class CreateWindow {
     }
 
     public static int getPages(){
-        if(LandModule.getModule().getList().getData().size() % 10 != 0){
-            return LandModule.getModule().getList().getData().size() / 10 + 1;
-        }else{
-            return LandModule.getModule().getList().getData().size() / 10;
-        }
+        return (int) Math.ceil(LandModule.getModule().getList().getData().size() / 10);
+
     }
 
     /**

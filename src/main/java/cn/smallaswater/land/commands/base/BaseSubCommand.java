@@ -8,7 +8,7 @@ import cn.nukkit.command.data.CommandParameter;
  * @author SmallasWater
  */
 abstract public class BaseSubCommand {
-    private String name;
+    private final String name;
 
     protected BaseSubCommand(String name) {
         this.name = name;

@@ -187,31 +187,41 @@ public class LandModule {
             LinkedList<LandData> data = new LinkedList<>();
             if(getDefaultFiles().length > 0) {
                 for (String name : getDefaultFiles()) {
-                    config = new Config(getModuleInfo().getDataFolder() + "/lands/" + name + ".yml", 2);
-                    Map m = config.getAll();
-                    if(m != null) {
-                        LandData data1 = getDataByMap(m);
-                        if(data1 != null) {
-                            data1.setConfig(config);
-                            if (m.containsKey("subLand")) {
-                                List list = (List) m.get("subLand");
-                                data1.setSubData(getSubDates(list));
+                    try {
+                        config = new Config(getModuleInfo().getDataFolder() + "/lands/" + name + ".yml", 2);
+                        Map m = config.getAll();
+                        if (m != null) {
+                            LandData data1 = getDataByMap(m);
+                            if (data1 != null) {
+                                data1.setConfig(config);
+                                if (m.containsKey("subLand")) {
+                                    List list = (List) m.get("subLand");
+                                    data1.setSubData(getSubDates(list));
+                                } else {
+                                    data1.setSubData(new LinkedList<>());
+                                }
+                                data.add(data1);
+                                getModuleInfo().getLogger().info("成功加载: " + name + "领地");
                             } else {
-                                data1.setSubData(new LinkedList<>());
-                            }
-                            data.add(data1);
-                            getModuleInfo().getLogger().info("成功加载: "+name+"领地");
-                        }else{
-                            getModuleInfo().getLogger().warning(""+name+"领地 加载失败， 原因: 配置文件异常");
+                                getModuleInfo().getLogger().warning("" + name + "领地 加载失败， 原因: 配置文件异常");
 
+                            }
+                        } else {
+                            getModuleInfo().getLogger().info("检测到空白文件" + name + " 避免影响使用，正在删除");
+                            File file = new File(getModuleInfo().getDataFolder() + "/lands/" + name + ".yml");
+                            if (!file.delete()) {
+                                getModuleInfo().getLogger().warning("空白文件" + name + " 删除失败");
+                            } else {
+                                getModuleInfo().getLogger().info("空白文件" + name + " 删除成功");
+                            }
                         }
-                    }else{
-                        getModuleInfo().getLogger().info("检测到空白文件"+name+" 避免影响使用，正在删除");
+                    }catch (Exception e){
+                        getModuleInfo().getLogger().info("检测到异常文件" + name.trim() + " 避免影响使用，正在删除");
                         File file = new File(getModuleInfo().getDataFolder() + "/lands/" + name + ".yml");
-                        if(!file.delete()){
-                            getModuleInfo().getLogger().warning("空白文件"+name+" 删除失败");
-                        }else{
-                            getModuleInfo().getLogger().info("空白文件"+name+" 删除成功");
+                        if (!file.delete()) {
+                            getModuleInfo().getLogger().warning("异常文件" + name + " 删除失败");
+                        } else {
+                            getModuleInfo().getLogger().info("异常文件" + name + " 删除成功");
                         }
                     }
                 }

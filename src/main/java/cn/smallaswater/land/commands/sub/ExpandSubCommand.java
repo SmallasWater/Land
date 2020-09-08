@@ -113,7 +113,7 @@ public class ExpandSubCommand extends BaseSubCommand {
             if(commandSender.pitch <= PLAYER_SEE_DOWN){
                 y = i;
             }else{
-                y = 0 - i;
+                y = -i;
             }
             if (y != 0) {
                 if(y > 0){
@@ -139,12 +139,12 @@ public class ExpandSubCommand extends BaseSubCommand {
             if(x > 0){
                 vector.addEndX(i);
             }else{
-                vector.addStartX( 0 - i);
+                vector.addStartX(-i);
             }
             if(z > 0){
                 vector.addEndZ(i);
             }else{
-                vector.addStartZ( 0 - i);
+                vector.addStartZ(-i);
             }
         }
         return vector;
