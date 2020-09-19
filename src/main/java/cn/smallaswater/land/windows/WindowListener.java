@@ -352,29 +352,29 @@ public class WindowListener implements Listener {
                     return;
                 }
                 switch (id){
-                    case CreateWindow.inviteButton:
+                    case CreateWindow.INVITE_BUTTON:
                         CreateWindow.sendInvitePlayerMenu(p);
                         return;
-                    case CreateWindow.kickButton:
-                        type.put(p, CreateWindow.kickButton);
+                    case CreateWindow.KICK_BUTTON:
+                        type.put(p, CreateWindow.KICK_BUTTON);
                         CreateWindow.sendMemberList(p);
                         return;
-                    case CreateWindow.setPlayerButton:
-                        type.put(p, CreateWindow.setPlayerButton);
+                    case CreateWindow.SET_PLAYER_BUTTON:
+                        type.put(p, CreateWindow.SET_PLAYER_BUTTON);
                         CreateWindow.sendMemberList(p);
                         return;
-                    case CreateWindow.setOtherButton:
+                    case CreateWindow.SET_OTHER_BUTTON:
                         CreateWindow.sendLandSettingMenu(p);
                         return;
-                    case CreateWindow.sellLandButton:
+                    case CreateWindow.SELL_LAND_BUTTON:
                         CreateWindow.sendQuitOrSellMenu(p);
                         return;
-                    case CreateWindow.giveLandButton:
+                    case CreateWindow.GIVE_LAND_BUTTON:
                         CreateWindow.sendInvitePlayerMenu(p);
-                        type.put(p, CreateWindow.giveLandButton);
+                        type.put(p, CreateWindow.GIVE_LAND_BUTTON);
                         LandModule.getModule().clickPlayer.remove(p);
                         return;
-                    case CreateWindow.setTransfer:
+                    case CreateWindow.SET_TRANSFER_BUTTON:
                         LandData name = DataTool.getPlayerTouchArea(p.getPosition());
                         if (name != null) {
                             if (name.equals(data)) {
@@ -385,13 +385,13 @@ public class WindowListener implements Listener {
                         }
                         p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.saveTransferError.replace("%name%", data.getLandName()));
                         break;
-                    case CreateWindow.setTextButton:
+                    case CreateWindow.SET_TEXT_BUTTON:
                         CreateWindow.onJoinQuitTextMenu(p);
                         break;
-                    case CreateWindow.showParticle:
+                    case CreateWindow.SHOW_PARTICLE_BUTTON:
                         LandModule.getModule().showTime.put(data,LandModule.getModule().getConfig().getTime());
                         return;
-                    case CreateWindow.setSubLand:
+                    case CreateWindow.SET_SUB_LAND_BUTTON:
                         CreateWindow.sendSubLandList(p);
                         return;
 
@@ -510,7 +510,7 @@ public class WindowListener implements Listener {
             String player = simple.getResponse().getClickedButton().getText();
             Player player1 = Server.getInstance().getPlayer(player);
             if (type.containsKey(p)) {
-                if (type.get(p) == CreateWindow.giveLandButton) {
+                if (type.get(p) == CreateWindow.GIVE_LAND_BUTTON) {
                     type.remove(p);
                     if (player1 != null) {
                         LandModule.getModule().clickPlayer.put(p, player1.getName());
@@ -549,11 +549,11 @@ public class WindowListener implements Listener {
                 return;
             }
             if (data.getMember().containsKey(s)) {
-                if (type == CreateWindow.kickButton) {
+                if (type == CreateWindow.KICK_BUTTON) {
                     //踢出玩家
                     LandModule.getModule().clickPlayer.put(p, s);
                     CreateWindow.sendKickMenu(p, s);
-                } else if (type == CreateWindow.setPlayerButton) {
+                } else if (type == CreateWindow.SET_PLAYER_BUTTON) {
                     //设置权限
                     CreateWindow.sendLandSettingMenu(p, s);
                 }

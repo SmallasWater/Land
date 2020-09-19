@@ -40,16 +40,16 @@ public class CreateWindow {
     static final int IS_SELL_MENU = 0x125Ac23;
     static final int SCREEN_MENU = 0x125Ac24;
 
-    static final int inviteButton = 0;
-    static final int kickButton = 1;
-    static final int setPlayerButton = 2;
-    static final int setOtherButton = 3;
-    static final int sellLandButton = 4;
-    static final int giveLandButton = 5;
-    static final int setTransfer = 6;
-    static final int setTextButton = 7;
-    static final int showParticle = 8;
-    static final int setSubLand = 9;
+    static final int INVITE_BUTTON = 0;
+    static final int KICK_BUTTON = 1;
+    static final int SET_PLAYER_BUTTON = 2;
+    static final int SET_OTHER_BUTTON = 3;
+    static final int SELL_LAND_BUTTON = 4;
+    static final int GIVE_LAND_BUTTON = 5;
+    static final int SET_TRANSFER_BUTTON = 6;
+    static final int SET_TEXT_BUTTON = 7;
+    static final int SHOW_PARTICLE_BUTTON = 8;
+    static final int SET_SUB_LAND_BUTTON = 9;
     static String backImage = "textures/ui/refresh_light";
 
     public static LinkedHashMap<Player,Integer> PAGES = new LinkedHashMap<>();
