@@ -9,7 +9,6 @@ import cn.nukkit.form.window.FormWindowCustom;
 import cn.nukkit.form.window.FormWindowModal;
 import cn.nukkit.form.window.FormWindowSimple;
 import cn.smallaswater.land.event.player.*;
-import cn.smallaswater.land.event.player.*;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
 import cn.smallaswater.land.module.LandModule;
@@ -21,14 +20,15 @@ import cn.smallaswater.land.players.LandSetting;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
+
 /**
  * @author 若水
  */
 public class WindowListener implements Listener {
 
-    private LinkedHashMap<Player,Integer> type = new LinkedHashMap<>();
+    private final LinkedHashMap<Player,Integer> type = new LinkedHashMap<>();
 
-    private LinkedHashMap<Player, LandData> lastData = new LinkedHashMap<>();
+    private final LinkedHashMap<Player, LandData> lastData = new LinkedHashMap<>();
 
 
 
@@ -70,7 +70,6 @@ public class WindowListener implements Listener {
             data = LandModule.getModule().clickData.get(p);
         }
         Language language = LandModule.getModule().getLanguage();
-
         if (data != null) {
             if (existsData(p, data, language)) {
                 return;
@@ -78,140 +77,141 @@ public class WindowListener implements Listener {
             String player = LandModule.getModule().clickPlayer.get(p);
             LandModule.getModule().clickPlayer.remove(p);
             if (!wasClose) {
-                if (formId == CreateWindow.GIVE_MENU) {
-                    if (modal.getResponse().getClickedButtonText().equals(LandModule.getModule().getLanguage().choseTrue)) {
-                        PlayerGiveLandEvent event = new PlayerGiveLandEvent(p,data,player);
-                        Server.getInstance().getPluginManager().callEvent(event);
-                        if(event.isCancelled()){
-                            return;
-                        }
-                        player = event.getMaster();
-                        int lands = DataTool.getLands(player).size();
-                        int max =  LandModule.getModule().getConfig().getMaxLand();
-                        if(data instanceof LandSubData){
-                            lands = ((LandSubData) data).getMasterData().getSubData().size();
-                            max = LandModule.getModule().getConfig().getSubMax();
-                            if(((LandSubData) data).isSellPlayer()){
-                                p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.notHavePermission);
+                switch(formId){
+                    case CreateWindow.GIVE_MENU:
+                        if (modal.getResponse().getClickedButtonText().equals(LandModule.getModule().getLanguage().choseTrue)) {
+                            PlayerGiveLandEvent event = new PlayerGiveLandEvent(p,data,player);
+                            Server.getInstance().getPluginManager().callEvent(event);
+                            if(event.isCancelled()){
                                 return;
                             }
-                        }
-                        if (lands >= max) {
-                            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerLandMax.replace("%count%", max + ""));
-                            return;
-                        } else {
-                            Player player1 = Server.getInstance().getPlayer(player);
-                            if(data.getMaster().equalsIgnoreCase(player)){
-                                p.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().
-                                        invitePlayerInArray.replace("%name%",data.getLandName()).replace("%p%",player));
-                                return;
-                            }
-                            if(player1 != null){
-                                PlayerGetLandEvent event1 = new PlayerGetLandEvent(player1,data,p.getName());
-                                Server.getInstance().getPluginManager().callEvent(event);
-                                if(event1.isCancelled()){
+                            player = event.getMaster();
+                            int lands = DataTool.getLands(player).size();
+                            int max =  LandModule.getModule().getConfig().getMaxLand();
+                            if(data instanceof LandSubData){
+                                lands = ((LandSubData) data).getMasterData().getSubData().size();
+                                max = LandModule.getModule().getConfig().getSubMax();
+                                if(((LandSubData) data).isSellPlayer()){
+                                    p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.notHavePermission);
                                     return;
                                 }
                             }
+                            if (lands >= max) {
+                                p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerLandMax.replace("%count%", max + ""));
+                            } else {
+                                Player player1 = Server.getInstance().getPlayer(player);
+                                if(data.getMaster().equalsIgnoreCase(player)){
+                                    p.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().
+                                            invitePlayerInArray.replace("%name%",data.getLandName()).replace("%p%",player));
+                                    return;
+                                }
+                                if(player1 != null){
+                                    PlayerGetLandEvent event1 = new PlayerGetLandEvent(player1,data,p.getName());
+                                    Server.getInstance().getPluginManager().callEvent(event);
+                                    if(event1.isCancelled()){
+                                        return;
+                                    }
+                                }
 
-                            if (data.getMember().containsKey(player)) {
-                                data.removeMember(player);
-                            }
-                            p.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().givePlayerLandTarget
+                                if (data.getMember().containsKey(player)) {
+                                    data.removeMember(player);
+                                }
+                                p.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().givePlayerLandTarget
                                         .replace("%p%",player).replace("%name%",data.getLandName()));
 
-                            data.setMaster(player);
+                                data.setMaster(player);
+                            }
                             return;
-                        }
-                    } else {
-                        p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.cancelChose);
-                    }
-
-                }
-                if (formId == CreateWindow.CHOSE){
-                    boolean isMaster = data.getMaster().equalsIgnoreCase(p.getName());
-                    if(data instanceof LandSubData) {
-                        isMaster = ((LandSubData) data).getMasterData().getMaster().equalsIgnoreCase(p.getName());
-                        if(data.getMaster().equalsIgnoreCase(p.getName())){
-                            isMaster = true;
-                        }
-                    }
-                    if(isMaster){
-                        if(modal.getResponse().getClickedButtonText().equalsIgnoreCase(language.choseTrue)){
-                            double get = DataTool.getGettingMoney(data);
-                            PlayerSellLandEvent event = new PlayerSellLandEvent(p,data,get);
-                            Server.getInstance().getPluginManager().callEvent(event);
-                            if(event.isCancelled()){
-                                return;
-                            }
-                            get = event.getMoney();
-                            LandModule.getModule().getMoney().addMoney(p.getName(),get);
-                            for(String mode:data.getMember().keySet()){
-                                Player player1 = Server.getInstance().getPlayer(mode);
-                                if(player1 != null){
-                                    player1.sendMessage(LandModule.getModule().getConfig().getTitle()+language.kickLandMessage.replace("%p%",p.getName()).replace("%name%",data.getLandName()));
-                                }
-                                data.removeMember(mode);
-                            }
-                            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.sellLandMessage.replace("%name%",data.getLandName()).replace("%money%",get+""));
-                            if(data instanceof LandSubData){
-                                if(data.getMaster().equalsIgnoreCase(((LandSubData) data).getMasterData().getMaster())){
-                                    data.close();
-                                }else{
-                                    data.setMaster(((LandSubData) data).getMasterData().getMaster());
-                                }
-                            }else {
-                                data.close();
-                            }
-                        }else{
+                        } else {
                             p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.cancelChose);
                         }
-                    }else{
-                        if(modal.getResponse().getClickedButtonText().equalsIgnoreCase(language.choseTrue)){
-                            data.removeMember(p.getName());
-                        }
-                    }
-                }
-                if(formId == CreateWindow.KICK_MENU){
-                    if(player != null) {
-                        if (modal.getResponse().getClickedButtonText().equalsIgnoreCase(language.choseTrue)) {
-                            PlayerKickMemberLandEvent event = new PlayerKickMemberLandEvent(p,player,data);
-                            Server.getInstance().getPluginManager().callEvent(event);
-                            if(event.isCancelled()){
-                                return;
+                        break;
+
+                    case CreateWindow.CHOSE:
+                        boolean isMaster = data.getMaster().equalsIgnoreCase(p.getName());
+                        if(data instanceof LandSubData) {
+                            isMaster = ((LandSubData) data).getMasterData().getMaster().equalsIgnoreCase(p.getName());
+                            if(data.getMaster().equalsIgnoreCase(p.getName())){
+                                isMaster = true;
                             }
-                            player = event.getMember();
-                            if(data.getMember().containsKey(player)) {
-                                data.removeMember(player);
-                                if(!(data instanceof LandSubData)){
-                                    for(LandSubData data1:data.getSubData()){
-                                        if(!data1.isSellPlayer()) {
-                                            if (data1.getMaster().equalsIgnoreCase(player)) {
-                                                data1.setMaster(p.getName());
-                                            } else {
-                                                if (data1.getMember().containsKey(player)) {
-                                                    data1.removeMember(player);
+                        }
+                        if(isMaster){
+                            if(modal.getResponse().getClickedButtonText().equalsIgnoreCase(language.choseTrue)){
+                                double get = DataTool.getGettingMoney(data);
+                                PlayerSellLandEvent event = new PlayerSellLandEvent(p,data,get);
+                                Server.getInstance().getPluginManager().callEvent(event);
+                                if(event.isCancelled()){
+                                    return;
+                                }
+                                get = event.getMoney();
+                                LandModule.getModule().getMoney().addMoney(p.getName(),get);
+                                for(String mode:data.getMember().keySet()){
+                                    Player player1 = Server.getInstance().getPlayer(mode);
+                                    if(player1 != null){
+                                        player1.sendMessage(LandModule.getModule().getConfig().getTitle()+language.kickLandMessage.replace("%p%",p.getName()).replace("%name%",data.getLandName()));
+                                    }
+                                    data.removeMember(mode);
+                                }
+                                p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.sellLandMessage.replace("%name%",data.getLandName()).replace("%money%",get+""));
+                                if(data instanceof LandSubData){
+                                    if(data.getMaster().equalsIgnoreCase(((LandSubData) data).getMasterData().getMaster())){
+                                        data.close();
+                                    }else{
+                                        data.setMaster(((LandSubData) data).getMasterData().getMaster());
+                                    }
+                                }else {
+                                    data.close();
+                                }
+                            }else{
+                                p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.cancelChose);
+                            }
+                        }else{
+                            if(modal.getResponse().getClickedButtonText().equalsIgnoreCase(language.choseTrue)){
+                                data.removeMember(p.getName());
+                            }
+                        }
+                        break;
+                    case CreateWindow.KICK_MENU:
+                        if(player != null) {
+                            if (modal.getResponse().getClickedButtonText().equalsIgnoreCase(language.choseTrue)) {
+                                PlayerKickMemberLandEvent event = new PlayerKickMemberLandEvent(p,player,data);
+                                Server.getInstance().getPluginManager().callEvent(event);
+                                if(event.isCancelled()){
+                                    return;
+                                }
+                                player = event.getMember();
+                                if(data.getMember().containsKey(player)) {
+                                    data.removeMember(player);
+                                    if(!(data instanceof LandSubData)){
+                                        for(LandSubData data1:data.getSubData()){
+                                            if(!data1.isSellPlayer()) {
+                                                if (data1.getMaster().equalsIgnoreCase(player)) {
+                                                    data1.setMaster(p.getName());
+                                                } else {
+                                                    if (data1.getMember().containsKey(player)) {
+                                                        data1.removeMember(player);
+                                                    }
                                                 }
                                             }
                                         }
                                     }
-                                }
 
-                            }else{
-                                return;
+                                }else{
+                                    return;
+                                }
+                            }
+                            Player player1 = Server.getInstance().getPlayer(player);
+                            if (player1 != null) {
+                                player1.sendMessage(LandModule.getModule().getConfig().getTitle()+language.kickLandMessage.replace("%p%", p.getName()).replace("%name%", data.getLandName()));
                             }
                         }
-                        Player player1 = Server.getInstance().getPlayer(player);
-                        if (player1 != null) {
-                            player1.sendMessage(LandModule.getModule().getConfig().getTitle()+language.kickLandMessage.replace("%p%", p.getName()).replace("%name%", data.getLandName()));
-                        }
-                    }
+                        break;
+                    default: break;
                 }
             }
         } else {
             p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.dataNotExists.replace("%name%", ""));
         }
-
     }
 
     private void onBackSimpleWindow(Player p,int formId){
@@ -260,76 +260,75 @@ public class WindowListener implements Listener {
                 if (existsData(p, data, language)) {
                     return;
                 }
-                if(formId == CreateWindow.IS_SELL_MENU){
-                    String message = custom.getResponse().getInputResponse(1);
-                    String money = custom.getResponse().getInputResponse(0);
-                    double m = -1.0;
-                    if("".equalsIgnoreCase(money)){
-                        p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.integerError);
-                        return;
-                    }
-                    try {
-                        m = Double.parseDouble(money);
-                    }catch (Exception ignore){}
-                    if(m < 0 && m != -1){
-                        p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.integerError);
-                        return;
-                    }
-                    if(data.isSell()){
-                        data.setSell(false);
-                        data.setSellDay("");
-                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellFalseText.replace("%name%",data.getLandName()));
-                    }else{
-                        if(!"".equalsIgnoreCase(message)){
-                            data.setSellMessage(message);
+                switch (formId){
+                    case CreateWindow.IS_SELL_MENU:
+                        String message = custom.getResponse().getInputResponse(1);
+                        String money = custom.getResponse().getInputResponse(0);
+                        double m = -1.0;
+                        if("".equalsIgnoreCase(money)){
+                            p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.integerError);
+                            return;
                         }
-                        data.setSell(true);
-                        data.setSellDay(DataTool.getDateToString(new Date()));
-                        if(m != -1){
-                            data.setSellMoney(m);
-                            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellMoneyMessage.replace("%name%",data.getLandName())
-                                    .replace("%money%",String.format("%.2f",m).replace("%name%",data.getLandName())));
+                        try {
+                            m = Double.parseDouble(money);
+                        }catch (Exception ignore){}
+                        if(m < 0 && m != -1){
+                            p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.integerError);
+                            return;
                         }
-                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellText.replace("%name%",data.getLandName())
-                                .replace("%day%",LandModule.getModule().getConfig().getShowTime()+""));
-
-                    }
-
-                }
-                if(formId == CreateWindow.JOIN_QUIT_TEXT) {
-                    data.setJoinMessage(custom.getResponse().getInputResponse(0));
-                    data.setQuitMessage(custom.getResponse().getInputResponse(1));
-                    p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.saveText.replace("%name%", data.getLandName()));
-                    return;
-                }
-                if(formId == CreateWindow.SETTING_LAND){
-                    String playerName = LandModule.getModule().clickPlayer.get(p);
-                    LandModule.getModule().clickPlayer.remove(p);
-                    PlayerSetting playerSetting = new PlayerSetting(new LinkedHashMap<>());
-                    int i = 1;
-                    for (LandSetting setting : LandSetting.values()) {
-                        playerSetting.setSetting(setting.getName(),custom.getResponse().getToggleResponse(i));
-                        i++;
-                    }
-                    PlayerLandSettingEvent event = new PlayerLandSettingEvent(p,playerSetting,data,playerName);
-                    Server.getInstance().getPluginManager().callEvent(event);
-                    if(event.isCancelled()){
+                        if(data.isSell()){
+                            data.setSell(false);
+                            data.setSellDay("");
+                            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellFalseText.replace("%name%",data.getLandName()));
+                        }else{
+                            if(!"".equalsIgnoreCase(message)){
+                                data.setSellMessage(message);
+                            }
+                            data.setSell(true);
+                            data.setSellDay(DataTool.getDateToString(new Date()));
+                            if(m != -1){
+                                data.setSellMoney(m);
+                                p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellMoneyMessage.replace("%name%",data.getLandName())
+                                        .replace("%money%",String.format("%.2f",m).replace("%name%",data.getLandName())));
+                            }
+                            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellText.replace("%name%",data.getLandName())
+                                    .replace("%day%",LandModule.getModule().getConfig().getShowTime()+""));
+                        }
+                        break;
+                    case CreateWindow.JOIN_QUIT_TEXT:
+                        data.setJoinMessage(custom.getResponse().getInputResponse(0));
+                        data.setQuitMessage(custom.getResponse().getInputResponse(1));
+                        p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.saveText.replace("%name%", data.getLandName()));
                         return;
-                    }
-                    playerSetting = event.getPlayerSetting();
-                    playerName = event.getMember();
-                    if (playerName != null) {
-                        data.setPlayerSetting(playerName,playerSetting);
-                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.saveSetting.replace("%p%", playerName));
-                    } else {
-                        data.setDefaultSetting(playerSetting);
-                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.saveSetting.replace("%p%", language.other));
-                    }
+                    case CreateWindow.SETTING_LAND:
+                        String playerName = LandModule.getModule().clickPlayer.get(p);
+                        LandModule.getModule().clickPlayer.remove(p);
+                        PlayerSetting playerSetting = new PlayerSetting(new LinkedHashMap<>());
+                        int i = 1;
+                        for (LandSetting setting : LandSetting.values()) {
+                            playerSetting.setSetting(setting.getName(),custom.getResponse().getToggleResponse(i));
+                            i++;
+                        }
+                        PlayerLandSettingEvent event = new PlayerLandSettingEvent(p,playerSetting,data,playerName);
+                        Server.getInstance().getPluginManager().callEvent(event);
+                        if(event.isCancelled()){
+                            return;
+                        }
+                        playerSetting = event.getPlayerSetting();
+                        playerName = event.getMember();
+                        if (playerName != null) {
+                            data.setPlayerSetting(playerName,playerSetting);
+                            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.saveSetting.replace("%p%", playerName));
+                        } else {
+                            data.setDefaultSetting(playerSetting);
+                            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.saveSetting.replace("%p%", language.other));
+                        }
+                        break;
+                    default:break;
                 }
             }else{
                 p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.dataNotExists.replace("%name%", ""));
             }
-
         }else{
             CreateWindow.sendSetLandMenu(p);
         }
@@ -346,174 +345,160 @@ public class WindowListener implements Listener {
     }
 
     private void onListenerSimpleWindowSetMenu(Player p,LandData data,Language language,FormWindowSimple simple,int formId){
-        if (formId == CreateWindow.SET_LAND) {
-            if(sendBack(p, simple, formId, language)){
-                return;
-            }
-            if (simple.getResponse().getClickedButtonId() == CreateWindow.inviteButton) {
-                CreateWindow.sendInvitePlayerMenu(p);
-                return;
-            }
-            if (simple.getResponse().getClickedButtonId() == CreateWindow.kickButton) {
-                type.put(p, CreateWindow.kickButton);
-                CreateWindow.sendMemberList(p);
-                return;
-            }
-            if (simple.getResponse().getClickedButtonId() == CreateWindow.setPlayerButton) {
-                type.put(p, CreateWindow.setPlayerButton);
-                CreateWindow.sendMemberList(p);
-                return;
-            }
-            if (simple.getResponse().getClickedButtonId() == CreateWindow.setOtherButton) {
-                CreateWindow.sendLandSettingMenu(p);
-                return;
-            }
-            if (simple.getResponse().getClickedButtonId() == CreateWindow.sellLandButton) {
-                CreateWindow.sendQuitOrSellMenu(p);
-                return;
-            }
-            if (simple.getResponse().getClickedButtonId() == CreateWindow.giveLandButton) {
-                CreateWindow.sendInvitePlayerMenu(p);
-                type.put(p, CreateWindow.giveLandButton);
-                LandModule.getModule().clickPlayer.remove(p);
-                return;
-            }
-            if (simple.getResponse().getClickedButtonId() == CreateWindow.setTransfer) {
-                LandData name = DataTool.getPlayerTouchArea(p.getPosition());
-                if (name != null) {
-                    if (name.equals(data)) {
-                        data.setTransfer(p.getPosition());
-                        p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.saveTransfer.replace("%name%", data.getLandName()));
-                        return;
-                    }
-                }
-                p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.saveTransferError.replace("%name%", data.getLandName()));
-            }
-            if (simple.getResponse().getClickedButtonId() == CreateWindow.setTextButton) {
-                CreateWindow.onJoinQuitTextMenu(p);
-            }
-            if(simple.getResponse().getClickedButton().getText().equalsIgnoreCase(language.inSellButton) ||
-                    simple.getResponse().getClickedButton().getText().equalsIgnoreCase(language.inSellFalseButton) ){
-                if(data instanceof LandSubData){
-                    if(!data.getMaster().equalsIgnoreCase(((LandSubData) data).getMasterData().getMaster())){
-                        p.sendMessage(language.notHavePermission);
-                        return;
-                    }
-                }
-                if(data.isSell()){
-                    data.setSell(false);
-                    data.setSellDay("");
-                    p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellFalseText.replace("%name%",data.getLandName()));
-                }else{
-                    CreateWindow.sendSellSetting(p);
-                }
-                return;
-
-
-
-            }
-
-
-            if (simple.getResponse().getClickedButtonId() == CreateWindow.showParticle) {
-                LandModule.getModule().showTime.put(data,LandModule.getModule().getConfig().getTime());
-                return;
-            }
-            if(simple.getResponse().getClickedButtonId() == CreateWindow.setSubLand){
-                CreateWindow.sendSubLandList(p);
-                return;
-            }
-        }
-        if(formId == CreateWindow.BUY_LAND_MENU){
-            int id = simple.getResponse().getClickedButtonId();
-            if(sendBack(p, simple, formId, language)){
-                return;
-            }
-            if(id == 0){
-                transfer(p,data);
-            }
-            if(id == 1){
-                //购买
-                if(p.getName().equalsIgnoreCase(data.getMaster())){
-                    p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandMe);
+        int id = simple.getResponse().getClickedButtonId();
+        switch (formId){
+            case CreateWindow.SET_LAND:
+                if(sendBack(p, simple, formId, language)){
                     return;
                 }
-                if(data.isSell()){
-                    int lands = DataTool.getLands(p.getName()).size();
-                    int max =  LandModule.getModule().getConfig().getMaxLand();
-                    if(data instanceof LandSubData){
-                        lands = ((LandSubData) data).getMasterData().getSubData().size();
-                        max = LandModule.getModule().getConfig().getSubMax();
-                    }
-                    if (lands >= max) {
-                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerLandMax.replace("%count%", max + ""));
+                switch (id){
+                    case CreateWindow.inviteButton:
+                        CreateWindow.sendInvitePlayerMenu(p);
                         return;
-                    }
-
-                    double money =  DataTool.getLandMoney(data.getVector(),(data instanceof LandSubData));
-                    if(data.getSellMoney() != -1){
-                        money = data.getSellMoney();
-                    }
-                    if(LandModule.getModule().getMoney().myMoney(p) > money){
-                        PlayerGetLandEvent event = new PlayerGetLandEvent(p,data,data.getMaster());
-                        Server.getInstance().getPluginManager().callEvent(event);
-                        if(event.isCancelled()){
-                            return;
-                        }
-                        LandModule.getModule().getMoney().reduceMoney(p,money);
-                        LandModule.getModule().getMoney().addMoney(data.getMaster(),money);
-                        Player master = Server.getInstance().getPlayer(data.getMaster());
-                        if(master != null){
-                            master.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandMaster.replace("%player%",p.getName()).replace("%name%",data.getLandName()).replace("%money%",String.format("%.2f",money)));
-                        }
-                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandTrue.replace("%name%",data.getLandName()).replace("%money%",String.format("%.2f",money)));
-                        if(data instanceof LandSubData){
-                            if(data.getMaster().equalsIgnoreCase(((LandSubData) data).getMasterData().getMaster())){
-                                ((LandSubData) data).setSellPlayer(false);
-                            }else {
-                                ((LandSubData) data).setSellPlayer(true);
+                    case CreateWindow.kickButton:
+                        type.put(p, CreateWindow.kickButton);
+                        CreateWindow.sendMemberList(p);
+                        return;
+                    case CreateWindow.setPlayerButton:
+                        type.put(p, CreateWindow.setPlayerButton);
+                        CreateWindow.sendMemberList(p);
+                        return;
+                    case CreateWindow.setOtherButton:
+                        CreateWindow.sendLandSettingMenu(p);
+                        return;
+                    case CreateWindow.sellLandButton:
+                        CreateWindow.sendQuitOrSellMenu(p);
+                        return;
+                    case CreateWindow.giveLandButton:
+                        CreateWindow.sendInvitePlayerMenu(p);
+                        type.put(p, CreateWindow.giveLandButton);
+                        LandModule.getModule().clickPlayer.remove(p);
+                        return;
+                    case CreateWindow.setTransfer:
+                        LandData name = DataTool.getPlayerTouchArea(p.getPosition());
+                        if (name != null) {
+                            if (name.equals(data)) {
+                                data.setTransfer(p.getPosition());
+                                p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.saveTransfer.replace("%name%", data.getLandName()));
+                                return;
                             }
                         }
-                        data.setMaster(p.getName());
+                        p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.saveTransferError.replace("%name%", data.getLandName()));
+                        break;
+                    case CreateWindow.setTextButton:
+                        CreateWindow.onJoinQuitTextMenu(p);
+                        break;
+                    case CreateWindow.showParticle:
+                        LandModule.getModule().showTime.put(data,LandModule.getModule().getConfig().getTime());
+                        return;
+                    case CreateWindow.setSubLand:
+                        CreateWindow.sendSubLandList(p);
+                        return;
+
+                    default:break;
+                }
+                if(simple.getResponse().getClickedButton().getText().equalsIgnoreCase(language.inSellButton) ||
+                        simple.getResponse().getClickedButton().getText().equalsIgnoreCase(language.inSellFalseButton) ){
+                    if(data instanceof LandSubData){
+                        if(!data.getMaster().equalsIgnoreCase(((LandSubData) data).getMasterData().getMaster())){
+                            p.sendMessage(language.notHavePermission);
+                            return;
+                        }
+                    }
+                    if(data.isSell()){
                         data.setSell(false);
+                        data.setSellDay("");
+                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellFalseText.replace("%name%",data.getLandName()));
                     }else{
-                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandNotHaveMoney.replace("%name%",data.getLandName()).replace("%money%",String.format("%.2f",money)));
+                        CreateWindow.sendSellSetting(p);
+                    }
+                    return;
+                }
+                break;
+            case CreateWindow.BUY_LAND_MENU:
+                if(sendBack(p, simple, formId, language)){
+                    return;
+                }
+                if(id == 0){
+                    transfer(p,data);
+                }
+                if(id == 1){
+                    //购买
+                    if(p.getName().equalsIgnoreCase(data.getMaster())){
+                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandMe);
+                        return;
+                    }
+                    if(data.isSell()){
+                        int lands = DataTool.getLands(p.getName()).size();
+                        int max =  LandModule.getModule().getConfig().getMaxLand();
+                        if(data instanceof LandSubData){
+                            lands = ((LandSubData) data).getMasterData().getSubData().size();
+                            max = LandModule.getModule().getConfig().getSubMax();
+                        }
+                        if (lands >= max) {
+                            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerLandMax.replace("%count%", max + ""));
+                            return;
+                        }
+
+                        double money =  DataTool.getLandMoney(data.getVector(),(data instanceof LandSubData));
+                        if(data.getSellMoney() != -1){
+                            money = data.getSellMoney();
+                        }
+                        if(LandModule.getModule().getMoney().myMoney(p) > money){
+                            PlayerGetLandEvent event = new PlayerGetLandEvent(p,data,data.getMaster());
+                            Server.getInstance().getPluginManager().callEvent(event);
+                            if(event.isCancelled()){
+                                return;
+                            }
+                            LandModule.getModule().getMoney().reduceMoney(p,money);
+                            LandModule.getModule().getMoney().addMoney(data.getMaster(),money);
+                            Player master = Server.getInstance().getPlayer(data.getMaster());
+                            if(master != null){
+                                master.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandMaster.replace("%player%",p.getName()).replace("%name%",data.getLandName()).replace("%money%",String.format("%.2f",money)));
+                            }
+                            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandTrue.replace("%name%",data.getLandName()).replace("%money%",String.format("%.2f",money)));
+                            if(data instanceof LandSubData){
+                                ((LandSubData) data).setSellPlayer(!data.getMaster().equalsIgnoreCase(((LandSubData) data).getMasterData().getMaster()));
+                            }
+                            data.setMaster(p.getName());
+                            data.setSell(false);
+                        }else{
+                            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandNotHaveMoney.replace("%name%",data.getLandName()).replace("%money%",String.format("%.2f",money)));
+                        }
+
+                    }else{
+                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandFalse.replace("%name%",data.getLandName()));
                     }
 
+                }
+                break;
+            case CreateWindow.SETTING:
+                if (sendBack(p, simple, formId, language)) {
+                    return;
+                }
+                if(id == 0){
+                    transfer(p,data);
+                }
+                if (data.getMaster().equalsIgnoreCase(p.getName())){
+                    if(id == 1){
+                        CreateWindow.sendSetLandMenu(p);
+                    }
+                    return;
+                }
+                if(data.getMember().containsKey(p.getName())){
+                    if(id == 1){
+                        CreateWindow.sendQuitOrSellMenu(p);
+                    }
+                    if(id == 2){
+                        CreateWindow.sendSetLandMenu(p);
+                    }
                 }else{
-                    p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandFalse.replace("%name%",data.getLandName()));
+                    if(id == 1){
+                        CreateWindow.sendSetLandMenu(p);
+                    }
                 }
-
-            }
-        }
-
-        if(formId == CreateWindow.SETTING){
-            int id = simple.getResponse().getClickedButtonId();
-            if (sendBack(p, simple, formId, language)) {
-                return;
-            }
-
-            if(id == 0){
-                transfer(p,data);
-            }
-            if (data.getMaster().equalsIgnoreCase(p.getName())){
-                if(id == 1){
-                    CreateWindow.sendSetLandMenu(p);
-                }
-                return;
-
-            }
-            if(data.getMember().containsKey(p.getName())){
-                if(id == 1){
-                    CreateWindow.sendQuitOrSellMenu(p);
-                }
-                if(id == 2){
-                    CreateWindow.sendSetLandMenu(p);
-                }
-            }else{
-                if(id == 1){
-                    CreateWindow.sendSetLandMenu(p);
-                }
-            }
+                break;
+            default:break;
         }
     }
 
