@@ -18,6 +18,8 @@ import java.util.*;
  */
 public class DataTool {
 
+
+
     private static boolean checkIt(Vector vector,LandData overlap){
         if(vector != null && overlap != null) {
             if (overlap.getVector().getLevel().getFolderName().equals(vector.getLevel().getFolderName())) {
@@ -270,12 +272,7 @@ public class DataTool {
      * 获取传送点
      * */
     public static Position getDefaultPosition(Position pos1, Position pos2) {
-        double y;
-        if(pos1.getY() >= pos2.getY()){
-            y = pos1.getY();
-        }else{
-            y = pos2.getY();
-        }
+        double y = Math.max(pos1.getY(), pos2.getY());
         double x = 0;
         if((pos1.getX() + pos2.getX()) != 0){
             x = (pos1.getX() + pos2.getX()) / 2;
@@ -294,7 +291,7 @@ public class DataTool {
 
 
     //转换String为Date
-    private static Date getDate(String format){
+    public static Date getDate(String format){
         SimpleDateFormat lsdStrFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             return lsdStrFormat.parse(format);
@@ -325,5 +322,24 @@ public class DataTool {
         return Integer.parseInt(String.valueOf(betweenDays)) + 1;
     }
 
+    public static String getQuery(String target){
+        StringBuilder builder = new StringBuilder(target);
+        char[] searchChars = target.toCharArray();
+        int max = 0;
+        for(int i = 0;i<target.length();i++){
+            int index = builder.indexOf(searchChars[i]+"");
+            if (max != 0) {
+                index = builder.indexOf(searchChars[i] + "", max);
+            }
+            max = index;
+            builder.insert(index,"[\\s\\S]*");
+        }
+        return "("+builder.append("[\\s\\S]*").toString()+")";
+        //之前的
+    }
+
+    public static void getLandsByScreen(Player player){
+
+    }
 
 }

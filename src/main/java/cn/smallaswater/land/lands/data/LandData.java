@@ -18,6 +18,7 @@ import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.players.LandSetting;
 
 import java.io.File;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
@@ -27,7 +28,7 @@ import java.util.LinkedList;
  */
 public class LandData  {
 
-    private int landId = 0;
+    private int landId;
 
     private String landName;
 
@@ -55,6 +56,8 @@ public class LandData  {
 
     private double sellMoney = -1.0;
 
+    private Date createTime;
+
     private LinkedList<LandSubData> subData = new LinkedList<>();
 
     private String sellMessage = "领地出售中~~~";
@@ -72,6 +75,7 @@ public class LandData  {
         this.joinMessage = joinMessage;
         this.quitMessage = quitMessage;
         this.transfer = transfer;
+        this.createTime = new Date();
     }
 
     public void setConfig(Config config) {
@@ -114,6 +118,14 @@ public class LandData  {
 
     public String getSellDay() {
         return sellDay;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
     }
 
     public void setSell(boolean sell) {
@@ -183,6 +195,7 @@ public class LandData  {
         obj.put("money",getMoney());
         obj.put("sellMoney",getSellMoney());
         obj.put("sellMessage",getSellMessage().trim());
+        obj.put("createTime",DataTool.getDateToString(createTime));
         return obj;
     }
 

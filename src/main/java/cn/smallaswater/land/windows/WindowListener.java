@@ -11,6 +11,7 @@ import cn.nukkit.form.window.FormWindowSimple;
 import cn.smallaswater.land.event.player.*;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
+import cn.smallaswater.land.lands.utils.ScreenSetting;
 import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.players.PlayerSetting;
 import cn.smallaswater.land.utils.DataTool;
@@ -30,7 +31,7 @@ public class WindowListener implements Listener {
 
     private final LinkedHashMap<Player, LandData> lastData = new LinkedHashMap<>();
 
-
+    public static LinkedHashMap<String, ScreenSetting> screenSetting = new LinkedHashMap<>();
 
     @EventHandler
     public void onWindow(PlayerFormRespondedEvent event){
@@ -51,7 +52,8 @@ public class WindowListener implements Listener {
                     || formId == CreateWindow.INVITE_PLAYER
                     || formId == CreateWindow.JOIN_QUIT_TEXT
                     || formId == CreateWindow.LIST_SUB
-                    || formId == CreateWindow.IS_SELL_MENU) {
+                    || formId == CreateWindow.IS_SELL_MENU
+                    || formId == CreateWindow.SCREEN_MENU) {
                 if (event.getWindow() instanceof FormWindowSimple) {
                     onListenerSimpleWindow(p, (FormWindowSimple) event.getWindow(), formId, event.getWindow().wasClosed());
                 }
@@ -294,6 +296,15 @@ public class WindowListener implements Listener {
                             p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellText.replace("%name%",data.getLandName())
                                     .replace("%day%",LandModule.getModule().getConfig().getShowTime()+""));
                         }
+                        break;
+                    case CreateWindow.SCREEN_MENU:
+                        String type = custom.getResponse().getDropdownResponse(1).getElementContent();
+                        boolean isSort = custom.getResponse().getToggleResponse(2);
+                        boolean showSell = custom.getResponse().getToggleResponse(3);
+                        String text = custom.getResponse().getInputResponse(4);
+                        screenSetting.put(p.getName(),new ScreenSetting(type,isSort,showSell,text));
+
+
                         break;
                     case CreateWindow.JOIN_QUIT_TEXT:
                         data.setJoinMessage(custom.getResponse().getInputResponse(0));

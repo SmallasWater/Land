@@ -8,6 +8,7 @@ import cn.nukkit.form.window.FormWindowModal;
 import cn.nukkit.form.window.FormWindowSimple;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
+import cn.smallaswater.land.lands.utils.ScreenSetting;
 import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.players.LandSetting;
 
@@ -124,17 +125,38 @@ public class CreateWindow {
     }
 
     /**TODO 领地查找*/
-    static void sendScreenMenu(Player player){
-        FormWindowCustom custom = new FormWindowCustom(LandModule.getModule().getConfig().getTitle());
-        custom.addElement(new ElementDropdown("选择筛选条件",new LinkedList<String>(){
-            {
-                add("普通查找");
-                add("ID查找");
-            }
-        }));
-
+    public static void sendScreenMenu(Player player){
+        FormWindowCustom custom = new FormWindowCustom(LandModule.getModule().getConfig().getTitle()+"--查找");
+        custom.addElement(new ElementLabel("查找的选项不同会影响查找结果"));
+        custom.addElement(new ElementDropdown("索引设置", ScreenSetting.strings,0));
+        custom.addElement(new ElementToggle("自动排序",false));
+        custom.addElement(new ElementToggle("是否显示出售中领地",true));
+        custom.addElement(new ElementInput("输入索引","请根据索引设置输入"));
+        player.showFormWindow(custom,SCREEN_MENU);
 
     }
+
+    public static void sendScreenList(Player player){
+        if(WindowListener.screenSetting.containsKey(player.getName())){
+            ScreenSetting screenSetting = WindowListener.screenSetting.get(player.getName());
+            FormWindowSimple simple = new FormWindowSimple(LandModule.getModule().getConfig().getTitle(),"");
+            for(LandData data: DataTool.getServerAllLands()){
+                switch (screenSetting.getType()){
+                    case 0:
+                        if(screenSetting.getText().matches(DataTool.getQuery(data.getLandId()+""))
+                                || screenSetting.getText().matches(DataTool.getQuery(data.getLandName()))
+                                || screenSetting.getText().matches(DataTool.getQuery(data.getMaster()))
+                                ){
+
+
+                        }
+                }
+            }
+        }
+
+    }
+
+
 
     private static ElementButton getBackButton(){
         return new ElementButton(LandModule.getModule().getLanguage().backButton,new ElementButtonImageData("path","textures/ui/refresh_light"));
@@ -248,7 +270,7 @@ public class CreateWindow {
     }
 
     public static int getPages(){
-        return (int) Math.ceil(LandModule.getModule().getList().getData().size() / 10);
+        return (int) Math.ceil((float) LandModule.getModule().getList().getData().size() / 10);
 
     }
 

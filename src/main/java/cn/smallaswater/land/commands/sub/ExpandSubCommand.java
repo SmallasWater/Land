@@ -37,49 +37,42 @@ public class ExpandSubCommand extends BaseSubCommand {
                     commandSender.sendMessage(title+language.integerError);
                     return false;
                 }
-                if(i < 0){
+                if(i <= 0){
                     commandSender.sendMessage(title+language.integerError);
                     return true;
                 }
                 LandData data = DataTool.getPlayerLandData(((Player) commandSender).getPosition());
                 if(data != null) {
                     Vector vector;
-                    if(i != 0) {
-                        commandSender.sendMessage(title+language.mathLandMoney);
-                        vector = newLandDataVector((Player) commandSender,i,data.getVector().clone());
-                        LandData name = DataTool.checkOverlap(vector);
-                        if(data instanceof LandSubData) {
-                            LandData in = DataTool.inLandAll(vector);
-                            if(in != null && in.getLandName().equalsIgnoreCase(((LandSubData) data).getMasterData().getLandName())){
-                                if(!data.getMaster().equalsIgnoreCase(((LandSubData) data).getMasterData().getMaster())){
-                                    commandSender.sendMessage(title + language.notHavePermission);
-                                    return true;
-                                }
-                            }else{
-                                commandSender.sendMessage(language.subInMaster.replace("%name%",((LandSubData) data).getMasterData().getLandName()));
+                    commandSender.sendMessage(title+language.mathLandMoney);
+                    vector = newLandDataVector((Player) commandSender,i,data.getVector().clone());
+                    LandData name = DataTool.checkOverlap(vector);
+                    if(data instanceof LandSubData) {
+                        LandData in = DataTool.inLandAll(vector);
+                        if(in != null && in.getLandName().equalsIgnoreCase(((LandSubData) data).getMasterData().getLandName())){
+                            if(!data.getMaster().equalsIgnoreCase(((LandSubData) data).getMasterData().getMaster())){
+                                commandSender.sendMessage(title + language.notHavePermission);
                                 return true;
                             }
                         }else{
-                            if (name != null && !name.equals(data)) {
-                                commandSender.sendMessage(title + language.playerBuyLandErrorLandInArray.replace("%name%", name.getLandName()));
-                                return true;
-                            }
-                        }
-                        double money = DataTool.getLandMoney(vector) - DataTool.getLandMoney(data.getVector());
-                        if(LandModule.getModule().getMoney().myMoney(commandSender.getName()) >= money){
-                            LandModule.getModule().getMoney().reduceMoney(commandSender.getName(),money);
-                            data.setVector(vector);
-                            commandSender.sendMessage(title+language.expandNeedSuccess
-                                    .replace("%count%",i+"").replace("%name%",data.getLandName()).replace("%money%",money+""));
-                            return true;
-                        }else{
-                            commandSender.sendMessage(title+language.expandNeedNotHaveMoney.replace("%money%",money+""));
+                            commandSender.sendMessage(language.subInMaster.replace("%name%",((LandSubData) data).getMasterData().getLandName()));
                             return true;
                         }
-
-
                     }else{
-                        commandSender.sendMessage(title+language.integerError);
+                        if (name != null && !name.equals(data)) {
+                            commandSender.sendMessage(title + language.playerBuyLandErrorLandInArray.replace("%name%", name.getLandName()));
+                            return true;
+                        }
+                    }
+                    double money = DataTool.getLandMoney(vector) - DataTool.getLandMoney(data.getVector());
+                    if(LandModule.getModule().getMoney().myMoney(commandSender.getName()) >= money){
+                        LandModule.getModule().getMoney().reduceMoney(commandSender.getName(),money);
+                        data.setVector(vector);
+                        commandSender.sendMessage(title+language.expandNeedSuccess
+                                .replace("%count%",i+"").replace("%name%",data.getLandName()).replace("%money%",money+""));
+                        return true;
+                    }else{
+                        commandSender.sendMessage(title+language.expandNeedNotHaveMoney.replace("%money%",money+""));
                         return true;
                     }
                 }else{
@@ -108,6 +101,7 @@ public class ExpandSubCommand extends BaseSubCommand {
      * @return {@link Vector}
      * */
     private Vector newLandDataVector(Player commandSender,int i,Vector vector){
+        vector.sort();
         double x,y,z;
         if(commandSender.pitch <= PLAYER_SEE_DOWN || commandSender.pitch >= PLAYER_SEE_UP){
             if(commandSender.pitch <= PLAYER_SEE_DOWN){
@@ -133,21 +127,24 @@ public class ExpandSubCommand extends BaseSubCommand {
         }else{
             Position position1 = commandSender.getPosition();
             Position position2 = position1.getSide(commandSender.getDirection(), i);
-            // -5                -1
-            x = position2.x - position1.x;
-            z = position2.z - position1.z;
-            if(x > 0){
-                vector.addEndX(i);
+            x = Math.abs(position2.x - position1.x);
+            z = Math.abs(position2.z - position1.z);
+            if(x > z){
+                if(position2.x < position1.x){
+                    vector.addStartX(-i);
+                }else{
+                    vector.addEndX(i);
+                }
             }else{
-                vector.addStartX(-i);
+                if(position2.z < position1.z){
+                    vector.addStartZ(-i);
+                }else{
+                    vector.addEndZ(i);
+                }
             }
-            if(z > 0){
-                vector.addEndZ(i);
-            }else{
-                vector.addStartZ(-i);
-            }
+
         }
-        return vector;
+        return vector.deSort();
     }
 
     @Override

@@ -50,9 +50,6 @@ public class LandModule {
 
     private LoadMoney money;
 
-
-
-
     public LinkedHashMap<Player,LandData> clickData = new LinkedHashMap<>();
 
     public LinkedHashMap<Player,String> clickPlayer = new LinkedHashMap<>();
@@ -106,7 +103,6 @@ public class LandModule {
         }else{
             LandMainClass.MAIN_CLASS.getLogger().info("Land经济核心已启用:"+ TextFormat.GREEN+" 自动");
         }
-
         if(money.getMoney() == -2){
             LandMainClass.MAIN_CLASS.getLogger().info("未检测到经济核心");
             LandMainClass.MAIN_CLASS.getPluginLoader().disablePlugin(LandMainClass.MAIN_CLASS);
@@ -131,7 +127,6 @@ public class LandModule {
                         }
                     }
                 }
-
             }
         },20) ;
 
@@ -268,6 +263,7 @@ public class LandModule {
             data.setSellDay((m.containsKey("sellDay") ? (String) m.get("sellDay") : ""));
             data.setMoney(Double.parseDouble((m.containsKey("money") ? m.get("money").toString() : "-1.0")));
             data.setSellMoney(Double.parseDouble((m.containsKey("sellMoney") ? m.get("sellMoney").toString() : "-1.0")));
+            data.setCreateTime(m.containsKey("createTime")?DataTool.getDate(m.get("createTime").toString()):new Date());
             return data;
         }catch (Exception e){
             return null;
