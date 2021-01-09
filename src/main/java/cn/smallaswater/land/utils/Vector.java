@@ -76,15 +76,23 @@ public class Vector implements Cloneable{
 
     public Vector deSort(){
         int temp;
-        temp = this.endX;
-        this.endX = this.startX;
-        this.startX = temp;
-        temp = this.endY;
-        this.endY = this.startY;
-        this.startY = temp;
-        temp = this.endZ;
-        this.endZ = this.startZ;
-        this.startZ = temp;
+        if(this.startX < this.endX){
+            temp = this.endX;
+            this.endX = this.startX;
+            this.startX = temp;
+        }
+
+        if(this.startY < this.endY){
+            temp = this.endY;
+            this.endY = this.startY;
+            this.startY = temp;
+        }
+
+        if(this.startZ < this.endZ){
+            temp = this.endZ;
+            this.endZ = this.startZ;
+            this.startZ = temp;
+        }
         return this;
     }
 

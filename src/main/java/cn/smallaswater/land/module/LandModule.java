@@ -200,7 +200,6 @@ public class LandModule {
                                     data1.setSubData(new LinkedList<>());
                                 }
                                 data.add(data1);
-                                getModuleInfo().getLogger().info("成功加载: " + name + "领地");
                             } else {
                                 getModuleInfo().getLogger().warning("" + name + "领地 加载失败， 原因: 配置文件异常");
 
