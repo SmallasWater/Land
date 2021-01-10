@@ -32,6 +32,7 @@ public class LandCommand extends BaseCommand {
         this.addSubCommand(new PosSubLandSubCommand("subpos"));
         this.addSubCommand(new CreateSubLandSubCommand("subcreate"));
         this.addSubCommand(new SellSubCommand("sell"));
+        this.addSubCommand(new SeekLandSubCommand("screen"));
         loadCommandBase();
 
     }
@@ -58,6 +59,7 @@ public class LandCommand extends BaseCommand {
         sender.sendMessage("§e/领地 §7deny <player> §a拒绝玩家的领地邀请");
         sender.sendMessage("§e/领地 §7invites §a查看邀请列表");
         sender.sendMessage("§e/领地 §7expand <大小> §a拓展领地");
+        sender.sendMessage("§e/领地 §7screen  §a查找领地");
         sender.sendMessage("§e>>§a-------------------§bHelps of Land§a-------------------§e<<");
 
     }

@@ -35,7 +35,7 @@ public class ScreenSetting {
     }
 
     public int getType() {
-        return strings.indexOf(text);
+        return strings.indexOf(type);
     }
 
     public String getText() {

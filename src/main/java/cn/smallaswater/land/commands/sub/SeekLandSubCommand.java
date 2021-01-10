@@ -27,6 +27,10 @@ public class SeekLandSubCommand extends BaseSubCommand {
         }
         return false;
     }
+    @Override
+    public String getDescription() {
+        return "查找领地";
+    }
 
     @Override
     public CommandParameter[] getParameters() {

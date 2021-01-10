@@ -16,6 +16,7 @@ import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.Vector;
 
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
@@ -40,6 +41,7 @@ public class CreateWindow {
     static final int BUY_LAND_MENU = 0x125Ac22;
     static final int IS_SELL_MENU = 0x125Ac23;
     static final int SCREEN_MENU = 0x125Ac24;
+    static final int SCREEN_LIST = 0x125Ac25;
 
     static final int INVITE_BUTTON = 0;
     static final int KICK_BUTTON = 1;
@@ -55,7 +57,7 @@ public class CreateWindow {
 
     public static LinkedHashMap<Player,Integer> PAGES = new LinkedHashMap<>();
 
-    public static LinkedHashMap<Player,LandData> SCREEN_LAND_LIST = new LinkedHashMap<>();
+//    public static LinkedHashMap<Player,LandData> SCREEN_LAND_LIST = new LinkedHashMap<>();
 
     /**
      * 玩家领地菜单
@@ -136,8 +138,9 @@ public class CreateWindow {
 
     }
 
-    public static void sendScreenList(Player player){
+    static void sendScreenList(Player player){
         if(WindowListener.screenSetting.containsKey(player.getName())){
+            LinkedList<LandData> landDataList = new LinkedList<>();
             ScreenSetting screenSetting = WindowListener.screenSetting.get(player.getName());
             FormWindowSimple simple = new FormWindowSimple(LandModule.getModule().getConfig().getTitle(),"");
             for(LandData data: DataTool.getServerAllLands()){
@@ -146,15 +149,110 @@ public class CreateWindow {
                         if(screenSetting.getText().matches(DataTool.getQuery(data.getLandId()+""))
                                 || screenSetting.getText().matches(DataTool.getQuery(data.getLandName()))
                                 || screenSetting.getText().matches(DataTool.getQuery(data.getMaster()))
+                                || screenSetting.getText().matches(DataTool.getQuery(DataTool.getDateToString(data.getCreateTime())))
                                 ){
-
+                            if(landDataList.size() == 20){
+                                break;
+                            }
+                            if(screenSetting.isShowSell()){
+                                landDataList.add(data);
+                            }else{
+                                if(!data.isSell()){
+                                    landDataList.add(data);
+                                }
+                            }
 
                         }
+                        break;
+                    case 1:
+                        if(screenSetting.getText().matches(DataTool.getQuery(data.getLandId()+""))){
+                            if(landDataList.size() == 20){
+                                break;
+                            }
+                            if(screenSetting.isShowSell()){
+                                landDataList.add(data);
+                            }else{
+                                if(!data.isSell()){
+                                    landDataList.add(data);
+                                }
+                            }
+                        }
+                        break;
+                    case 2:
+                        if(screenSetting.getText().matches(DataTool.getQuery(data.getLandName()))){
+                            if(landDataList.size() == 20){
+                                break;
+                            }
+                            if(screenSetting.isShowSell()){
+                                landDataList.add(data);
+                            }else{
+                                if(!data.isSell()){
+                                    landDataList.add(data);
+                                }
+                            }
+                        }
+                        break;
+                    case 3:
+                        if(screenSetting.getText().matches(DataTool.getQuery(data.getMaster()))){
+                            if(landDataList.size() == 20){
+                                break;
+                            }
+                            if(screenSetting.isShowSell()){
+                                    landDataList.add(data);
+                            }else{
+                                if(!data.isSell()){
+                                    landDataList.add(data);
+                                }
+                            }
+                        }
+                    case 4:
+                        if(screenSetting.getText().matches(DataTool.getDateToString(data.getCreateTime()))){
+                            if(landDataList.size() == 20){
+                                break;
+                            }
+                            if(screenSetting.isShowSell()){
+                                landDataList.add(data);
+
+                            }else{
+                                if(!data.isSell()){
+                                    landDataList.add(data);
+                                }
+                            }
+                        }
+                        break;
+                        default:break;
+
                 }
             }
+            if(screenSetting.isSort()){
+                Comparator<LandData> comparator = (s1, s2) -> {
+                    if(s1.getLandId() != s2.getLandId()){
+                        return (int)Math.floor(s1.getLandId()) - (int)Math.floor(s2.getLandId());
+                    } else if (!s1.getLandName().equals(s2.getLandName())) {
+                        return s1.getLandName().compareTo(s2.getLandName());
+                    } else {
+                        return s1.getLandId() - s2.getLandId();
+                    }
+                };
+                landDataList.sort(comparator);
+            }
+            WindowListener.screenLands.put(player,landDataList);
+            if(landDataList.size() == 0){
+                simple.setContent("未查找到领地 请确认查询条件是否正确");
+            }else{
+                simple.setContent("查找到 "+landDataList.size()+" 个符合条件的领地 (最多显示20个)");
+            }
+            for(LandData data: landDataList){
+                simple.addButton(getButton(player,data));
+            }
+            simple.addButton(getBackButton());
+            player.showFormWindow(simple,SCREEN_LIST);
+
         }
 
     }
+
+
 
 
 
