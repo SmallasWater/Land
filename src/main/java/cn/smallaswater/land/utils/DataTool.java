@@ -242,6 +242,14 @@ public class DataTool {
         return dataList;
     }
 
+    public static String getPosToString(Position position){
+        return LandModule.getModule().getLanguage().position
+                .replace("%x%",position.getFloorX()+"")
+                .replace("%y%",position.getFloorY()+"")
+                .replace("%z%",position.getFloorZ()+"")
+                .replace("%level%",position.getLevel().getFolderName()+"");
+    }
+
     /**
      * 获取服务器所有出售领地
      * */

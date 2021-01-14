@@ -39,7 +39,7 @@ public class PosSubCommand extends BaseSubCommand {
                     Position position = new Position(((Player) sender).getFloorX(), ((Player) sender).getFloorY()
                             ,((Player) sender).getFloorZ(),((Player) sender).getLevel());
                     positions.add(position);
-                    sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos1.replace("%pos%",getPos(position)));
+                    sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos1.replace("%pos%",DataTool.getPosToString(position)));
                     getPos().put(sender.getName(), positions);
                     return true;
                 }else if("2".equalsIgnoreCase(strings[1])){
@@ -70,7 +70,7 @@ public class PosSubCommand extends BaseSubCommand {
                             return true;
                         }
                         double money = getLandMoney(new Vector(position1,position));
-                        sender.sendMessage(LandModule.getModule().getConfig().getTitle()+getPos2String().replace("%pos%",getPos(position)).replace("%money%",
+                        sender.sendMessage(LandModule.getModule().getConfig().getTitle()+getPos2String().replace("%pos%",DataTool.getPosToString(position)).replace("%money%",
                                 String.format("%.2f", money)));
                         return true;
                     }else{
@@ -111,11 +111,5 @@ public class PosSubCommand extends BaseSubCommand {
         };
     }
 
-    private String getPos(Position position){
-        return LandModule.getModule().getLanguage().position
-                .replace("%x%",position.getFloorX()+"")
-                .replace("%y%",position.getFloorY()+"")
-                .replace("%z%",position.getFloorZ()+"")
-                .replace("%level%",position.getLevel().getFolderName()+"");
-    }
+
 }

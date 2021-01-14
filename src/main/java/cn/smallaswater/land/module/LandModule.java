@@ -2,6 +2,7 @@ package cn.smallaswater.land.module;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.item.Item;
 import cn.nukkit.level.Position;
 import cn.nukkit.scheduler.Task;
 import cn.nukkit.utils.Config;
@@ -42,6 +43,7 @@ public class LandModule {
 
     private Config languageConfig;
 
+
     public LinkedHashMap<LandData,Integer> showTime = new LinkedHashMap<>();
 
     public LinkedHashMap<String, LinkedList<Position>> pos = new LinkedHashMap<>();
@@ -76,7 +78,6 @@ public class LandModule {
             getModuleInfo().saveResource("language.yml");
         }
         languageConfig = new Config(getModuleInfo().getDataFolder()+"/language.yml",2);
-
     }
 
     public void saveList(){
@@ -88,6 +89,7 @@ public class LandModule {
     public void moduleRegister() {
         module = this;
         loadAll();
+
         money = new LoadMoney();
         if(config.getLoadEconomy() != -1){
             money.setMoney(config.getLoadEconomy());

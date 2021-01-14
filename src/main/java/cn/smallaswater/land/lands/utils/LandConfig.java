@@ -1,5 +1,6 @@
 package cn.smallaswater.land.lands.utils;
 
+import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
 import cn.smallaswater.land.LandMainClass;
 import cn.smallaswater.land.utils.LoadMoney;
@@ -35,7 +36,7 @@ public class LandConfig {
 
     private int loadEconomy;
 
-    private boolean checkY;
+    private Item landTool;
 
 
 
@@ -96,10 +97,18 @@ public class LandConfig {
         }
         LandConfig config1 = new LandConfig(title,landMoney,subLandMoney,sellMoney,blackList,protectList,max,subMax,time,load);
         config1.setShowTime(config.getInt("售卖领地显示时间",7));
+        Item i = Item.fromString(config.getString("landTool","290:0"));
+        config1.setLandTool(i);
         return config1;
     }
 
+    private void setLandTool(Item landTool) {
+        this.landTool = landTool;
+    }
 
+    public Item getLandTool() {
+        return landTool;
+    }
 
     public int getTime() {
         return time;

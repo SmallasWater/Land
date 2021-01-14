@@ -2,6 +2,7 @@ package cn.smallaswater.land.lands.data;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
+import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockChest;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.EventHandler;
@@ -21,9 +22,12 @@ import cn.smallaswater.land.lands.data.sub.LandSubData;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.players.LandSetting;
+import cn.smallaswater.land.utils.Language;
+import cn.smallaswater.land.utils.Vector;
 
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 
 /**
@@ -270,6 +274,67 @@ public class LandListener implements Listener {
         if(notHasPermission(player, player, LandSetting.DROP)){
             event.setCancelled();
         }
+    }
+
+    @EventHandler
+    public void onTouchLand(PlayerInteractEvent event){
+        Player player = event.getPlayer();
+        if(event.getAction() == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK
+                || event.getAction() == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK){
+            LinkedList<Position> positions = new LinkedList<>();
+            Item playerHand = event.getItem();
+            if(playerHand.equals(LandModule.getModule().getConfig().getLandTool(),true)){
+                Block block = event.getBlock();
+                event.setCancelled();
+                Language language = LandModule.getModule().getLanguage();
+                if(!LandModule.getModule().pos.containsKey(player.getName()) || LandModule.getModule().pos.get(player.getName()).size() > 1){
+                    if(LandModule.getModule().getConfig().getBlackList().contains(block.getLevel().getFolderName()) && !player.isOp()){
+                        player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.whiteWorld.replace("%level%",block.level.getFolderName()));
+                        return;
+                    }
+                    Position position = new Position(block.getFloorX(), block.getFloorY()
+                            ,block.getFloorZ(),block.getLevel());
+                    positions.add(position);
+                    player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos1.replace("%pos%",DataTool.getPosToString(position)));
+                    LandModule.getModule().pos.put(player.getName(), positions);
+                }else{
+                    Position position = new Position(block.getFloorX(),block.getFloorY()
+                            ,block.getFloorZ(),block.getLevel());
+                    positions = LandModule.getModule().pos.get(player.getName());
+                    Position position1 = positions.get(0);
+                    if(position1.getLevel().getFolderName().equalsIgnoreCase(block.getLevel().getFolderName())){
+                        if(positions.size() > 1){
+                            positions.remove(1);
+                        }
+                        positions.add(position);
+                        LandModule.getModule().pos.put(player.getName(),positions);
+                        //进行一次空值检测
+                        try{
+                            if(position1.getLevel() == null || position.getLevel() == null){
+                                LandModule.getModule().pos.remove(player.getName());
+                                player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos2ErrorLevel);
+                                return;
+                            }
+                        }catch (Exception e){
+                            LandModule.getModule().pos.remove(player.getName());
+                            player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos2ErrorLevel);
+                            return;
+                        }
+                        double money = DataTool.getLandMoney(new Vector(position1,position));
+                        player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos2.replace("%pos%",DataTool.getPosToString(position)).replace("%money%",
+                                String.format("%.2f", money)));
+
+                    }else{
+                        LandModule.getModule().pos.remove(player.getName());
+                        player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos2ErrorLevel);
+                    }
+                }
+
+
+            }
+
+        }
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR,ignoreCancelled = true)
