@@ -62,8 +62,8 @@ public class LandSubData extends LandData{
     public void addSubLand(LandSubData data) {}
 
     @Override
-    public void save() {
-        getMasterData().save();
+    public boolean save() {
+        return getMasterData().save();
     }
 
     public void setSellPlayer(boolean sellPlayer) {

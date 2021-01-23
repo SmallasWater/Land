@@ -159,6 +159,6 @@ public class ExpandSubCommand extends BaseSubCommand {
 
     @Override
     public CommandParameter[] getParameters() {
-        return new CommandParameter[]{new CommandParameter("int", CommandParamType.INT,false)};
+        return new CommandParameter[]{CommandParameter.newType("int",false, CommandParamType.INT)};
     }
 }
