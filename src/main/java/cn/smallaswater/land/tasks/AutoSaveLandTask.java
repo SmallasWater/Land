@@ -1,5 +1,6 @@
 package cn.smallaswater.land.tasks;
 
+import cn.nukkit.scheduler.AsyncTask;
 import cn.nukkit.scheduler.PluginTask;
 import cn.smallaswater.land.LandMainClass;
 import cn.smallaswater.land.lands.LandList;
@@ -15,17 +16,22 @@ public class AutoSaveLandTask extends PluginTask<LandMainClass> {
         super(owner);
     }
 
+    private int saveCount = 0;
+
     @Override
     public void onRun(int i) {
         getOwner().getLogger().info("[领地] 正在保存领地数值");
-        int saveCount = 0;
-        LandList list = getOwner().getModule().getList();
-        for(LandData data: list.getData()){
-            if(data.save()){
-                saveCount++;
+        getOwner().getServer().getScheduler().scheduleAsyncTask(getOwner(), new AsyncTask() {
+            @Override
+            public void onRun() {
+                LandList list = getOwner().getModule().getList();
+                for(LandData data: list.getData()){
+                    if(data.save()){
+                        saveCount++;
+                    }
+                }
+                getOwner().getLogger().info("[领地] 保存完成 "+saveCount+"个领地已保存");
             }
-        }
-        getOwner().getLogger().info("[领地] 保存完成 "+saveCount+"个领地已保存 (服务器拥有:"+list.getData().size()+"个领地)");
-
+        });
     }
 }
