@@ -44,6 +44,13 @@ time: 5
 # default 为自动识别
 loadEconomy: default
 
+#单位： 分钟
+#领地自动保存设置
+auto-save-land:
+  open: true
+  time: 5
+
+
 
 
 

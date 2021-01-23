@@ -6,6 +6,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.particle.DustParticle;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.scheduler.AsyncTask;
+import cn.nukkit.scheduler.PluginTask;
 import cn.nukkit.scheduler.Task;
 import cn.nukkit.utils.BlockColor;
 import cn.smallaswater.land.LandMainClass;
@@ -18,7 +19,11 @@ import cn.smallaswater.land.utils.Vector;
 /**
  * @author 若水
  */
-public class ShowParticleTask extends Task {
+public class ShowParticleTask extends PluginTask<LandMainClass> {
+    public ShowParticleTask(LandMainClass owner) {
+        super(owner);
+    }
+
     @Override
     public void onRun(int i) {
         for(LandData data: LandModule.getModule().showTime.keySet()){

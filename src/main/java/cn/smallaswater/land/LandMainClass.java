@@ -1,7 +1,6 @@
 package cn.smallaswater.land;
 
 import cn.nukkit.Server;
-import cn.nukkit.item.Item;
 import cn.nukkit.plugin.PluginBase;
 import cn.smallaswater.land.module.LandModule;
 import updata.AutoData;
@@ -28,6 +27,10 @@ public class LandMainClass extends PluginBase {
         module = new LandModule();
         module.moduleRegister();
 
+    }
+
+    public LandModule getModule() {
+        return module;
     }
 
     @Override

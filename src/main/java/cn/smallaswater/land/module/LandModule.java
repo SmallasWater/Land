@@ -16,6 +16,7 @@ import cn.smallaswater.land.lands.utils.InviteHandle;
 import cn.smallaswater.land.lands.utils.LandConfig;
 import cn.smallaswater.land.players.MemberSetting;
 import cn.smallaswater.land.players.PlayerSetting;
+import cn.smallaswater.land.tasks.AutoSaveLandTask;
 import cn.smallaswater.land.tasks.ShowSellLandTask;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
@@ -110,9 +111,12 @@ public class LandModule {
             LandMainClass.MAIN_CLASS.getPluginLoader().disablePlugin(LandMainClass.MAIN_CLASS);
             return;
         }
-        Server.getInstance().getScheduler().scheduleRepeatingTask(new ShowParticleTask(),20);
+        if(getConfig().isAutoSave()){
+            Server.getInstance().getScheduler().scheduleRepeatingTask(new AutoSaveLandTask(getModuleInfo()),(20 * config.getAutoSaveTime()) * 60);
+        }
+        Server.getInstance().getScheduler().scheduleRepeatingTask(new ShowParticleTask(getModuleInfo()),20);
         //检测公示期
-        Server.getInstance().getScheduler().scheduleRepeatingTask(new ShowSellLandTask(),40);
+        Server.getInstance().getScheduler().scheduleRepeatingTask(new ShowSellLandTask(getModuleInfo()),40);
 
         getModuleInfo().getServer().getScheduler().scheduleRepeatingTask(new Task() {
             @Override

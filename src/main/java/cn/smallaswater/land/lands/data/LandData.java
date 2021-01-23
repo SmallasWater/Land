@@ -5,6 +5,7 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.Config;
+import cn.smallaswater.land.LandMainClass;
 import cn.smallaswater.land.event.land.LandAddMemberEvent;
 import cn.smallaswater.land.event.land.LandCloseEvent;
 import cn.smallaswater.land.event.player.PlayerJoinLandEvent;
@@ -201,12 +202,17 @@ public class LandData  {
 
 
 
-    public void save(){
+    public boolean save(){
         if(config == null){
             config = new Config(LandModule.getModule().getModuleInfo().getDataFolder()+"/lands/"+(landName).trim()+".yml",2);
         }
         config.setAll(getAll());
+        if(config.getAll().size() == 0){
+            LandMainClass.MAIN_CLASS.getLogger().error("[领地]"+landName+" 在保存的过程中出现问题 原因: 数据丢失[未对配置文件进行更改]");
+            return false;
+        }
         config.save();
+        return true;
 
     }
 

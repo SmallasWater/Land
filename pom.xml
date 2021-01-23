@@ -13,7 +13,7 @@
             <artifactId>nukkit</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath> F:/Maven/.m2/repository/cn/nukkit/nukkit/1.0-SNAPSHOT/nukkit-1.0-20200308.181528-752.jar</systemPath>
+            <systemPath> F:/Nukkit驱动/nukkit-1.16.200.jar</systemPath>
         </dependency>
 
         <dependency>
