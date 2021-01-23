@@ -164,7 +164,7 @@ public class CreateSubCommand extends BaseSubCommand {
     @Override
     public CommandParameter[] getParameters() {
         return new CommandParameter[]{
-                CommandParameter.newType("name",true, CommandParamType.TEXT)
+                new CommandParameter("name", CommandParamType.TEXT,true)
         };
     }
 }

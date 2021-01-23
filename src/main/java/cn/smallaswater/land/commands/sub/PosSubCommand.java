@@ -107,7 +107,7 @@ public class PosSubCommand extends BaseSubCommand {
     @Override
     public CommandParameter[] getParameters() {
         return new CommandParameter[]{
-                CommandParameter.newEnum("value",new String[]{"1","2"})
+                new CommandParameter("value",new String[]{"1","2"})
         };
     }
 

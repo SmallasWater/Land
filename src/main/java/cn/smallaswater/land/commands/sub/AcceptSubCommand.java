@@ -60,6 +60,6 @@ public class AcceptSubCommand extends BaseSubCommand {
     @Override
     public CommandParameter[] getParameters() {
         return new CommandParameter[]{
-                CommandParameter.newType("player",true,CommandParamType.TARGET)};
+                new CommandParameter("player", CommandParamType.TARGET,true)};
     }
 }
