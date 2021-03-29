@@ -256,6 +256,7 @@ public class CreateWindow {
 
 
 
+
     private static ElementButton getBackButton(){
         return new ElementButton(LandModule.getModule().getLanguage().backButton,new ElementButtonImageData("path","textures/ui/refresh_light"));
     }
@@ -328,8 +329,8 @@ public class CreateWindow {
                     .replace("%level%", data.getVector().getLevel().getFolderName())
                     .replace("%day%", (LandModule.getModule().getConfig().getShowTime() - DataTool.getOutDay(data)) + "")
                     .replace("%player%",data.getMaster())
-                    .replace("%money%", String.format("%.2f",money)
-                    .replace("%message%",data.getSellMessage()));
+                    .replace("%money%", String.format("%.2f",money))
+                    .replace("%message%",data.getSellMessage());
             simple.setContent(content);
             simple.addButton(new ElementButton(LandModule.getModule().getLanguage().transferButton,new ElementButtonImageData("path","textures/ui/mashup_world")));
             simple.addButton(new ElementButton(LandModule.getModule().getLanguage().buyLandButton, new ElementButtonImageData("path", "textures/ui/MCoin")));

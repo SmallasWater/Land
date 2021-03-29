@@ -102,7 +102,7 @@ public class Language {
     public String protectLevel = "此世界被圈地之前禁止交互";
     public String sellOtherLand = "主领地领主出售了 %name% 子领地 你失去了 %name% 的权限";
     public String showSellLandButton = "(%type%) %name% 售卖中 领主: %player% (%day%天后下架)\n点我查看详情";
-    public String showSellLandMenu = "领地名称: %name%\n\n领地大小: %size% 方块\n\n领地位置: %pos%\n\n领地地图: %level%\n\n公示时间: %day%天后下架\n\n领地价格: %money%\n\n领地介绍: %message%";
+    public String showSellLandMenu = "领地名称: %name%&r\n\n领地大小: %size% 方块\n\n领地位置: %pos%\n\n领地地图: %level%\n\n公示时间: %day%天后下架\n\n领地价格: %money%\n\n领地介绍: %message%";
     public String masterLand = "主领地";
     public String subLand = "子领地";
     public String buyLandButton = "是我的了，购买！";

@@ -21,17 +21,14 @@ public class AutoSaveLandTask extends PluginTask<LandMainClass> {
     @Override
     public void onRun(int i) {
         getOwner().getLogger().info("[领地] 正在保存领地数值");
-        getOwner().getServer().getScheduler().scheduleAsyncTask(getOwner(), new AsyncTask() {
-            @Override
-            public void onRun() {
-                LandList list = getOwner().getModule().getList();
-                for(LandData data: list.getData()){
-                    if(data.save()){
-                        saveCount++;
-                    }
-                }
-                getOwner().getLogger().info("[领地] 保存完成 "+saveCount+"个领地已保存");
+        LandList list = getOwner().getModule().getList();
+        for(LandData data: list.getData()){
+            if(data.save()){
+                saveCount++;
             }
-        });
+        }
+        getOwner().getLogger().info("[领地] 保存完成 "+saveCount+"个领地已保存");
+        saveCount = 0;
+
     }
 }

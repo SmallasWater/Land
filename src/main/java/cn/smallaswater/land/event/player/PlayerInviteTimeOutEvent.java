@@ -3,6 +3,9 @@ package cn.smallaswater.land.event.player;
 import cn.smallaswater.land.event.LandDataEvent;
 import cn.smallaswater.land.lands.data.LandData;
 
+/**
+ * @author SmallasWater
+ */
 public class PlayerInviteTimeOutEvent extends LandDataEvent {
 
     private final String memberPlayerName;

@@ -111,8 +111,9 @@ public class LandModule {
             LandMainClass.MAIN_CLASS.getPluginLoader().disablePlugin(LandMainClass.MAIN_CLASS);
             return;
         }
+
         if(getConfig().isAutoSave()){
-            Server.getInstance().getScheduler().scheduleRepeatingTask(new AutoSaveLandTask(getModuleInfo()),(20 * config.getAutoSaveTime()) * 60);
+            Server.getInstance().getScheduler().scheduleDelayedRepeatingTask(getModuleInfo(),new AutoSaveLandTask(getModuleInfo()),(20 * config.getAutoSaveTime()) * 60,(20 * config.getAutoSaveTime()) * 60);
         }
         Server.getInstance().getScheduler().scheduleRepeatingTask(new ShowParticleTask(getModuleInfo()),20);
         //检测公示期
@@ -147,7 +148,7 @@ public class LandModule {
 
 
     private void registerListener(){
-       LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new LandListener(),LandMainClass.MAIN_CLASS);
+        LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new LandListener(),LandMainClass.MAIN_CLASS);
         LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new WindowListener(),LandMainClass.MAIN_CLASS);
     }
 

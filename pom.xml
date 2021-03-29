@@ -6,7 +6,7 @@
 
     <groupId>cn.smallaswater.land</groupId>
     <artifactId>Land</artifactId>
-    <version>1.5.8</version>
+    <version>1.6.1</version>
     <dependencies>
         <dependency>
             <groupId>cn.nukkit</groupId>

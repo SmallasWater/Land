@@ -436,6 +436,9 @@ public class WindowListener implements Listener {
                         LandModule.getModule().showTime.put(data,LandModule.getModule().getConfig().getTime());
                         return;
                     case CreateWindow.SET_SUB_LAND_BUTTON:
+                        if(data instanceof LandSubData){
+                            break;
+                        }
                         CreateWindow.sendSubLandList(p);
                         return;
 
