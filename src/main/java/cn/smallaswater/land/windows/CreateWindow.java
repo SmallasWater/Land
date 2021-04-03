@@ -8,9 +8,10 @@ import cn.nukkit.form.window.FormWindowModal;
 import cn.nukkit.form.window.FormWindowSimple;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
+import cn.smallaswater.land.lands.settings.OtherLandSetting;
 import cn.smallaswater.land.lands.utils.ScreenSetting;
 import cn.smallaswater.land.module.LandModule;
-import cn.smallaswater.land.players.LandSetting;
+import cn.smallaswater.land.lands.settings.LandSetting;
 
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
@@ -42,18 +43,24 @@ public class CreateWindow {
     static final int IS_SELL_MENU = 0x125Ac23;
     static final int SCREEN_MENU = 0x125Ac24;
     static final int SCREEN_LIST = 0x125Ac25;
+    static final int LAND_ALL_SETTING = 0x125Ac26;
+    static final int LAND_ALL_DEFAULT_SETTING = 0x125Ac27;
 
     static final int INVITE_BUTTON = 0;
     static final int KICK_BUTTON = 1;
     static final int SET_PLAYER_BUTTON = 2;
-    static final int SET_OTHER_BUTTON = 3;
-    static final int SELL_LAND_BUTTON = 4;
-    static final int GIVE_LAND_BUTTON = 5;
-    static final int SET_TRANSFER_BUTTON = 6;
-    static final int SET_TEXT_BUTTON = 7;
-    static final int SHOW_PARTICLE_BUTTON = 8;
-    static final int SET_SUB_LAND_BUTTON = 9;
+
+    static final int SET_LAND_ALL_SETTING = 9;
+//    static final int SET_OTHER_BUTTON = 3;
+    static final int SELL_LAND_BUTTON = 3;
+    static final int GIVE_LAND_BUTTON = 4;
+    static final int SET_TRANSFER_BUTTON = 5;
+    static final int SET_TEXT_BUTTON = 6;
+    static final int SHOW_PARTICLE_BUTTON = 7;
+    static final int SET_SUB_LAND_BUTTON = 8;
     static String backImage = "textures/ui/refresh_light";
+
+    private static Language language = LandModule.getModule().getLanguage();
 
     public static LinkedHashMap<Player,Integer> PAGES = new LinkedHashMap<>();
 
@@ -441,12 +448,13 @@ public class CreateWindow {
      * */
     static void sendSetLandMenu(Player player){
         LandData data = LandModule.getModule().clickData.get(player);
-        Language language = LandModule.getModule().getLanguage();
+
         FormWindowSimple simple = new FormWindowSimple(LandModule.getModule().getConfig().getTitle(), "");
         simple.addButton(new ElementButton(language.inviteButton,new ElementButtonImageData("path","textures/ui/invite_base")));
         simple.addButton(new ElementButton(language.kickButton,new ElementButtonImageData("path","textures/ui/realms_red_x")));
-        simple.addButton(new ElementButton(language.setPlayerButton,new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
-        simple.addButton(new ElementButton(language.setOtherButton,new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
+//        simple.addButton(new ElementButton(language.setPlayerButton,new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
+        simple.addButton(new ElementButton(language.setting,new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
+//        simple.addButton(new ElementButton(language.setOtherButton,new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
         simple.addButton(new ElementButton(LandModule.getModule().getLanguage().sellLandButton.replace("%c%",
                 LandModule.getModule().getConfig().getSellMoney()+""),new ElementButtonImageData("path","textures/ui/MCoin")));
         simple.addButton(new ElementButton(LandModule.getModule().getLanguage().giveLandButton,new ElementButtonImageData("path","textures/ui/Friend1")));
@@ -463,6 +471,29 @@ public class CreateWindow {
         }
         simple.addButton(getBackButton());
         player.showFormWindow(simple,SET_LAND);
+    }
+
+    /**
+     * TODO 发送领地设置
+     * */
+    static void sendLandOtherSettingMenu(Player player){
+        LandData data =  LandModule.getModule().clickData.get(player);
+        if(data != null) {
+            FormWindowCustom custom = new FormWindowCustom(LandModule.getModule().getConfig().getTitle());
+            for(OtherLandSetting setting: OtherLandSetting.values()){
+                custom.addElement(new ElementToggle(setting.getName(),data.hasPermission(setting)));
+            }
+            player.showFormWindow(custom,LAND_ALL_DEFAULT_SETTING);
+        }
+    }
+
+    public static void sendLandAllSettingMenu(Player player){
+        FormWindowSimple simple = new FormWindowSimple(LandModule.getModule().getConfig().getTitle(), "");
+        simple.addButton(new ElementButton(language.setPlayerButton,new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
+        simple.addButton(new ElementButton(language.landSetting,new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
+        simple.addButton(new ElementButton(language.setOtherButton,new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
+        simple.addButton(getBackButton());
+        player.showFormWindow(simple,LAND_ALL_SETTING);
     }
 
     /**

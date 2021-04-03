@@ -6,7 +6,7 @@ import cn.smallaswater.land.event.land.LandCloseEvent;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.players.MemberSetting;
 import cn.smallaswater.land.module.LandModule;
-import cn.smallaswater.land.players.LandSetting;
+import cn.smallaswater.land.lands.settings.LandSetting;
 import cn.smallaswater.land.players.PlayerSetting;
 import cn.smallaswater.land.utils.Vector;
 

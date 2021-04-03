@@ -10,6 +10,7 @@ import cn.nukkit.utils.TextFormat;
 import cn.smallaswater.land.LandMainClass;
 import cn.smallaswater.land.lands.LandList;
 import cn.smallaswater.land.lands.data.LandListener;
+import cn.smallaswater.land.lands.data.LandOtherSet;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.utils.InviteHandle;
@@ -264,6 +265,11 @@ public class LandModule {
                     m.get("joinMessage").toString(),
                     m.get("quitMessage").toString(),
                     DataTool.getPositionByMap((Map) m.get("transfer")));
+            LandOtherSet set = new LandOtherSet();
+            if(m.containsKey("otherLandSetting")){
+                set = LandOtherSet.getLandOtherSetByMap((Map) m.get("otherLandSetting"));
+            }
+            data.setLandOtherSet(set);
             data.setSellMessage(m.containsKey("sellMessage") ? m.get("sellMessage").toString():"领地出售中~~");
             data.setSell(m.containsKey("isSell") && (boolean) m.get("isSell"));
             data.setSellDay((m.containsKey("sellDay") ? (String) m.get("sellDay") : ""));

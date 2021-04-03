@@ -109,4 +109,6 @@ isSellInputMoney: "请设置领地出售金钱.."
 isSellInputMessage: "请设置宣传标语.."
 setSellMoneyMessage: "成功设置 %name% 领地出售价格为 %money%"
 landlists: "当前服务器拥有 %count% 个领地 第 %i% 页/共 %max% 页"
+landSetting: "领地权限设置"
+setting: "权限设置"
 ...

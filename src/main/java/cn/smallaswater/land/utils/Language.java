@@ -125,6 +125,8 @@ public class Language {
     public String giveSellLandError = "此领地正在寄售..无法给予任何玩家";
 
     public String  sellLandError = "此领地正在寄售..无法进行出售";
+    public String landSetting =  "领地权限设置";
+    public String setting = "权限设置";
 
     private Config locale;
     public Language(Config locale){
@@ -238,9 +240,14 @@ public class Language {
         this.protectLevel = TextFormat.colorize('&',this.locale.getString("protectLevel",protectLevel));
     }
 
+    private void loadLocaleC(){
+        this.landSetting = TextFormat.colorize('&', this.locale.getString("landSetting", landSetting));
+        this.setting = TextFormat.colorize('&',this.locale.getString("setting",setting));
+    }
     private void loadLocale(){
         loadLocaleA();
         loadLocalB();
+        loadLocaleC();
         //-----//
         this.sellOtherLand = TextFormat.colorize('&', this.locale.getString("sellOtherLand", sellOtherLand));
         this.showSellLandButton = TextFormat.colorize('&', this.locale.getString("showSellLandButton", showSellLandButton));

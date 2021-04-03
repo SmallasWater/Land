@@ -1,5 +1,7 @@
 package cn.smallaswater.land.players;
 
+import cn.smallaswater.land.lands.settings.LandSetting;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 

@@ -11,12 +11,13 @@ import cn.smallaswater.land.event.land.LandCloseEvent;
 import cn.smallaswater.land.event.player.PlayerJoinLandEvent;
 import cn.smallaswater.land.event.player.PlayerQuitLandEvent;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
+import cn.smallaswater.land.lands.settings.OtherLandSetting;
 import cn.smallaswater.land.players.MemberSetting;
 import cn.smallaswater.land.players.PlayerSetting;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Vector;
 import cn.smallaswater.land.module.LandModule;
-import cn.smallaswater.land.players.LandSetting;
+import cn.smallaswater.land.lands.settings.LandSetting;
 
 import java.io.File;
 import java.util.Date;
@@ -61,6 +62,8 @@ public class LandData  {
 
     private LinkedList<LandSubData> subData = new LinkedList<>();
 
+    private LandOtherSet landOtherSet;
+
     private String sellMessage = "领地出售中~~~";
 
     public LandData(int landId,String landName,String master,Vector vector,
@@ -77,6 +80,15 @@ public class LandData  {
         this.quitMessage = quitMessage;
         this.transfer = transfer;
         this.createTime = new Date();
+        this.landOtherSet = new LandOtherSet();
+    }
+
+    public void setLandOtherSet(LandOtherSet landOtherSet) {
+        this.landOtherSet = landOtherSet;
+    }
+
+    public LandOtherSet getLandOtherSet() {
+        return landOtherSet;
     }
 
     public void setConfig(Config config) {
@@ -188,6 +200,7 @@ public class LandData  {
         obj.put("vector",getVector().getConfig());
         obj.put("member",getMember().getMember());
         obj.put("defaultSetting",getDefaultSetting().getSettings());
+        obj.put("otherLandSetting",landOtherSet.getOtherLandSetting());
         obj.put("joinMessage",getJoinMessage().trim());
         obj.put("quitMessage",getQuitMessage().trim());
         obj.put("transfer", DataTool.getMapByTransfer(getTransfer()));
@@ -343,6 +356,13 @@ public class LandData  {
     }
 
 
+    /**
+     * TODO 领地的设置 防怪等
+     * */
+    public boolean hasPermission(OtherLandSetting setting){
+        return landOtherSet.isOpen(setting);
+
+    }
 
     public boolean hasPermission(String player, LandSetting setting){
         if(player != null) {

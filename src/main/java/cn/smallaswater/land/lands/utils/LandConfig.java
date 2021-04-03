@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * @author 若水
  */
-public class LandConfig {
+public class  LandConfig {
 
     private String title;
 
@@ -41,6 +41,10 @@ public class LandConfig {
     private boolean autoSave;
 
     private int autoSaveTime;
+
+    private boolean echoBlackListMessage;
+
+    private boolean echoProtectListMessage;
 
 
 
@@ -103,10 +107,28 @@ public class LandConfig {
         config1.setShowTime(config.getInt("售卖领地显示时间",7));
         Item i = Item.fromString(config.getString("landTool","290:0"));
         config1.setLandTool(i);
+        config1.setEchoBlackListMessage(config.getBoolean("echoBlackListMessage",true));
+        config1.setEchoProtectListMessage(config.getBoolean("echoProtectListMessage",true));
         config1.setAutoSave(config.getBoolean("auto-save-land.open",true));
         config1.setAutoSaveTime(config.getInt("auto-save-land.time",5));
 
         return config1;
+    }
+
+    private void setEchoBlackListMessage(boolean echoBlackListMessage) {
+        this.echoBlackListMessage = echoBlackListMessage;
+    }
+
+    public boolean isEchoBlackListMessage() {
+        return echoBlackListMessage;
+    }
+
+    private void setEchoProtectListMessage(boolean echoProtectListMessage) {
+        this.echoProtectListMessage = echoProtectListMessage;
+    }
+
+    public boolean isEchoProtectListMessage() {
+        return echoProtectListMessage;
     }
 
     private void setAutoSave(boolean autoSave) {

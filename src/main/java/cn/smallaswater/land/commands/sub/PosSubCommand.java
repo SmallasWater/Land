@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.level.Position;
+import cn.smallaswater.land.LandMainClass;
 import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
@@ -33,7 +34,10 @@ public class PosSubCommand extends BaseSubCommand {
                 LinkedList<Position> positions = new LinkedList<>();
                 if ("1".equalsIgnoreCase(strings[1])) {
                     if(LandModule.getModule().getConfig().getBlackList().contains(((Player) sender).getLevel().getFolderName()) && !sender.isOp()){
-                        sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.whiteWorld.replace("%level%",((Player) sender).level.getFolderName()));
+                        if(LandMainClass.MAIN_CLASS.getModule().getConfig().isEchoBlackListMessage()){
+                            sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.whiteWorld.replace("%level%",((Player) sender).level.getFolderName()));
+                            return true;
+                        }
                         return true;
                     }
                     Position position = new Position(((Player) sender).getFloorX(), ((Player) sender).getFloorY()

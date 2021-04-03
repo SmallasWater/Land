@@ -5,23 +5,25 @@ import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockChest;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
+import cn.nukkit.event.block.BlockBurnEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
-import cn.nukkit.event.entity.EntityDamageByEntityEvent;
-import cn.nukkit.event.entity.EntityDamageEvent;
-import cn.nukkit.event.entity.EntityExplodeEvent;
-import cn.nukkit.event.entity.ExplosionPrimeEvent;
+import cn.nukkit.event.block.BlockUpdateEvent;
+import cn.nukkit.event.entity.*;
 import cn.nukkit.event.player.*;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Position;
+import cn.smallaswater.land.LandMainClass;
 import cn.smallaswater.land.event.player.*;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
+import cn.smallaswater.land.lands.settings.OtherLandSetting;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.module.LandModule;
-import cn.smallaswater.land.players.LandSetting;
+import cn.smallaswater.land.lands.settings.LandSetting;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.Vector;
 
@@ -168,7 +170,9 @@ public class LandListener implements Listener {
         if(LandModule.getModule().getConfig().getProtectList().contains(position.level.getFolderName())) {
             if (data == null) {
                 if(!player.isOp()){
-                    player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().protectLevel);
+                    if(LandMainClass.MAIN_CLASS.getModule().getConfig().isEchoProtectListMessage()){
+                        player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().protectLevel);
+                    }
                     return false;
                 }
             } else {
@@ -277,6 +281,49 @@ public class LandListener implements Listener {
     }
 
     @EventHandler
+    public void onEntitySpawn(EntitySpawnEvent event){
+        Entity entity = event.getEntity();
+        if(entity instanceof EntityHuman){
+            return;
+        }
+
+        Position position = event.getPosition();
+        LandData data = DataTool.getPlayerLandData(position);
+        if(data != null){
+            if(!data.getLandOtherSet().isOpen(OtherLandSetting.ENTITY_SPAWN)){
+                entity.close();
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBlockBurn(BlockBurnEvent event){
+        Position position = event.getBlock();
+        LandData data = DataTool.getPlayerLandData(position);
+        if(data != null){
+            if(!data.getLandOtherSet().isOpen(OtherLandSetting.FIRE)){
+                event.setCancelled();
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockUpData(BlockUpdateEvent event){
+        Position position = event.getBlock();
+        LandData data = DataTool.getPlayerLandData(position);
+        if(data != null){
+            if(!data.getLandOtherSet().isOpen(OtherLandSetting.BLOCK_UPDATE)){
+                event.setCancelled();
+            }
+            if(!data.getLandOtherSet().isOpen(OtherLandSetting.WATER)) {
+                if ((event.getBlock().getName().contains("Water")) || (event.getBlock().getName().contains("Lava"))) {
+                    event.setCancelled();
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void onTouchLand(PlayerInteractEvent event){
         Player player = event.getPlayer();
         if(event.getAction() == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK
@@ -289,7 +336,10 @@ public class LandListener implements Listener {
                 Language language = LandModule.getModule().getLanguage();
                 if(!LandModule.getModule().pos.containsKey(player.getName()) || LandModule.getModule().pos.get(player.getName()).size() > 1){
                     if(LandModule.getModule().getConfig().getBlackList().contains(block.getLevel().getFolderName()) && !player.isOp()){
-                        player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.whiteWorld.replace("%level%",block.level.getFolderName()));
+                        if(LandMainClass.MAIN_CLASS.getModule().getConfig().isEchoBlackListMessage()){
+                            player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.whiteWorld.replace("%level%",block.level.getFolderName()));
+                            return;
+                        }
                         return;
                     }
                     Position position = new Position(block.getFloorX(), block.getFloorY()

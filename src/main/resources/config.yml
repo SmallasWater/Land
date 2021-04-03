@@ -21,10 +21,16 @@ sellMoney: 50
 # 示例: blackList: ["世界1","世界2"]
 blackList: ["世界1","世界2"]
 
+# 是否提示
+echoBlackListMessage: true
+
 # 保护世界
 # 在此名单的世界无法破坏放置 需要圈地
 # 示例: protectList: ["世界1","世界2"]
 protectList: ["世界1","世界2"]
+
+# 是否提示
+echoProtectListMessage: true
 
 # 限制玩家拥有的领地上限
 # 注: 只拥有成员权限也计算在内
@@ -49,6 +55,8 @@ loadEconomy: default
 auto-save-land:
   open: true
   time: 30
+
+
 
 
 

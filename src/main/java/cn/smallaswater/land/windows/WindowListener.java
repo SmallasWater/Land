@@ -10,13 +10,15 @@ import cn.nukkit.form.window.FormWindowModal;
 import cn.nukkit.form.window.FormWindowSimple;
 import cn.smallaswater.land.event.player.*;
 import cn.smallaswater.land.lands.data.LandData;
+import cn.smallaswater.land.lands.data.LandOtherSet;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
+import cn.smallaswater.land.lands.settings.OtherLandSetting;
 import cn.smallaswater.land.lands.utils.ScreenSetting;
 import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.players.PlayerSetting;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
-import cn.smallaswater.land.players.LandSetting;
+import cn.smallaswater.land.lands.settings.LandSetting;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -59,7 +61,9 @@ public class WindowListener implements Listener {
                     || formId == CreateWindow.LIST_SUB
                     || formId == CreateWindow.IS_SELL_MENU
                     || formId == CreateWindow.SCREEN_MENU
-                    || formId == CreateWindow.SCREEN_LIST) {
+                    || formId == CreateWindow.LAND_ALL_SETTING
+                    || formId == CreateWindow.SCREEN_LIST
+                    || formId == CreateWindow.LAND_ALL_DEFAULT_SETTING) {
                 if (event.getWindow() instanceof FormWindowSimple) {
                     onListenerSimpleWindow(p, (FormWindowSimple) event.getWindow(), formId, event.getWindow().wasClosed());
                 }
@@ -262,7 +266,8 @@ public class WindowListener implements Listener {
                     CreateWindow.sendMenu(p);
                 } else if (formId == CreateWindow.MEMBERS ||
                         formId == CreateWindow.INVITE_PLAYER ||
-                        formId == CreateWindow.LIST_SUB) {
+                        formId == CreateWindow.LIST_SUB ||
+                        formId == CreateWindow.LAND_ALL_SETTING) {
                     LandModule.getModule().clickData.put(p,data);
                     CreateWindow.sendSetLandMenu(p);
                 } else if (formId == CreateWindow.SET_LAND) {
@@ -333,6 +338,15 @@ public class WindowListener implements Listener {
                     return;
                 }
                 switch (formId){
+                    case CreateWindow.LAND_ALL_DEFAULT_SETTING:
+                        int i = 0;
+                        LandOtherSet set = data.getLandOtherSet();
+                        for (OtherLandSetting setting : OtherLandSetting.values()) {
+                            set.setOpen(setting,custom.getResponse().getToggleResponse(i));
+                            i++;
+                        }
+                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.saveSetting.replace("%p%", "领地"));
+                        break;
                     case CreateWindow.IS_SELL_MENU:
                         String message = custom.getResponse().getInputResponse(1);
                         String money = custom.getResponse().getInputResponse(0);
@@ -347,7 +361,7 @@ public class WindowListener implements Listener {
                         String playerName = LandModule.getModule().clickPlayer.get(p);
                         LandModule.getModule().clickPlayer.remove(p);
                         PlayerSetting playerSetting = new PlayerSetting(new LinkedHashMap<>());
-                        int i = 1;
+                        i = 1;
                         for (LandSetting setting : LandSetting.values()) {
                             playerSetting.setSetting(setting.getName(),custom.getResponse().getToggleResponse(i));
                             i++;
@@ -404,12 +418,13 @@ public class WindowListener implements Listener {
                         CreateWindow.sendMemberList(p);
                         return;
                     case CreateWindow.SET_PLAYER_BUTTON:
-                        type.put(p, CreateWindow.SET_PLAYER_BUTTON);
-                        CreateWindow.sendMemberList(p);
+                        type.put(p, CreateWindow.SET_LAND_ALL_SETTING);
+                        CreateWindow.sendLandAllSettingMenu(p);
+//                        CreateWindow.sendMemberList(p);
                         return;
-                    case CreateWindow.SET_OTHER_BUTTON:
-                        CreateWindow.sendLandSettingMenu(p);
-                        return;
+//                    case CreateWindow.SET_OTHER_BUTTON:
+//                        CreateWindow.sendLandSettingMenu(p);
+//                        return;
                     case CreateWindow.SELL_LAND_BUTTON:
                         CreateWindow.sendQuitOrSellMenu(p);
                         return;
@@ -584,6 +599,24 @@ public class WindowListener implements Listener {
                 p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.playerOffOnline.replace("%p%", player));
             }
         }
+        if(formId == CreateWindow.LAND_ALL_SETTING){
+            if(sendBack(p, simple, formId, language)){
+                return;
+            }
+            switch (simple.getResponse().getClickedButtonId()){
+                case 0:
+                    type.put(p, CreateWindow.SET_PLAYER_BUTTON);
+                    CreateWindow.sendMemberList(p);
+                    break;
+                case 1:
+                    CreateWindow.sendLandOtherSettingMenu(p);
+                    break;
+                case 2:
+                    CreateWindow.sendLandSettingMenu(p);
+                    break;
+                default:break;
+            }
+        }
         if (formId == CreateWindow.MEMBERS) {
             if(sendBack(p, simple, formId, language)){
                 return;
@@ -617,13 +650,14 @@ public class WindowListener implements Listener {
         }
         Language language = LandModule.getModule().getLanguage();
         if(!wasClose) {
-            if (data != null && formId != CreateWindow.MENU && formId != CreateWindow.LIST && formId != CreateWindow.LIST_SUB && formId != CreateWindow.SELL_LANDS) {
+            if (data != null && formId != CreateWindow.MENU && formId != CreateWindow.LIST && formId != CreateWindow.LIST_SUB && formId != CreateWindow.SELL_LANDS ) {
                 if (existsData(p, data, language)) {
                     return;
                 }
                 onListenerSimpleWindowSendMenu(p,data,language,simple,formId);
                 onListenerSimpleWindowSetMenu(p,data,language,simple,formId);
             } else {
+
                 if(formId == CreateWindow.MENU){
                     try {
                         data = DataTool.getPlayerAllLand(p).get(simple.getResponse().getClickedButtonId());
