@@ -2,7 +2,7 @@ package cn.smallaswater.land.players;
 
 /**
  * @author 若水
- * 此类仅兼容胡桃商店使用~
+ * 此类仅兼容胡椒商店使用~
  *
  */
 @Deprecated
