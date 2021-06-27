@@ -15,6 +15,7 @@ public class LandMainClass extends PluginBase {
 
 
 
+
     public static LandMainClass MAIN_CLASS;
     @Override
     public void onEnable() {

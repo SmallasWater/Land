@@ -8,12 +8,17 @@ import cn.nukkit.event.player.PlayerFormRespondedEvent;
 import cn.nukkit.form.window.FormWindowCustom;
 import cn.nukkit.form.window.FormWindowModal;
 import cn.nukkit.form.window.FormWindowSimple;
+import cn.smallaswater.land.LandMainClass;
 import cn.smallaswater.land.event.player.*;
+import cn.smallaswater.land.handle.KeyHandle;
+import cn.smallaswater.land.handle.TimeHandle;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.LandOtherSet;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
 import cn.smallaswater.land.lands.settings.OtherLandSetting;
 import cn.smallaswater.land.lands.utils.ScreenSetting;
+import cn.smallaswater.land.manager.KeyHandleManager;
+import cn.smallaswater.land.manager.TimerHandleManager;
 import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.players.PlayerSetting;
 import cn.smallaswater.land.utils.DataTool;
@@ -395,9 +400,28 @@ public class WindowListener implements Listener {
     private void transfer(Player player,LandData data){
         if(!data.hasPermission(player.getName(), LandSetting.TRANSFER)){
             player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().notHavePermission.replace("%title%",LandModule.getModule().getConfig().getTitle()));
-
         }else{
-            player.teleport(data.getTransfer());
+            TimeHandle handle = TimerHandleManager.getTimeHandle(player);
+            if(handle.hasCold("transferCold")){
+                player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().transferCold.replace("%time%",handle.getCold("transferCold")+""));
+                return;
+            }
+            KeyHandleManager.addKey(player,"transfer");
+            handle.addTimer("transferCold",LandModule.getModule().getConfig().getTransferCold());
+            player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().transferTime.replace("%time%",handle.getCold("transferTime")+""));
+            LandMainClass.MAIN_CLASS.getServer().getScheduler().scheduleDelayedTask(LandMainClass.MAIN_CLASS, () -> {
+                if(!player.isOnline() ){
+                    return;
+                }
+                if(!KeyHandleManager.isKey(player,"transferClose")) {
+                    player.teleport(data.getTransfer());
+                }else{
+
+                    KeyHandleManager.removeKey(player,"transferClose");
+                    KeyHandleManager.removeKey(player,"transfer");
+                }
+            },LandModule.getModule().getConfig().getTransferTime() * 20);
+
 
         }
     }
@@ -420,11 +444,7 @@ public class WindowListener implements Listener {
                     case CreateWindow.SET_PLAYER_BUTTON:
                         type.put(p, CreateWindow.SET_LAND_ALL_SETTING);
                         CreateWindow.sendLandAllSettingMenu(p);
-//                        CreateWindow.sendMemberList(p);
                         return;
-//                    case CreateWindow.SET_OTHER_BUTTON:
-//                        CreateWindow.sendLandSettingMenu(p);
-//                        return;
                     case CreateWindow.SELL_LAND_BUTTON:
                         CreateWindow.sendQuitOrSellMenu(p);
                         return;

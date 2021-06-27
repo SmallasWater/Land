@@ -21,7 +21,12 @@ sellMoney: 50
 # 示例: blackList: ["世界1","世界2"]
 blackList: ["世界1","世界2"]
 
-# 是否提示
+whiteList: []
+
+# 无权限的时候是否提示
+echoPermission: true
+
+# 在黑名单世界是否提示
 echoBlackListMessage: true
 
 # 保护世界
@@ -49,6 +54,13 @@ time: 5
 #当前支持 EconomyAPI,Money,PlayerPoint
 # default 为自动识别
 loadEconomy: default
+
+#领地传送时间相关设置
+#time: 传送时间
+# cold: 冷却时间
+transfer-time-setting:
+  time: 5
+  cold: 30
 
 #单位： 分钟
 #领地自动保存设置

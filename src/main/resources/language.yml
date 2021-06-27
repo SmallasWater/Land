@@ -111,4 +111,7 @@ setSellMoneyMessage: "成功设置 %name% 领地出售价格为 %money%"
 landlists: "当前服务器拥有 %count% 个领地 第 %i% 页/共 %max% 页"
 landSetting: "领地权限设置"
 setting: "权限设置"
+transfer_time: "&e将在&a %time% &e秒后传送到领地 请勿移动"
+transfer_cold: "&c传送冷却中 剩余时间&a %time%"
+transfer_error: "&c传送取消!"
 ...

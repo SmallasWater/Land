@@ -128,6 +128,13 @@ public class Language {
     public String landSetting =  "领地权限设置";
     public String setting = "权限设置";
 
+    public String transferTime = "&e将在&a %time% &e秒后传送到领地 请勿移动";
+
+    public String transferCold = "&c传送冷却中 剩余时间&a %time%";
+
+    public String transferError = "&c传送取消!";
+
+
     private Config locale;
     public Language(Config locale){
         this.locale = locale;
@@ -276,6 +283,10 @@ public class Language {
         this.isSellInputMoney = TextFormat.colorize('&',this.locale.getString("isSellInputMoney",isSellInputMoney));
         this.setSellMoneyMessage = TextFormat.colorize('&',this.locale.getString("setSellMoneyMessage",setSellMoneyMessage));
         this.landLists = TextFormat.colorize('&',this.locale.getString("landLists",landLists));
+        this.transferTime = TextFormat.colorize('&',this.locale.getString("transfer_time",transferTime));
+        this.transferCold = TextFormat.colorize('&',this.locale.getString("transfer_cold",transferCold));
+        this.transferError = TextFormat.colorize('&',this.locale.getString("transfer_error",transferError));
+
     }
 
 

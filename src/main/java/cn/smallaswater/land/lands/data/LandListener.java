@@ -7,7 +7,6 @@ import cn.nukkit.block.BlockChest;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.event.EventHandler;
-import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.block.BlockBurnEvent;
@@ -16,11 +15,13 @@ import cn.nukkit.event.block.BlockUpdateEvent;
 import cn.nukkit.event.entity.*;
 import cn.nukkit.event.player.*;
 import cn.nukkit.item.Item;
+import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
 import cn.smallaswater.land.LandMainClass;
 import cn.smallaswater.land.event.player.*;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
 import cn.smallaswater.land.lands.settings.OtherLandSetting;
+import cn.smallaswater.land.manager.KeyHandleManager;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.lands.settings.LandSetting;
@@ -37,10 +38,24 @@ import java.util.LinkedList;
  */
 public class LandListener implements Listener {
     private LinkedHashMap<Player,LandData> move = new LinkedHashMap<>();
+
+    @EventHandler
+    public void onTransferMove(PlayerMoveEvent event){
+        Player player = event.getPlayer();
+        if(KeyHandleManager.isKey(player,"transfer")){
+            Location f = event.getFrom();
+            Location t = event.getTo();
+            if(f.getX() != t.getX() || f.getY() != t.getY() || f.getZ() != t.getZ()){
+                KeyHandleManager.addKey(player,"transferClose");
+                player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().transferError);
+            }
+        }
+    }
     @EventHandler
     public void onMove(PlayerMoveEvent event){
         Player player = event.getPlayer();
         LandData data = DataTool.getPlayerLandData(player);
+
         if(data != null) {
             if (notHasPermission(player, player.getPosition(), LandSetting.MOVE)) {
                 event.setCancelled();
@@ -111,10 +126,11 @@ public class LandListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e){
+        KeyHandleManager.clearPlayerKey(e.getPlayer());
         move.remove(e.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR,ignoreCancelled = true)
+    @EventHandler
     public void onPlayer(BlockPlaceEvent event){
         Player player = event.getPlayer();
         if(notCancel(player, event.getBlock())) {
@@ -152,7 +168,7 @@ public class LandListener implements Listener {
     }
 
 
-    @EventHandler(priority = EventPriority.MONITOR,ignoreCancelled = true)
+    @EventHandler
     public void onBreak(BlockBreakEvent event){
         Player player = event.getPlayer();
 
@@ -234,7 +250,7 @@ public class LandListener implements Listener {
 
 
 
-    @EventHandler(priority = EventPriority.MONITOR,ignoreCancelled = true)
+    @EventHandler
     public void onUseChest(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if (notCancel(player, player.getPosition())) {
@@ -272,7 +288,7 @@ public class LandListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR,ignoreCancelled = true)
+    @EventHandler
     public void onDrop(PlayerDropItemEvent event){
         Player player = event.getPlayer();
         if(notHasPermission(player, player, LandSetting.DROP)){
@@ -296,7 +312,7 @@ public class LandListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBlockBurn(BlockBurnEvent event){
         Position position = event.getBlock();
         LandData data = DataTool.getPlayerLandData(position);
@@ -387,7 +403,7 @@ public class LandListener implements Listener {
 
     }
 
-    @EventHandler(priority = EventPriority.MONITOR,ignoreCancelled = true)
+    @EventHandler
     public void onDamage(EntityDamageEvent event){
         if(event instanceof EntityDamageByEntityEvent){
             Entity entity1 = event.getEntity();
@@ -429,7 +445,7 @@ public class LandListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR,ignoreCancelled = true)
+    @EventHandler
     public void onTransfer(PlayerTeleportEvent event){
         if(event.isCancelled()){
             return;
@@ -445,7 +461,7 @@ public class LandListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onExplosionPrime(ExplosionPrimeEvent event) {
         event.setCancelled(canTnt(event.getEntity()));
     }
@@ -455,7 +471,7 @@ public class LandListener implements Listener {
     }
 
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
         event.setCancelled(canTnt(event.getEntity()));
     }

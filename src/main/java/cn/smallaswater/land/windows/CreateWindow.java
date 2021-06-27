@@ -51,7 +51,6 @@ public class CreateWindow {
     static final int SET_PLAYER_BUTTON = 2;
 
     static final int SET_LAND_ALL_SETTING = 9;
-//    static final int SET_OTHER_BUTTON = 3;
     static final int SELL_LAND_BUTTON = 3;
     static final int GIVE_LAND_BUTTON = 4;
     static final int SET_TRANSFER_BUTTON = 5;

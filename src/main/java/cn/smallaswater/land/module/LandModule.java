@@ -2,12 +2,12 @@ package cn.smallaswater.land.module;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
-import cn.nukkit.item.Item;
 import cn.nukkit.level.Position;
 import cn.nukkit.scheduler.Task;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import cn.smallaswater.land.LandMainClass;
+import cn.smallaswater.land.handle.KeyHandle;
 import cn.smallaswater.land.lands.LandList;
 import cn.smallaswater.land.lands.data.LandListener;
 import cn.smallaswater.land.lands.data.LandOtherSet;
@@ -19,6 +19,7 @@ import cn.smallaswater.land.players.MemberSetting;
 import cn.smallaswater.land.players.PlayerSetting;
 import cn.smallaswater.land.tasks.AutoSaveLandTask;
 import cn.smallaswater.land.tasks.ShowSellLandTask;
+import cn.smallaswater.land.tasks.TransferColdTask;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.LoadMoney;
@@ -44,6 +45,8 @@ public class LandModule {
     private LandList landList;
 
     private Config languageConfig;
+
+    public ArrayList<KeyHandle> keyHanle = new ArrayList<>();
 
 
     public LinkedHashMap<LandData,Integer> showTime = new LinkedHashMap<>();
@@ -116,6 +119,7 @@ public class LandModule {
         if(getConfig().isAutoSave()){
             Server.getInstance().getScheduler().scheduleDelayedRepeatingTask(getModuleInfo(),new AutoSaveLandTask(getModuleInfo()),(20 * config.getAutoSaveTime()) * 60,(20 * config.getAutoSaveTime()) * 60);
         }
+        Server.getInstance().getScheduler().scheduleRepeatingTask(new TransferColdTask(getModuleInfo()),20);
         Server.getInstance().getScheduler().scheduleRepeatingTask(new ShowParticleTask(getModuleInfo()),20);
         //检测公示期
         Server.getInstance().getScheduler().scheduleRepeatingTask(new ShowSellLandTask(getModuleInfo()),40);
