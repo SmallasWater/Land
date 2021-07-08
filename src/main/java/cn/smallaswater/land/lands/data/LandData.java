@@ -364,7 +364,12 @@ public class LandData  {
 
     }
 
-    public boolean hasPermission(String player, LandSetting setting){
+    @Deprecated
+    public boolean hasPermission(String player, cn.smallaswater.land.players.LandSetting setting){
+        return hasPermissionAsOldSetting(player, setting.getName());
+    }
+
+    private boolean hasPermissionAsOldSetting(String player, String name) {
         if(player != null) {
             Player player1 = Server.getInstance().getPlayer(player);
             if (player1 != null) {
@@ -376,10 +381,14 @@ public class LandData  {
                 return true;
             } else if (member.containsKey(player)) {
                 PlayerSetting setting1 = member.get(player);
-                return setting1.getSetting(setting.getName());
+                return setting1.getSetting(name);
             }
         }
-        return defaultSetting.getSetting(setting.getName());
+        return defaultSetting.getSetting(name);
+    }
+
+    public boolean hasPermission(String player, LandSetting setting){
+        return hasPermissionAsOldSetting(player, setting.getName());
     }
 
 

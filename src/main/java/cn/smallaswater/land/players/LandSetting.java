@@ -2,12 +2,9 @@ package cn.smallaswater.land.players;
 
 /**
  * @author 若水
- * 此类仅兼容胡椒商店使用~
- *
  */
 @Deprecated
 public enum LandSetting {
-
     /**锁箱子 玩家移动 玩家传送 锁熔炉 锁放置 锁破坏,锁 PVP 锁伤害生物,锁丢弃 生物生成 方块更新*/
     LOCK_CHEST("使用箱子"),
     MOVE("进入领地"),

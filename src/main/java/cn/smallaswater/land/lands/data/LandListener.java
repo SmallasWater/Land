@@ -45,7 +45,7 @@ public class LandListener implements Listener {
         if(KeyHandleManager.isKey(player,"transfer")){
             Location f = event.getFrom();
             Location t = event.getTo();
-            if(f.getX() != t.getX() || f.getY() != t.getY() || f.getZ() != t.getZ()){
+            if(f.getFloorX() != t.getFloorX() || f.getFloorY() != t.getFloorY() || f.getFloorZ() != t.getFloorZ()){
                 KeyHandleManager.addKey(player,"transferClose");
                 player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().transferError);
             }

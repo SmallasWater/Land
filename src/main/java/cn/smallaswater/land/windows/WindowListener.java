@@ -408,15 +408,15 @@ public class WindowListener implements Listener {
             }
             KeyHandleManager.addKey(player,"transfer");
             handle.addTimer("transferCold",LandModule.getModule().getConfig().getTransferCold());
-            player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().transferTime.replace("%time%",handle.getCold("transferTime")+""));
+            player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().transferTime.replace("%time%",LandModule.getModule().getConfig().getTransferTime()+""));
             LandMainClass.MAIN_CLASS.getServer().getScheduler().scheduleDelayedTask(LandMainClass.MAIN_CLASS, () -> {
                 if(!player.isOnline() ){
                     return;
                 }
                 if(!KeyHandleManager.isKey(player,"transferClose")) {
+                    KeyHandleManager.removeKey(player,"transfer");
                     player.teleport(data.getTransfer());
                 }else{
-
                     KeyHandleManager.removeKey(player,"transferClose");
                     KeyHandleManager.removeKey(player,"transfer");
                 }
