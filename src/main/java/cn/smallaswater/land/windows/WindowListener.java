@@ -138,6 +138,7 @@ public class WindowListener implements Listener {
                 player = event.getMember();
                 if(data.getMember().containsKey(player)) {
                     data.removeMember(player);
+
                     if(!(data instanceof LandSubData)){
                         for(LandSubData data1:data.getSubData()){
                             if(!data1.isSellPlayer()) {
@@ -155,11 +156,12 @@ public class WindowListener implements Listener {
                 }else{
                     return;
                 }
+                Player player1 = Server.getInstance().getPlayer(player);
+                if (player1 != null) {
+                    player1.sendMessage(LandModule.getModule().getConfig().getTitle()+language.kickLandMessage.replace("%p%", p.getName()).replace("%name%", data.getLandName()));
+                }
             }
-            Player player1 = Server.getInstance().getPlayer(player);
-            if (player1 != null) {
-                player1.sendMessage(LandModule.getModule().getConfig().getTitle()+language.kickLandMessage.replace("%p%", p.getName()).replace("%name%", data.getLandName()));
-            }
+
         }
     }
 

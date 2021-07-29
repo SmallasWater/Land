@@ -515,7 +515,7 @@ public class CreateWindow {
      * */
     static void sendKickMenu(Player player, String name){
         Language language = LandModule.getModule().getLanguage();
-        FormWindowModal modal = new FormWindowModal(LandModule.getModule().getConfig().getTitle(),"","确认","取消");
+        FormWindowModal modal = new FormWindowModal(LandModule.getModule().getConfig().getTitle(),"",language.choseTrue,language.choseFalse);
         modal.setContent(language.kickText.replace("%p%",name));
         player.showFormWindow(modal,KICK_MENU);
     }

@@ -8,15 +8,14 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
-import cn.nukkit.event.block.BlockBreakEvent;
-import cn.nukkit.event.block.BlockBurnEvent;
-import cn.nukkit.event.block.BlockPlaceEvent;
-import cn.nukkit.event.block.BlockUpdateEvent;
+import cn.nukkit.event.block.*;
 import cn.nukkit.event.entity.*;
 import cn.nukkit.event.player.*;
+import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
+import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import cn.smallaswater.land.LandMainClass;
 import cn.smallaswater.land.event.player.*;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
@@ -51,12 +50,30 @@ public class LandListener implements Listener {
             }
         }
     }
+
+
+
+//    @EventHandler
+//    public void onCultivatedLandProtect(BlockFadeEvent event){
+//        Position position = event.getBlock();
+//        LandData data = DataTool.getPlayerLandData(position);
+//        if(data != null){
+//            if(data.getLandOtherSet().isOpen(OtherLandSetting.TREAD)){
+//
+//                event.setCancelled();
+//            }
+//        }
+//    }
+
+
+
     @EventHandler
     public void onMove(PlayerMoveEvent event){
         Player player = event.getPlayer();
         LandData data = DataTool.getPlayerLandData(player);
 
         if(data != null) {
+
             if (notHasPermission(player, player.getPosition(), LandSetting.MOVE)) {
                 event.setCancelled();
                 player.knockBack(player,0,(player.x - player.getLocation().x),(player.z - player.getLocation().z),0.8);
@@ -203,7 +220,8 @@ public class LandListener implements Listener {
         if(data != null){
             if(!data.hasPermission(player.getName(), setting)){
                 player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().notHavePermission
-                        .replace("%title%",LandModule.getModule().getConfig().getTitle()));
+                        .replace("%title%",LandModule.getModule().getConfig().getTitle())
+                        .replace("%setting%",setting.getName()));
                 return true;
             }
         }
@@ -253,7 +271,7 @@ public class LandListener implements Listener {
     @EventHandler
     public void onUseChest(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (notCancel(player, player.getPosition())) {
+        if (notCancel(player, event.getBlock())) {
             Item item = event.getItem();
             if(item == null){
                 item = Item.get(0);

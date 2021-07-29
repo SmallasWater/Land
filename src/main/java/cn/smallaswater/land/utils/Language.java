@@ -69,7 +69,7 @@ public class Language {
     public String notHaveTargetInvite = "你没有 %p% 的领地邀请..";
     public String inviteList = ">>========邀请列表=======<<\n%list%";
     public String listValue = " %p% 邀请你加入 %name% 领地 (输/领地 accept <%p%> 同意邀请)";
-    public String notHavePermission = "你没有操作权限...";
+    public String notHavePermission = "你没有 %setting% 权限...";
     public String choseTrue = "确定";
     public String choseFalse = "取消";
     public String saveSetting = "%p% 权限设置已保存..";
