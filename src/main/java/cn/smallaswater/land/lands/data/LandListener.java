@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockChest;
+import cn.nukkit.block.BlockPistonBase;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.event.EventHandler;
@@ -11,11 +12,10 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.*;
 import cn.nukkit.event.entity.*;
 import cn.nukkit.event.player.*;
-import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
-import cn.nukkit.network.protocol.LevelSoundEventPacket;
+import cn.nukkit.utils.TextFormat;
 import cn.smallaswater.land.LandMainClass;
 import cn.smallaswater.land.event.player.*;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
@@ -28,6 +28,7 @@ import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.Vector;
 
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
@@ -53,17 +54,16 @@ public class LandListener implements Listener {
 
 
 
-//    @EventHandler
-//    public void onCultivatedLandProtect(BlockFadeEvent event){
-//        Position position = event.getBlock();
-//        LandData data = DataTool.getPlayerLandData(position);
-//        if(data != null){
-//            if(data.getLandOtherSet().isOpen(OtherLandSetting.TREAD)){
-//
-//                event.setCancelled();
-//            }
-//        }
-//    }
+    @EventHandler
+    public void onCultivatedLandProtect(BlockFromToEvent event){
+        Position position = event.getBlock();
+        LandData data = DataTool.getPlayerLandData(position);
+        if(data != null){
+            if(!data.getLandOtherSet().isOpen(OtherLandSetting.BLOCK_UPDATE)){
+                event.setCancelled();
+            }
+        }
+    }
 
 
 

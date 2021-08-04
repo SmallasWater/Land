@@ -197,6 +197,18 @@ public class DataTool {
         return landName;
     }
 
+    //检测附近玩家
+    public static LinkedList<Player> getAroundPlayers(Position position, int size) {
+        LinkedList<Player> explodePlayer = new LinkedList<>();
+        for(Player player1: position.level.getPlayers().values()){
+
+            if(player1.x < position.x + size && player1.x > position.x - size && player1.z < position.z + size && player1.z > position.z - size && player1.y < position.y + size && player1.y > position.y - size){
+                explodePlayer.add(player1);
+            }
+        }
+        return explodePlayer;
+    }
+
     /** 获取点击位置是否在领地*/
     public static LandData getPlayerTouchArea(Position position){
         return getPlayerTouchArea(position,false);

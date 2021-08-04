@@ -18,8 +18,7 @@ public enum  LandSetting {
     BUCKET("使用桶"),
     IGNITE("使用打火石"),
     SUB_ZONE("创建子空间"),
-    ENTITY_SPAWN("生物生成"),
-    BLOCK_UPDATE("方块更新"),
+
 
     SHOW_ITEM("使用展示框");
 
