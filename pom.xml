@@ -6,7 +6,7 @@
 
     <groupId>cn.smallaswater.land</groupId>
     <artifactId>Land</artifactId>
-    <version>1.6.6</version>
+    <version>1.6.6-PM1E</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
