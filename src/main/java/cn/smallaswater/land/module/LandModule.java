@@ -155,11 +155,6 @@ public class LandModule {
 
 
     private void registerListener(){
-
-        if("PowerNukkit".equalsIgnoreCase(Nukkit.CODENAME)){
-            LandMainClass.MAIN_CLASS.getLogger().info("正在启动 PowerNukkit 监听器");
-            LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new LandListenerPn(),LandMainClass.MAIN_CLASS);
-        }
         LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new LandListener(),LandMainClass.MAIN_CLASS);
         LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new WindowListener(),LandMainClass.MAIN_CLASS);
     }

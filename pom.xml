@@ -49,17 +49,10 @@
     </repositories>
 
     <dependencies>
-        <!--dependency>
+        <dependency>
             <groupId>cn.nukkit</groupId>
             <artifactId>nukkit</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency-->
-
-        <dependency>
-            <groupId>org.powernukkit</groupId>
-            <artifactId>powernukkit</artifactId>
-            <version>1.5.1.0-PN</version>
+            <version>PM1E</version>
             <scope>provided</scope>
         </dependency>
 

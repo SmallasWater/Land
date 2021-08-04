@@ -4,7 +4,6 @@ import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
-import cn.nukkit.event.block.BlockPistonEvent;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.TextFormat;
 import cn.smallaswater.land.lands.settings.OtherLandSetting;
@@ -22,7 +21,8 @@ import java.util.LinkedList;
 public class LandListenerPn implements Listener {
 
 
-    @EventHandler
+
+/*  @EventHandler
     public void onBlockPiston(BlockPistonEvent event){
         Block block = event.getBlock();
         LandData data;
@@ -47,5 +47,5 @@ public class LandListenerPn implements Listener {
                 }
             }
         }
-    }
+    }*/
 }
