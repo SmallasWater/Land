@@ -135,6 +135,7 @@ public class Language {
     public String transferError = "&c传送取消!";
 
 
+
     private Config locale;
     public Language(Config locale){
         this.locale = locale;

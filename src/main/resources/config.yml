@@ -21,8 +21,6 @@ sellMoney: 50
 # 示例: blackList: ["世界1","世界2"]
 blackList: ["世界1","世界2"]
 
-whiteList: []
-
 # 无权限的时候是否提示
 echoPermission: true
 
@@ -59,6 +57,7 @@ loadEconomy: default
 #time: 传送时间
 # cold: 冷却时间
 transfer-time-setting:
+  enable: true
   time: 5
   cold: 30
 

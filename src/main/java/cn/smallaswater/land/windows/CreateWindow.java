@@ -144,104 +144,16 @@ public class CreateWindow {
 
     }
 
+
+
     static void sendScreenList(Player player){
         if(WindowListener.screenSetting.containsKey(player.getName())){
-            LinkedList<LandData> landDataList = new LinkedList<>();
+
             ScreenSetting screenSetting = WindowListener.screenSetting.get(player.getName());
             FormWindowSimple simple = new FormWindowSimple(LandModule.getModule().getConfig().getTitle(),"");
-            for(LandData data: DataTool.getServerAllLands()){
-                switch (screenSetting.getType()){
-                    case 0:
-                        if(screenSetting.getText().matches(DataTool.getQuery(data.getLandId()+""))
-                                || screenSetting.getText().matches(DataTool.getQuery(data.getLandName()))
-                                || screenSetting.getText().matches(DataTool.getQuery(data.getMaster()))
-                                || screenSetting.getText().matches(DataTool.getQuery(DataTool.getDateToString(data.getCreateTime())))
-                                ){
-                            if(landDataList.size() == 20){
-                                break;
-                            }
-                            if(screenSetting.isShowSell()){
-                                landDataList.add(data);
-                            }else{
-                                if(!data.isSell()){
-                                    landDataList.add(data);
-                                }
-                            }
 
-                        }
-                        break;
-                    case 1:
-                        if(screenSetting.getText().matches(DataTool.getQuery(data.getLandId()+""))){
-                            if(landDataList.size() == 20){
-                                break;
-                            }
-                            if(screenSetting.isShowSell()){
-                                landDataList.add(data);
-                            }else{
-                                if(!data.isSell()){
-                                    landDataList.add(data);
-                                }
-                            }
-                        }
-                        break;
-                    case 2:
-                        if(screenSetting.getText().matches(DataTool.getQuery(data.getLandName()))){
-                            if(landDataList.size() == 20){
-                                break;
-                            }
-                            if(screenSetting.isShowSell()){
-                                landDataList.add(data);
-                            }else{
-                                if(!data.isSell()){
-                                    landDataList.add(data);
-                                }
-                            }
-                        }
-                        break;
-                    case 3:
-                        if(screenSetting.getText().matches(DataTool.getQuery(data.getMaster()))){
-                            if(landDataList.size() == 20){
-                                break;
-                            }
-                            if(screenSetting.isShowSell()){
-                                    landDataList.add(data);
-                            }else{
-                                if(!data.isSell()){
-                                    landDataList.add(data);
-                                }
-                            }
-                        }
-                    case 4:
-                        if(screenSetting.getText().matches(DataTool.getDateToString(data.getCreateTime()))){
-                            if(landDataList.size() == 20){
-                                break;
-                            }
-                            if(screenSetting.isShowSell()){
-                                landDataList.add(data);
+            LinkedList<LandData> landDataList = DataTool.getScreenLandData(screenSetting);
 
-                            }else{
-                                if(!data.isSell()){
-                                    landDataList.add(data);
-                                }
-                            }
-                        }
-                        break;
-                        default:break;
-
-                }
-            }
-            if(screenSetting.isSort()){
-                Comparator<LandData> comparator = (s1, s2) -> {
-                    if(s1.getLandId() != s2.getLandId()){
-                        return (int)Math.floor(s1.getLandId()) - (int)Math.floor(s2.getLandId());
-                    } else if (!s1.getLandName().equals(s2.getLandName())) {
-                        return s1.getLandName().compareTo(s2.getLandName());
-                    } else {
-                        return s1.getLandId() - s2.getLandId();
-                    }
-                };
-                landDataList.sort(comparator);
-            }
             WindowListener.screenLands.put(player,landDataList);
             if(landDataList.size() == 0){
                 simple.setContent("未查找到领地 请确认查询条件是否正确");

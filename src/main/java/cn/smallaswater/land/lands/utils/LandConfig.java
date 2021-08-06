@@ -48,6 +48,8 @@ public class  LandConfig {
 
     private int transferTime,transferCold;
 
+    private boolean enableTransferTime;
+
 
 
     private LandConfig(String title, double landMoney,double subLandMoney, int sellMoney, ArrayList<String> blackList,ArrayList<String> protectList, int maxLand,int subMax, int time,int loadEconomy){
@@ -109,6 +111,7 @@ public class  LandConfig {
         config1.setShowTime(config.getInt("售卖领地显示时间",7));
         Item i = Item.fromString(config.getString("landTool","290:0"));
         config1.setLandTool(i);
+        config1.setEnableTransferTime(config.getBoolean("transfer-time-setting.enable",true));
         config1.setTransferCold(config.getInt("transfer-time-setting.cold",30));
         config1.setTransferTime(config.getInt("transfer-time-setting.time",5));
         config1.setEchoBlackListMessage(config.getBoolean("echoBlackListMessage",true));
@@ -117,6 +120,14 @@ public class  LandConfig {
         config1.setAutoSaveTime(config.getInt("auto-save-land.time",5));
 
         return config1;
+    }
+
+    public boolean isEnableTransferTime() {
+        return enableTransferTime;
+    }
+
+    public void setEnableTransferTime(boolean enableTransferTime) {
+        this.enableTransferTime = enableTransferTime;
     }
 
     public void setTransferCold(int transferCold) {

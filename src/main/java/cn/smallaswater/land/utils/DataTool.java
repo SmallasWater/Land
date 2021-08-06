@@ -7,6 +7,7 @@ import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
+import cn.smallaswater.land.lands.utils.ScreenSetting;
 import cn.smallaswater.land.module.LandModule;
 
 import java.text.ParseException;
@@ -164,7 +165,6 @@ public class DataTool {
 
     public static LandData getPlayerLandData(Position position){
         return getPlayerTouchArea(position);
-//        return LandModule.getModule().getList().getLandDataByName(name);
     }
     /**
      * 获取点击位置是否在领地
@@ -201,9 +201,10 @@ public class DataTool {
     public static LinkedList<Player> getAroundPlayers(Position position, int size) {
         LinkedList<Player> explodePlayer = new LinkedList<>();
         for(Player player1: position.level.getPlayers().values()){
-
             if(player1.x < position.x + size && player1.x > position.x - size && player1.z < position.z + size && player1.z > position.z - size && player1.y < position.y + size && player1.y > position.y - size){
-                explodePlayer.add(player1);
+                if(!explodePlayer.contains(player1)) {
+                    explodePlayer.add(player1);
+                }
             }
         }
         return explodePlayer;
@@ -360,8 +361,103 @@ public class DataTool {
         //之前的
     }
 
-    public static void getLandsByScreen(Player player){
+    /**
+     * 根据查找设置查询领地
+     *
+     * @param screenSetting 查询设置
+     * @return 查询结果
+     * */
+    public static LinkedList<LandData> getScreenLandData(ScreenSetting screenSetting){
+        LinkedList<LandData> landDataList = new LinkedList<>();
+        for(LandData data: DataTool.getServerAllLands()){
+            if(landDataList.size() == 20){
+                break;
+            }
+            switch (screenSetting.getType()){
+                case 0:
+                    if(screenSetting.getText().matches(DataTool.getQuery(data.getLandId()+""))
+                            || screenSetting.getText().matches(DataTool.getQuery(data.getLandName()))
+                            || screenSetting.getText().matches(DataTool.getQuery(data.getMaster()))
+                            || screenSetting.getText().matches(DataTool.getQuery(DataTool.getDateToString(data.getCreateTime())))){
+                        if(screenSetting.isShowSell()){
+                            landDataList.add(data);
+                        }else{
+                            if(!data.isSell()){
+                                landDataList.add(data);
+                            }
+                        }
 
+                    }
+                    break;
+                case 1:
+                    if(screenSetting.getText().matches(DataTool.getQuery(data.getLandId()+""))){
+                        if(screenSetting.isShowSell()){
+                            landDataList.add(data);
+                        }else{
+                            if(!data.isSell()){
+                                landDataList.add(data);
+                            }
+                        }
+                    }
+                    break;
+                case 2:
+                    if(screenSetting.getText().matches(DataTool.getQuery(data.getLandName()))){
+                        if(screenSetting.isShowSell()){
+                            landDataList.add(data);
+                        }else{
+                            if(!data.isSell()){
+                                landDataList.add(data);
+                            }
+                        }
+                    }
+                    break;
+                case 3:
+                    if(screenSetting.getText().matches(DataTool.getQuery(data.getMaster()))){
+                        if(screenSetting.isShowSell()){
+                            landDataList.add(data);
+                        }else{
+                            if(!data.isSell()){
+                                landDataList.add(data);
+                            }
+                        }
+                    }
+                case 4:
+                    if(screenSetting.getText().matches(DataTool.getDateToString(data.getCreateTime()))){
+                        if(screenSetting.isShowSell()){
+                            landDataList.add(data);
+
+                        }else{
+                            if(!data.isSell()){
+                                landDataList.add(data);
+                            }
+                        }
+                    }
+                    break;
+                default:break;
+            }
+        }
+        if(screenSetting.isSort()){
+            sortLandData(landDataList);
+        }
+        return landDataList;
+    }
+
+    /**
+     * 排序领地
+     *
+     * @param landDataList 输入领地
+     * */
+    public static void sortLandData(LinkedList<LandData> landDataList){
+        Comparator<LandData> comparator = (s1, s2) -> {
+            if(s1.getLandId() != s2.getLandId()){
+                return (int)Math.floor(s1.getLandId()) - (int)Math.floor(s2.getLandId());
+            } else if (!s1.getLandName().equals(s2.getLandName())) {
+                return s1.getLandName().compareTo(s2.getLandName());
+            } else {
+                return s1.getLandId() - s2.getLandId();
+            }
+        };
+        landDataList.sort(comparator);
     }
 
 }
