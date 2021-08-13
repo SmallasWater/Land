@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockChest;
+import cn.nukkit.block.BlockEntityHolder;
 import cn.nukkit.block.BlockPistonBase;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityHuman;
@@ -276,31 +277,34 @@ public class LandListener implements Listener {
             if(item == null){
                 item = Item.get(0);
             }
-            if (event.getBlock() instanceof BlockChest) {
-                if (notHasPermission(player, event.getBlock(), LandSetting.LOCK_CHEST)) {
-                    event.setCancelled();
-                }
-            }
             if (event.getBlock().getId() == 61 || event.getBlock().getId() == 62) {
                 if (notHasPermission(player, event.getBlock(), LandSetting.FRAME)) {
                     event.setCancelled();
                 }
+                return;
             }
             if (item.getId() == 325) {
                 if (notHasPermission(player, event.getBlock(), LandSetting.BUCKET)) {
                     event.setCancelled();
                 }
+                return;
             }
             if (item.getId() == 259) {
                 if (notHasPermission(player, event.getBlock(), LandSetting.IGNITE)) {
                     event.setCancelled();
                 }
+                return;
             }
             if (event.getBlock().getId() == 389) {
                 if (notHasPermission(player, event.getBlock(), LandSetting.SHOW_ITEM)) {
                     event.setCancelled();
                 }
+                return;
             }
+            if (notHasPermission(player, event.getBlock(), LandSetting.LOCK_CHEST)) {
+                event.setCancelled();
+            }
+
         }else{
             event.setCancelled();
         }

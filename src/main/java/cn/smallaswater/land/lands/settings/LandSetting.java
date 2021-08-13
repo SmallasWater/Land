@@ -6,7 +6,7 @@ package cn.smallaswater.land.lands.settings;
 
 public enum  LandSetting {
     /**锁箱子 玩家移动 玩家传送 锁熔炉 锁放置 锁破坏,锁 PVP 锁伤害生物,锁丢弃 生物生成 方块更新*/
-    LOCK_CHEST("使用箱子"),
+    LOCK_CHEST("交互领地"),
     MOVE("进入领地"),
     TRANSFER("传送领地"),
     FRAME("使用熔炉"),
