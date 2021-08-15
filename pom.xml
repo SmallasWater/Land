@@ -6,7 +6,7 @@
 
     <groupId>cn.smallaswater.land</groupId>
     <artifactId>Land</artifactId>
-    <version>1.7.0</version>
+    <version>1.7.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -49,12 +49,12 @@
     </repositories>
 
     <dependencies>
-        <!--dependency>
-            <groupId>cn.nukkit</groupId>
-            <artifactId>nukkit</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency-->
+<!--        <dependency>-->
+<!--            <groupId>cn.nukkit</groupId>-->
+<!--            <artifactId>nukkit</artifactId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.powernukkit</groupId>

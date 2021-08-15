@@ -2,11 +2,16 @@ package cn.smallaswater.land.lands.data;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
+import cn.nukkit.block.BlockChest;
+import cn.nukkit.block.BlockShulkerBox;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockPistonEvent;
+import cn.nukkit.event.player.PlayerInteractEvent;
+import cn.nukkit.item.Item;
 import cn.nukkit.level.Position;
 import cn.nukkit.utils.TextFormat;
+import cn.smallaswater.land.lands.settings.LandSetting;
 import cn.smallaswater.land.lands.settings.OtherLandSetting;
 import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.utils.DataTool;
@@ -19,7 +24,7 @@ import java.util.LinkedList;
  * Create on 2021/8/4 10:49
  * Package cn.smallaswater.land.lands.data
  */
-public class LandListenerPn implements Listener {
+public class LandListenerPn extends LandListener {
 
 
     @EventHandler
