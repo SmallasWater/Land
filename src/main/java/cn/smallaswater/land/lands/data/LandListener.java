@@ -279,12 +279,13 @@ public class LandListener implements Listener {
             }
             try{
                 Class.forName("cn.nukkit.block.BlockBarrel");
-            }catch (Exception i){
-                if(event.getBlock() instanceof  BlockBarrel){
+                if(event.getBlock() instanceof BlockBarrel) {
                     if (notHasPermission(player, event.getBlock(), LandSetting.LOCK_CHEST)) {
                         event.setCancelled();
                     }
                 }
+            }catch (Exception ignored){
+
             }
             if(event.getBlock() instanceof BlockChest || event.getBlock() instanceof BlockShulkerBox) {
                 if (notHasPermission(player, event.getBlock(), LandSetting.LOCK_CHEST)) {
