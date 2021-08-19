@@ -671,6 +671,7 @@ public class WindowListener implements Listener {
                     CreateWindow.sendKickMenu(p, s);
                 } else if (type == CreateWindow.SET_PLAYER_BUTTON) {
                     //设置权限
+                    LandModule.getModule().clickPlayer.put(p, s);
                     CreateWindow.sendLandSettingMenu(p, s);
                 }
 
