@@ -316,7 +316,6 @@ public class LandListener implements Listener {
 
             }
 
-
         }else{
             event.setCancelled();
         }

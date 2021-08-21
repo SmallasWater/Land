@@ -24,7 +24,7 @@ import java.util.LinkedList;
  * Create on 2021/8/4 10:49
  * Package cn.smallaswater.land.lands.data
  */
-public class LandListenerPn extends LandListener {
+public class LandListenerPn implements Listener {
 
 
     @EventHandler
