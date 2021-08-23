@@ -31,6 +31,9 @@ public class MemberSetting {
     }
 
 
+    public void clear(){
+        member.clear();
+    }
 
     public boolean containsKey(String name){
         return member.containsKey(name);

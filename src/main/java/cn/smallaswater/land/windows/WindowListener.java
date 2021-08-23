@@ -24,9 +24,7 @@ import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.lands.settings.LandSetting;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 
 /**
@@ -195,6 +193,8 @@ public class WindowListener implements Listener {
                                 isMaster = true;
                             }
                         }
+
+
                         if(isMaster){
                             if(modal.getResponse().getClickedButtonText().equalsIgnoreCase(language.choseTrue)){
                                 double get = DataTool.getGettingMoney(data);
@@ -205,15 +205,21 @@ public class WindowListener implements Listener {
                                 }
                                 get = event.getMoney();
                                 LandModule.getModule().getMoney().addMoney(p.getName(),get);
-                                for(String mode:data.getMember().keySet()){
+                                Iterator<String> modei = new ArrayList<>(data.getMember().keySet()).iterator();
+                                String mode;
+                                while (modei.hasNext()){
+                                    mode = modei.next();
                                     Player player1 = Server.getInstance().getPlayer(mode);
                                     if(player1 != null){
                                         player1.sendMessage(LandModule.getModule().getConfig().getTitle()+language.kickLandMessage.replace("%p%",p.getName()).replace("%name%",data.getLandName()));
                                     }
                                     data.removeMember(mode);
                                 }
+
                                 p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.sellLandMessage.replace("%name%",data.getLandName()).replace("%money%",get+""));
                                 if(data instanceof LandSubData){
+                                    //出售就要消失
+//                                    data.close();
                                     if(data.getMaster().equalsIgnoreCase(((LandSubData) data).getMasterData().getMaster())){
                                         data.close();
                                     }else{
