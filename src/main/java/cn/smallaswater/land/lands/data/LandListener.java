@@ -287,7 +287,7 @@ public class LandListener implements Listener {
 
             }
 
-            if(event.getBlock() instanceof BlockChest || event.getBlock().getId() == 205) {
+            if(event.getBlock() instanceof BlockChest || event.getBlock() instanceof BlockShulkerBox || event.getBlock() instanceof BlockUndyedShulkerBox) {
                 if (notHasPermission(player, event.getBlock(), LandSetting.LOCK_CHEST)) {
                     event.setCancelled();
                 }
