@@ -218,8 +218,6 @@ public class WindowListener implements Listener {
 
                                 p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.sellLandMessage.replace("%name%",data.getLandName()).replace("%money%",get+""));
                                 if(data instanceof LandSubData){
-                                    //出售就要消失
-//                                    data.close();
                                     if(data.getMaster().equalsIgnoreCase(((LandSubData) data).getMasterData().getMaster())){
                                         data.close();
                                     }else{
