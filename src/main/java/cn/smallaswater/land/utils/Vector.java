@@ -3,6 +3,7 @@ package cn.smallaswater.land.utils;
 import cn.nukkit.Server;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
+import cn.smallaswater.land.LandMainClass;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -203,6 +204,9 @@ public class Vector implements Cloneable{
             if(Server.getInstance().loadLevel(levelName)){
                 level = Server.getInstance().getLevelByName(levelName);
             }
+            if(level == null){
+                return null;
+            }
         }
         return new Vector(level,sx,ex,sy,ey,sz,ez);
     }
@@ -212,14 +216,21 @@ public class Vector implements Cloneable{
         if(obj == null){
             return false;
         }
-        if(obj instanceof Vector){
-            return (((Vector) obj).getLevel().getFolderName().equalsIgnoreCase(level.getFolderName())
-                    && startX == ((Vector) obj).startX
-                    && startZ == ((Vector) obj).startZ
-                    && startY == ((Vector) obj).startY
-                    && endX == ((Vector) obj).endX
-                    && endY == ((Vector) obj).endY
-                    && endZ == ((Vector) obj).endZ);
+        try {
+            if (obj instanceof Vector) {
+                return (((Vector) obj).getLevel().getFolderName().equalsIgnoreCase(level.getFolderName())
+                        && startX == ((Vector) obj).startX
+                        && startZ == ((Vector) obj).startZ
+                        && startY == ((Vector) obj).startY
+                        && endX == ((Vector) obj).endX
+                        && endY == ((Vector) obj).endY
+                        && endZ == ((Vector) obj).endZ);
+            }
+        }catch (Exception e){
+            LandMainClass.MAIN_CLASS.getLogger().error("出现未知问题 无法将两点进行匹配");
+            LandMainClass.MAIN_CLASS.getLogger().debug("obj: "+obj.toString());
+            LandMainClass.MAIN_CLASS.getLogger().debug("this: "+this);
+            return false;
         }
         return false;
     }

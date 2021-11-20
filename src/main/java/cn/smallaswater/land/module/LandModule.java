@@ -267,15 +267,23 @@ public class LandModule {
 
     private LandData getDataByMap(Map m){
         try {
+            Vector vector = Vector.getVectorByMap((Map) m.get("vector"));
+            if(vector == null){
+                return null;
+            }
+            Position position = DataTool.getPositionByMap((Map) m.get("transfer"));
+            if(position == null){
+                return null;
+            }
             LandData data = new LandData(m.containsKey("landId")?Integer.parseInt(m.get("landId").toString()):0
                     ,m.get("landName").toString(),
                     m.get("master").toString(),
-                    Vector.getVectorByMap((Map) m.get("vector")),
+                    vector,
                     new MemberSetting((Map) m.get("member")),
                     new PlayerSetting((Map) m.get("defaultSetting")),
                     m.get("joinMessage").toString(),
                     m.get("quitMessage").toString(),
-                    DataTool.getPositionByMap((Map) m.get("transfer")));
+                    position);
             LandOtherSet set = new LandOtherSet();
             if(m.containsKey("otherLandSetting")){
                 set = LandOtherSet.getLandOtherSetByMap((Map) m.get("otherLandSetting"));
