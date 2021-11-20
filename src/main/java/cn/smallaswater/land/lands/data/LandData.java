@@ -229,6 +229,16 @@ public class LandData  {
 
     }
 
+    public boolean isError(){
+        try {
+            String name = vector.level.getFolderName();
+            return Server.getInstance().getLevelByName(name) == null;
+        }catch (Exception e){
+            return true;
+        }
+
+    }
+
     public void addSubLand(LandSubData data){
         if(!subData.contains(data)){
             subData.add(data);

@@ -88,6 +88,7 @@ public class DataTool {
     }
 
     public static double getLandMoney(Vector vector,boolean sub){
+
         LandData data = getLand(vector, sub);
         if(data != null){
             if(data.getMoney() > 0){
@@ -123,6 +124,9 @@ public class DataTool {
     public static LinkedList<LandData> getServerAllLands(){
         LinkedList<LandData> data = new LinkedList<>();
         for(LandData data1:LandModule.getModule().getList().getData()){
+            if(data1.isError()){
+                continue;
+            }
             data.add(data1);
             if(data1.getSubData().size() > 0){
                 data.addAll(data1.getSubData());
@@ -151,6 +155,9 @@ public class DataTool {
     public static Position getPositionByMap(Map transfer) {
         String levelName = (String) transfer.get("level");
         Level level = Server.getInstance().getLevelByName(levelName);
+        if(level == null){
+            return null;
+        }
         return Position.fromObject(new Vector3((double)transfer.get("x"),(double) transfer.get("y"), (double)transfer.get("z")),level);
     }
 
