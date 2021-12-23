@@ -114,7 +114,7 @@ public class LandModule {
                 LandMainClass.MAIN_CLASS.getLogger().info("Land Economy enable:"+ TextFormat.GREEN+" LlamaEconomy");
             }
         }else{
-            LandMainClass.MAIN_CLASS.getLogger().info("Land Economy enable:"+ TextFormat.GREEN+" 自动");
+            LandMainClass.MAIN_CLASS.getLogger().info("Land Economy enable:"+ TextFormat.GREEN+" auto");
         }
         if(money.getMoney() == -2){
             LandMainClass.MAIN_CLASS.getLogger().info("not to check economy");
@@ -153,15 +153,15 @@ public class LandModule {
     }
 
     private void registerCommand(){
-        getModuleInfo().getServer().getCommandMap().register("landCommand",new LandCommand("领地","领地主命令"));
-        getModuleInfo().getServer().getCommandMap().register("landAdminCommand",new AdminCommand("领地管理","领地管理主命令"));
+        getModuleInfo().getServer().getCommandMap().register("landCommand",new LandCommand("land","land main command"));
+        getModuleInfo().getServer().getCommandMap().register("landAdminCommand",new AdminCommand("landadmin","land admin main command"));
     }
 
 
     private void registerListener(){
 
         if("PowerNukkit".equalsIgnoreCase(Nukkit.CODENAME)){
-            LandMainClass.MAIN_CLASS.getLogger().info("正在启动 PowerNukkit 监听器");
+            LandMainClass.MAIN_CLASS.getLogger().info("enable PowerNukkit listener");
             LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new LandListenerPn(),LandMainClass.MAIN_CLASS);
         }
         LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new LandListener(),LandMainClass.MAIN_CLASS);
@@ -224,25 +224,25 @@ public class LandModule {
                                 }
                                 data.add(data1);
                             } else {
-                                getModuleInfo().getLogger().warning("" + name + "领地 加载失败， 原因: 配置文件异常");
+                                getModuleInfo().getLogger().warning("" + name + "land load error， because: yaml error");
 
                             }
                         } else {
-                            getModuleInfo().getLogger().info("检测到空白文件" + name + " 避免影响使用，正在删除");
+                            getModuleInfo().getLogger().info("check null file" + name + " deleting");
                             File file = new File(getModuleInfo().getDataFolder() + "/lands/" + name + ".yml");
                             if (!file.delete()) {
-                                getModuleInfo().getLogger().warning("空白文件" + name + " 删除失败");
+                                getModuleInfo().getLogger().warning("null file" + name + " delete  error");
                             } else {
-                                getModuleInfo().getLogger().info("空白文件" + name + " 删除成功");
+                                getModuleInfo().getLogger().info("null file" + name + " delete success");
                             }
                         }
                     }catch (Exception e){
-                        getModuleInfo().getLogger().info("检测到异常文件" + name.trim() + " 避免影响使用，正在删除");
+                        getModuleInfo().getLogger().info("check error file" + name.trim() + " deleting");
                         File file = new File(getModuleInfo().getDataFolder() + "/lands/" + name + ".yml");
                         if (!file.delete()) {
-                            getModuleInfo().getLogger().warning("异常文件" + name + " 删除失败");
+                            getModuleInfo().getLogger().warning("error file" + name + "  delete  error");
                         } else {
-                            getModuleInfo().getLogger().info("异常文件" + name + " 删除成功");
+                            getModuleInfo().getLogger().info("error file" + name + " delete success");
                         }
                         landId++;
                     }
@@ -293,7 +293,7 @@ public class LandModule {
                 set = LandOtherSet.getLandOtherSetByMap((Map) m.get("otherLandSetting"));
             }
             data.setLandOtherSet(set);
-            data.setSellMessage(m.containsKey("sellMessage") ? m.get("sellMessage").toString():"领地出售中~~");
+            data.setSellMessage(m.containsKey("sellMessage") ? m.get("sellMessage").toString():"land selling~~");
             data.setSell(m.containsKey("isSell") && (boolean) m.get("isSell"));
             data.setSellDay((m.containsKey("sellDay") ? (String) m.get("sellDay") : ""));
             data.setMoney(Double.parseDouble((m.containsKey("money") ? m.get("money").toString() : "-1.0")));
@@ -355,7 +355,7 @@ public class LandModule {
                             names.add(file.getName().substring(0, file.getName().lastIndexOf(".")));
                         }else{
                             if(file.delete()){
-                                getModuleInfo().getLogger().info("检测到错误文件"+file.getName()+" 已删除");
+                                getModuleInfo().getLogger().info("check error file "+file.getName()+" has been deleted");
                             }
                         }
                     }
