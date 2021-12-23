@@ -20,7 +20,7 @@ public class LandCommand extends BaseCommand {
     public LandCommand(String command, String description) {
         super(command, description);
         this.setPermission("Land.land");
-        this.setAliases(new String[]{"圈地","la"});
+        this.setAliases(new String[]{"land","la"});
         this.addSubCommand(new AllSubCommand("all"));
         this.addSubCommand(new CreateSubCommand("create"));
         this.addSubCommand(new MySubCommand("my"));
@@ -47,19 +47,19 @@ public class LandCommand extends BaseCommand {
     @Override
     public void sendHelp(CommandSender sender) {
         sender.sendMessage("§e>>§a-------------------§bHelps of Land§a-------------------§e<<");
-        sender.sendMessage("§e/领地 §7help §a查看插件帮助");
-        sender.sendMessage("§e/领地 §7my§a显示自己的领地列表");
-        sender.sendMessage("§e/领地 §7sell§a显示正在出售的领地列表");
-        sender.sendMessage("§e/领地 §7all <页数> (当前共有 "+CreateWindow.getPages()+" 页) 显示所有领地列表");
-        sender.sendMessage("§e/领地 §7pos <1/2> §a设置领地坐标");
-        sender.sendMessage("§e/领地 §7subpos <1/2> §a设置子领地坐标");
-        sender.sendMessage("§e/领地 §7create <name> §a创建领地 p.s每个方块: $"+ String.format("%2f",LandModule.getModule().getConfig().getLandMoney()));
-        sender.sendMessage("§e/领地 §7subcreate <name> §a创建子领地 p.s每个方块: $"+ String.format("%2f",LandModule.getModule().getConfig().getSubLandMoney()));
-        sender.sendMessage("§e/领地 §7accept <player> §a同意该玩家的领地邀请");
-        sender.sendMessage("§e/领地 §7deny <player> §a拒绝玩家的领地邀请");
-        sender.sendMessage("§e/领地 §7invites §a查看邀请列表");
-        sender.sendMessage("§e/领地 §7expand <大小> §a拓展领地");
-        sender.sendMessage("§e/领地 §7screen  §a查找领地");
+        sender.sendMessage("§e/land §7help §aCheck the plugin to help");
+        sender.sendMessage("§e/land §7my§aList according to their own territory");
+        sender.sendMessage("§e/land §7sell§aDisplay the list of domain is for sale");
+        sender.sendMessage("§e/land §7all <page> (The current total of "+CreateWindow.getPages()+" page) The list shows all territory");
+        sender.sendMessage("§e/land §7pos <1/2> §aSet the territory coordinates");
+        sender.sendMessage("§e/land §7subpos <1/2> §aSet the child domain coordinates");
+        sender.sendMessage("§e/land §7create <name> §aCreate land p.sOne block: $"+ String.format("%2f",LandModule.getModule().getConfig().getLandMoney()));
+        sender.sendMessage("§e/land §7subcreate <name> §aCreate SubLand p.sOne block: $"+ String.format("%2f",LandModule.getModule().getConfig().getSubLandMoney()));
+        sender.sendMessage("§e/land §7accept <player> §aAgree to the player's territory invitation");
+        sender.sendMessage("§e/land §7deny <player> §aRefuse to the domain of the players invited");
+        sender.sendMessage("§e/land §7invites §aCheck the invitation list");
+        sender.sendMessage("§e/land §7expand <size> §aExpand the territory");
+        sender.sendMessage("§e/land §7screen  §aFind the domain");
         sender.sendMessage("§e>>§a-------------------§bHelps of Land§a-------------------§e<<");
 
     }
@@ -71,7 +71,7 @@ public class LandCommand extends BaseCommand {
                 CreateWindow.sendMenu((Player) sender);
                 return true;
             }else{
-                sender.sendMessage("请不要在控制台执行此指令");
+                sender.sendMessage("Please don't in the console to perform this command");
             }
         }
         return super.execute(sender,label,args);

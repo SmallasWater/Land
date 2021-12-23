@@ -107,8 +107,11 @@ public class  LandConfig {
         if("playerpoint".equalsIgnoreCase(economy)){
             load = LoadMoney.PLAYER_POINT;
         }
+        if("llamaeconomy".equalsIgnoreCase(economy)){
+            load = LoadMoney.LLAMA_ECONOMY;
+        }
         LandConfig config1 = new LandConfig(title,landMoney,subLandMoney,sellMoney,blackList,protectList,max,subMax,time,load);
-        config1.setShowTime(config.getInt("售卖领地显示时间",7));
+        config1.setShowTime(config.getInt("sell-showTime",7));
         Item i = Item.fromString(config.getString("landTool","290:0"));
         config1.setLandTool(i);
         config1.setEnableTransferTime(config.getBoolean("transfer-time-setting.enable",true));

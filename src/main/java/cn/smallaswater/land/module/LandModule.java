@@ -100,20 +100,24 @@ public class LandModule {
         money = new LoadMoney();
         if(config.getLoadEconomy() != -1){
             money.setMoney(config.getLoadEconomy());
+
             if(config.getLoadEconomy() == LoadMoney.ECONOMY_API){
-                LandMainClass.MAIN_CLASS.getLogger().info("Land经济核心已启用:"+ TextFormat.GREEN+" EconomyAPI");
+                LandMainClass.MAIN_CLASS.getLogger().info("Land Economy enable:"+ TextFormat.GREEN+" EconomyAPI");
             }
             if(config.getLoadEconomy() == LoadMoney.MONEY){
-                LandMainClass.MAIN_CLASS.getLogger().info("Land经济核心已启用:"+ TextFormat.GREEN+" Money");
+                LandMainClass.MAIN_CLASS.getLogger().info("Land Economy enable:"+ TextFormat.GREEN+" Money");
             }
             if(config.getLoadEconomy() == LoadMoney.PLAYER_POINT){
-                LandMainClass.MAIN_CLASS.getLogger().info("Land经济核心已启用:"+ TextFormat.GREEN+" PlayerPoint");
+                LandMainClass.MAIN_CLASS.getLogger().info("Land Economy enable:"+ TextFormat.GREEN+" PlayerPoint");
+            }
+            if(config.getLoadEconomy() == LoadMoney.LLAMA_ECONOMY){
+                LandMainClass.MAIN_CLASS.getLogger().info("Land Economy enable:"+ TextFormat.GREEN+" LlamaEconomy");
             }
         }else{
-            LandMainClass.MAIN_CLASS.getLogger().info("Land经济核心已启用:"+ TextFormat.GREEN+" 自动");
+            LandMainClass.MAIN_CLASS.getLogger().info("Land Economy enable:"+ TextFormat.GREEN+" 自动");
         }
         if(money.getMoney() == -2){
-            LandMainClass.MAIN_CLASS.getLogger().info("未检测到经济核心");
+            LandMainClass.MAIN_CLASS.getLogger().info("not to check economy");
             LandMainClass.MAIN_CLASS.getPluginLoader().disablePlugin(LandMainClass.MAIN_CLASS);
             return;
         }

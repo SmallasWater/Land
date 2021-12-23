@@ -1,68 +1,67 @@
 ---
-# 标题
+# Title
 
-title: "[领地系统]"
+title: "[LAND]"
 
-#圈地工具
+#Tools
 landTool: "290:0"
 
-# 圈地时每个方块的价格
+# The price of each square enclosure
 landMoney: 10.0
 
-# 子领地每个方块价格
+# The price for each square sub domain
 subLandMoney: 5.0
 
-# 出售领地时 减少的价格百分比
-# 这里的 50 是减少原价格的 50%
+# Sale territory to reduce the price of the percentage
+# This 50 is 50% off the original price
 sellMoney: 50
 
-# 黑名单世界
-# 在此名单的世界无法圈地 OP 除外
-# 示例: blackList: ["世界1","世界2"]
-blackList: ["世界1","世界2"]
+# Blacklist world
+# In this list the world cannot enclosure OP except
+# demo: blackList: ["world1","world2"]
+blackList: ["world1","world2"]
 
-# 无权限的时候是否提示
+# Whether to prompt without permission
 echoPermission: true
 
-# 在黑名单世界是否提示
+# If the world in the blacklist
 echoBlackListMessage: true
 
-# 保护世界
-# 在此名单的世界无法破坏放置 需要圈地
-# 示例: protectList: ["世界1","世界2"]
-protectList: ["世界1","世界2"]
+# protect world
+# In the list of the world place need enclosure cannot destroy
+# demo: protectList: ["world1","world2"]
+protectList: ["world1","world2"]
 
-# 是否提示
+# Whether to prompt
 echoProtectListMessage: true
 
-# 限制玩家拥有的领地上限
-# 注: 只拥有成员权限也计算在内
+# Maximum limit players have territory
+# ps: Only members have access account
 max: 5
 
-# 限制子领地上限
+# land max
 subMax: 3
 
-# 设置领地显示范围时间
+# Set the domain display range of time
 time: 5
 
-#公示期(天)
-售卖领地显示时间: 7
+# show time(天)
+sell-showTime: 7
 
-# 加载的经济核心
-#当前支持 EconomyAPI,Money,PlayerPoint
-# default 为自动识别
+# loadEconomy
+#  EconomyAPI,Money,PlayerPoint,LlamaEconomy
+# default is other
 loadEconomy: default
 
-#领地传送时间相关设置
-#time: 传送时间
-# cold: 冷却时间
+#Land transfer time associated Settings
+#time: time
+# cold: Cooling time
 transfer-time-setting:
   enable: true
   time: 5
   cold: 30
 
-#单位： 分钟
-#领地自动保存设置
+#land auto save
 auto-save-land:
   open: true
   time: 30
