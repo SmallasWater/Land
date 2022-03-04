@@ -1,6 +1,6 @@
 name: Land
 main: cn.smallaswater.land.LandMainClass
-version: 1.7.6
+version: 1.7.7-SNAPSHOT
 api: 1.0.9
 load: POSTWORLD
 softdepend:
