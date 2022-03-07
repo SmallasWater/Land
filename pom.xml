@@ -59,7 +59,7 @@
         <dependency>
             <groupId>org.powernukkit</groupId>
             <artifactId>powernukkit</artifactId>
-            <version>1.5.1.0-PN</version>
+            <version>1.5.2.1-PN</version>
             <scope>provided</scope>
         </dependency>
 
@@ -70,6 +70,7 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/Money-3.3.jar</systemPath>
         </dependency>
+
         <dependency>
             <groupId>net.lldv.llamaeconomy</groupId>
             <artifactId>LlamaEconomy</artifactId>
@@ -130,8 +131,8 @@
                             </includes>
                             <replacements>
                                 <replacement>
-                                    <token>version: ".*"</token>
-                                    <value>version: "${project.version}"</value>
+                                    <token>version: .*</token>
+                                    <value>version: ${project.version}</value>
                                 </replacement>
                             </replacements>
                         </configuration>
