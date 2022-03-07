@@ -1,6 +1,8 @@
 ---
-# 标题
+# 语言 chs/eng
+language: chs
 
+# 标题
 title: "[领地系统]"
 
 #圈地工具
