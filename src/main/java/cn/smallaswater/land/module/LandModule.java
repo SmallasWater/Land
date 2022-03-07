@@ -81,10 +81,12 @@ public class LandModule {
         config = getConfig();
         landList = null;
         getList();
-        if(!new File(getModuleInfo().getDataFolder()+"/language.yml").exists()){
-            getModuleInfo().saveResource("language.yml");
+
+        File languageFile = new File(getModuleInfo().getDataFolder() + "/language/" + this.config.getLanguage() + ".yml");
+        if (!languageFile.exists()) {
+            new File(getModuleInfo().getDataFolder() + "/language/eng.yml");
         }
-        languageConfig = new Config(getModuleInfo().getDataFolder()+"/language.yml",2);
+        this.languageConfig = new Config(languageFile, Config.YAML);
     }
 
     public void saveList(){
