@@ -1,6 +1,6 @@
 ---
-# language  chs/eng
-language: eng
+# language  auto/chs/eng
+language: auto
 
 # Title
 title: "[LAND]"
