@@ -6,7 +6,7 @@
 
     <groupId>cn.smallaswater.land</groupId>
     <artifactId>Land</artifactId>
-    <version>1.7.7-SNAPSHOT</version>
+    <version>1.7.7</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -49,6 +49,20 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>23.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+            <scope>provided</scope>
+        </dependency>
+
 <!--        <dependency>-->
 <!--            <groupId>cn.nukkit</groupId>-->
 <!--            <artifactId>nukkit</artifactId>-->
@@ -69,6 +83,14 @@
             <version>1.1.7</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/Money-3.3.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>net.lldv.llamaeconomy</groupId>
+            <artifactId>LlamaEconomy</artifactId>
+            <version>1.0.0.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/LlamaEconomy-1.0.0.1-SNAPSHOT.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -95,7 +117,7 @@
     </dependencies>
 
     <build>
-        <finalName>${project.artifactId}_v${project.version}</finalName>
+        <finalName>[English]${project.artifactId}_v${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

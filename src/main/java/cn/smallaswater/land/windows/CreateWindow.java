@@ -134,12 +134,12 @@ public class CreateWindow {
 
     /**TODO 领地查找*/
     public static void sendScreenMenu(Player player){
-        FormWindowCustom custom = new FormWindowCustom(LandModule.getModule().getConfig().getTitle()+"--查找");
-        custom.addElement(new ElementLabel("查找的选项不同会影响查找结果"));
-        custom.addElement(new ElementDropdown("索引设置", ScreenSetting.strings,0));
-        custom.addElement(new ElementToggle("自动排序",false));
-        custom.addElement(new ElementToggle("是否显示出售中领地",true));
-        custom.addElement(new ElementInput("输入索引","请根据索引设置输入"));
+        FormWindowCustom custom = new FormWindowCustom(LandModule.getModule().getConfig().getTitle()+"--search");
+        custom.addElement(new ElementLabel("Different options will affect search results"));
+        custom.addElement(new ElementDropdown("The index set", ScreenSetting.strings,0));
+        custom.addElement(new ElementToggle("Automatic sorting",false));
+        custom.addElement(new ElementToggle("Whether to sell in the territory",true));
+        custom.addElement(new ElementInput("The input index","Please set input according to the index"));
         player.showFormWindow(custom,SCREEN_MENU);
 
     }
@@ -156,9 +156,9 @@ public class CreateWindow {
 
             WindowListener.screenLands.put(player,landDataList);
             if(landDataList.size() == 0){
-                simple.setContent("未查找到领地 请确认查询条件是否正确");
+                simple.setContent("Please make sure the query conditions did not find the territory is correct");
             }else{
-                simple.setContent("查找到 "+landDataList.size()+" 个符合条件的领地 (最多显示20个)");
+                simple.setContent("Find the "+landDataList.size()+" count qualified domain (up to 20)");
             }
             for(LandData data: landDataList){
                 simple.addButton(getButton(player,data));
@@ -225,7 +225,7 @@ public class CreateWindow {
         if(data != null) {
             Vector vector = data.getVector();
             if(vector == null){
-                player.sendMessage(LandModule.getModule().getConfig().getTitle()+"出现未知问题，打开失败，请重新打开一次");
+                player.sendMessage(LandModule.getModule().getConfig().getTitle()+"Please unknown problems, failed to open to open again");
                 return;
             }
             double money = DataTool.getLandMoney(data.getVector(), (data instanceof LandSubData));

@@ -45,7 +45,7 @@ public class LandListenerPn implements Listener {
                 if (data.getLandOtherSet().isOpen(OtherLandSetting.RED_STONE_OUT)) {
                     players = DataTool.getAroundPlayers(block, 5);
                     for (Player player : players) {
-                        player.sendMessage(TextFormat.colorize('&', LandModule.getModule().getConfig().getTitle() + " &a请不要在领地 &e"+data.getLandName()+" &a外使用活塞"));
+                        player.sendMessage(TextFormat.colorize('&', LandModule.getModule().getConfig().getTitle() + " &aPlease don't in the territory &e"+data.getLandName()+" &aUsing the piston outside"));
                     }
                     event.setCancelled();
                     return;
