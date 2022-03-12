@@ -3,8 +3,11 @@ package cn.smallaswater.land.utils;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import cn.smallaswater.land.module.LandModule;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * @author 若水
@@ -137,15 +140,24 @@ public class Language {
 
 
     private Config locale;
-    public Language(Config locale){
-        this.locale = locale;
-        if(locale == null){
-            reloadLocale();
-        }
-        this.loadLocale();
 
+    public Language(@NotNull File file) {
+        this(new Config(file, Config.PROPERTIES));
     }
 
+    public Language(@NotNull File file, int type) {
+        this(new Config(file, type));
+    }
+
+    public Language(@NotNull Config locale){
+        this.locale = locale;
+        /*if(locale == null){
+            reloadLocale();
+        }*/
+        this.loadLocale();
+    }
+
+    @Deprecated
     private void reloadLocale(){
         if(!new File(LandModule.getModule().getModuleInfo().getDataFolder()+"/language.yml").exists()){
             LandModule.getModule().getModuleInfo().saveResource("language.yml");
@@ -153,6 +165,7 @@ public class Language {
         locale = new Config(LandModule.getModule().getModuleInfo().getDataFolder()+"/language.yml",2);
     }
 
+    @Deprecated
     private void loadLocaleA(){
         this.playerJoinMessage = TextFormat.colorize('&', this.locale.getString("playerJoinMessage", playerJoinMessage));
         this.playerQuitMessage = TextFormat.colorize('&', this.locale.getString("playerQuitMessage", playerQuitMessage));
@@ -210,6 +223,7 @@ public class Language {
         this.pos = TextFormat.colorize('&', this.locale.getString("pos", pos));
     }
 
+    @Deprecated
     private void loadLocalB(){
         this.landSettingMessage = TextFormat.colorize('&', this.locale.getString("landSettingMessage", landSettingMessage));
         this.notHaveLand = TextFormat.colorize('&', this.locale.getString("notHaveLand", notHaveLand));
@@ -248,10 +262,13 @@ public class Language {
         this.protectLevel = TextFormat.colorize('&',this.locale.getString("protectLevel",protectLevel));
     }
 
+    @Deprecated
     private void loadLocaleC(){
         this.landSetting = TextFormat.colorize('&', this.locale.getString("landSetting", landSetting));
         this.setting = TextFormat.colorize('&',this.locale.getString("setting",setting));
     }
+
+    @Deprecated
     private void loadLocale(){
         loadLocaleA();
         loadLocalB();
@@ -290,6 +307,49 @@ public class Language {
 
     }
 
+    public String translateString(String key) {
+        return this.translateString(key, new Object[]{});
+    }
 
+    public String translateString(String key, Object... params) {
+        String string = TextFormat.colorize('&', this.locale.getString(key, "&c Unknown key:" + key));
+        if (params != null && params.length > 0) {
+            for (int i = 1; i < params.length + 1; i++) {
+                string = string.replace("%" + i + "%", Objects.toString(params[i-1]));
+            }
+        }
+        return string;
+    }
+
+    public void update(File newFile) {
+        this.update(newFile, Config.PROPERTIES);
+    }
+
+    public void update(File newFile, int type) {
+        this.update(new Config(newFile, type));
+    }
+
+    public void update(Config newConfig) {
+        boolean needSave = false;
+        HashMap<String, String> cache = new HashMap<>();
+        for (String key : this.locale.getKeys()) {
+            if (newConfig.getKeys().contains(key)) {
+                cache.put(key, this.locale.getString(key, "§c Unknown key:" + key));
+            }else {
+                this.locale.remove(key);
+                needSave = true;
+            }
+        }
+        for (String key : newConfig.getKeys()) {
+            if (!cache.containsKey(key)) {
+                String string = newConfig.getString(key, "§c Unknown key:" + key);
+                this.locale.set(key, string);
+                needSave = true;
+            }
+        }
+        if (needSave) {
+            this.locale.save();
+        }
+    }
 
 }
