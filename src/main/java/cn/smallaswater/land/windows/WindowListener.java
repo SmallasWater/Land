@@ -97,7 +97,7 @@ public class WindowListener implements Listener {
             }
         }
         if (lands >= max) {
-            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerLandMax.replace("%count%", max + ""));
+            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("playerLandMax").replace("%count%", max + ""));
         } else {
             Player player1 = Server.getInstance().getPlayer(player);
             if(data.getMaster().equalsIgnoreCase(player)){
@@ -388,7 +388,7 @@ public class WindowListener implements Listener {
                             p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.saveSetting.replace("%p%", playerName));
                         } else {
                             data.setDefaultSetting(playerSetting);
-                            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.saveSetting.replace("%p%", language.other));
+                            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.saveSetting.replace("%p%", language.translateString("other")));
                         }
                         break;
                     default:break;
@@ -409,12 +409,12 @@ public class WindowListener implements Listener {
             if(LandModule.getModule().getConfig().isEnableTransferTime()) {
                 TimeHandle handle = TimerHandleManager.getTimeHandle(player);
                 if (handle.hasCold("transferCold")) {
-                    player.sendMessage(LandModule.getModule().getConfig().getTitle() + LandModule.getModule().getLanguage().transferCold.replace("%time%", handle.getCold("transferCold") + ""));
+                    player.sendMessage(LandModule.getModule().getConfig().getTitle() + LandModule.getModule().getLanguage().translateString("transfer_cold").replace("%time%", handle.getCold("transferCold") + ""));
                     return;
                 }
                 KeyHandleManager.addKey(player, "transfer");
                 handle.addTimer("transferCold", LandModule.getModule().getConfig().getTransferCold());
-                player.sendMessage(LandModule.getModule().getConfig().getTitle() + LandModule.getModule().getLanguage().transferTime.replace("%time%", LandModule.getModule().getConfig().getTransferTime() + ""));
+                player.sendMessage(LandModule.getModule().getConfig().getTitle() + LandModule.getModule().getLanguage().translateString("transfer_time").replace("%time%", LandModule.getModule().getConfig().getTransferTime() + ""));
                 LandMainClass.MAIN_CLASS.getServer().getScheduler().scheduleDelayedTask(LandMainClass.MAIN_CLASS, () -> {
                     if (!player.isOnline()) {
                         return;
@@ -504,7 +504,7 @@ public class WindowListener implements Listener {
                     max = LandModule.getModule().getConfig().getSubMax();
                 }
                 if (lands >= max) {
-                    p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerLandMax.replace("%count%", max + ""));
+                    p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("playerLandMax").replace("%count%", max + ""));
                     return;
                 }
 

@@ -43,12 +43,12 @@ public class PosSubCommand extends BaseSubCommand {
                     Position position = new Position(((Player) sender).getFloorX(), ((Player) sender).getFloorY()
                             ,((Player) sender).getFloorZ(),((Player) sender).getLevel());
                     positions.add(position);
-                    sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos1.replace("%pos%",DataTool.getPosToString(position)));
+                    sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("playerSetPos1").replace("%pos%",DataTool.getPosToString(position)));
                     getPos().put(sender.getName(), positions);
                     return true;
                 }else if("2".equalsIgnoreCase(strings[1])){
                     if(!getPos().containsKey(sender.getName())){
-                        sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos2Error);
+                        sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("playerSetPos2Error"));
                         return false;
                     }
                     Position position = new Position(((Player) sender).getFloorX(), ((Player) sender).getFloorY()
@@ -65,12 +65,12 @@ public class PosSubCommand extends BaseSubCommand {
                         try{
                             if(position1.getLevel() == null || position.getLevel() == null){
                                 getPos().remove(sender.getName());
-                                sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos2ErrorLevel);
+                                sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("playerSetPos2ErrorLevel"));
                                 return true;
                             }
                         }catch (Exception e){
                             getPos().remove(sender.getName());
-                            sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos2ErrorLevel);
+                            sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("playerSetPos2ErrorLevel"));
                             return true;
                         }
                         double money = getLandMoney(new Vector(position1,position));
@@ -79,7 +79,7 @@ public class PosSubCommand extends BaseSubCommand {
                         return true;
                     }else{
                         getPos().remove(sender.getName());
-                        sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos2ErrorLevel);
+                        sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("playerSetPos2ErrorLevel"));
                     }
                 }
             }
@@ -91,7 +91,7 @@ public class PosSubCommand extends BaseSubCommand {
         return DataTool.getLandMoney(vector);
     }
     protected String getPos2String(){
-        return LandModule.getModule().getLanguage().playerSetPos2;
+        return LandModule.getModule().getLanguage().translateString("playerSetPos2");
     }
 
     protected LinkedHashMap<String, LinkedList<Position>> getPos(){

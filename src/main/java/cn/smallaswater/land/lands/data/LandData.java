@@ -319,11 +319,11 @@ public class LandData  {
             if(event.isCancelled()){
                 return;
             }
-            player.sendMessage(LandModule.getModule().getLanguage().playerJoinLandMessageTarget.replace("%p%",master).replace("%name%",landName));
+            player.sendMessage(LandModule.getModule().getLanguage().translateString("playerJoinLandMessageTarget").replace("%p%",master).replace("%name%",landName));
         }
         player = Server.getInstance().getPlayer(master);
         if(player != null){
-            player.sendMessage(LandModule.getModule().getLanguage().playerJoinLandMessageMaster.replace("%p%",member).replace("%name%",getLandName()));
+            player.sendMessage(LandModule.getModule().getLanguage().translateString("playerJoinLandMessageMaster").replace("%p%",member).replace("%name%",getLandName()));
         }
         this.member.put(member,PlayerSetting.getPlayerDefaultSetting());
     }
@@ -356,11 +356,11 @@ public class LandData  {
             if(event.isCancelled()){
                 return;
             }
-            player.sendMessage(LandModule.getModule().getLanguage().playerQuitLandMessageTarget.replace("%p%",master).replace("%name%",landName));
+            player.sendMessage(LandModule.getModule().getLanguage().translateString("playerQuitLandMessageTarget").replace("%p%",master).replace("%name%",landName));
         }
         player = Server.getInstance().getPlayer(master);
         if(player != null){
-            player.sendMessage(LandModule.getModule().getLanguage().playerQuitLandMessageMaster.replace("%p%",member).replace("%name%",getLandName()));
+            player.sendMessage(LandModule.getModule().getLanguage().translateString("playerQuitLandMessageMaster").replace("%p%",member).replace("%name%",getLandName()));
         }
         this.member.remove(member);
     }

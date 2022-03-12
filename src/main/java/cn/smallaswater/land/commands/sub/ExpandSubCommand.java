@@ -60,7 +60,7 @@ public class ExpandSubCommand extends BaseSubCommand {
                         }
                     }else{
                         if (name != null && !name.equals(data)) {
-                            commandSender.sendMessage(title + language.playerBuyLandErrorLandInArray.replace("%name%", name.getLandName()));
+                            commandSender.sendMessage(title + language.translateString("playerBuyLandErrorLandInArray").replace("%name%", name.getLandName()));
                             return true;
                         }
                     }

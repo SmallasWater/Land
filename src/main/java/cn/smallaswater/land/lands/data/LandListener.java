@@ -34,8 +34,10 @@ import java.util.LinkedList;
 /**
  * @author 若水
  */
+@SuppressWarnings("unused")
 public class LandListener implements Listener {
-    private LinkedHashMap<Player,LandData> move = new LinkedHashMap<>();
+
+    private final LinkedHashMap<Player,LandData> move = new LinkedHashMap<>();
 
     @EventHandler
     public void onTransferMove(PlayerMoveEvent event){
@@ -45,7 +47,7 @@ public class LandListener implements Listener {
             Location t = event.getTo();
             if(f.getFloorX() != t.getFloorX() || f.getFloorY() != t.getFloorY() || f.getFloorZ() != t.getFloorZ()){
                 KeyHandleManager.addKey(player,"transferClose");
-                player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().transferError);
+                player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("transfer_error"));
             }
         }
     }
@@ -231,7 +233,7 @@ public class LandListener implements Listener {
         Player player = event.getPlayer();
         LandData data = event.getData();
         if(data.isSell()){
-            player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().sellLandError);
+            player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("sellLandError"));
             event.setCancelled();
         }
 
@@ -394,7 +396,7 @@ public class LandListener implements Listener {
                     Position position = new Position(block.getFloorX(), block.getFloorY()
                             ,block.getFloorZ(),block.getLevel());
                     positions.add(position);
-                    player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos1.replace("%pos%",DataTool.getPosToString(position)));
+                    player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("playerSetPos1").replace("%pos%",DataTool.getPosToString(position)));
                     LandModule.getModule().pos.put(player.getName(), positions);
                 }else{
                     Position position = new Position(block.getFloorX(),block.getFloorY()
@@ -411,21 +413,21 @@ public class LandListener implements Listener {
                         try{
                             if(position1.getLevel() == null || position.getLevel() == null){
                                 LandModule.getModule().pos.remove(player.getName());
-                                player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos2ErrorLevel);
+                                player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("playerSetPos2ErrorLevel"));
                                 return;
                             }
                         }catch (Exception e){
                             LandModule.getModule().pos.remove(player.getName());
-                            player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos2ErrorLevel);
+                            player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("playerSetPos2ErrorLevel"));
                             return;
                         }
                         double money = DataTool.getLandMoney(new Vector(position1,position));
-                        player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos2.replace("%pos%",DataTool.getPosToString(position)).replace("%money%",
+                        player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("playerSetPos2").replace("%pos%",DataTool.getPosToString(position)).replace("%money%",
                                 String.format("%.2f", money)));
 
                     }else{
                         LandModule.getModule().pos.remove(player.getName());
-                        player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.playerSetPos2ErrorLevel);
+                        player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("playerSetPos2ErrorLevel"));
                     }
                 }
 
@@ -489,7 +491,7 @@ public class LandListener implements Listener {
             if (!data.hasPermission(player.getName(), LandSetting.TRANSFER)) {
                 event.setCancelled();
             } else {
-                player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().playerTransferLand.replace("%name%",data.getLandName()));
+                player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("playerTransferLand").replace("%name%",data.getLandName()));
             }
         }
     }
