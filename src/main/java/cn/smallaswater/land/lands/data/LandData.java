@@ -276,7 +276,7 @@ public class LandData  {
         Player player2 = Server.getInstance().getPlayer(this.master);
         if(player1 != null){
             player1.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().givePlayerLandTarget
-                    .replace("%p%","You").replace("%name%",getLandName()));
+                    .replace("%p%","你").replace("%name%",getLandName()));
         }
         if(player2 != null) {
             player2.sendMessage(LandModule.getModule().getConfig().getTitle() + LandModule.getModule().getLanguage().givePlayerLandMaster
@@ -418,7 +418,7 @@ public class LandData  {
         File file = new File(LandModule.getModule().getModuleInfo().getDataFolder()+"/lands/"+landName+".yml");
         if(file.exists()){
             if(!file.delete()){
-                System.out.println("delete "+landName+".yml file error");
+                System.out.println("删除"+landName+".yml 文件失败");
             }
         }
     }

@@ -4,7 +4,6 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import me.onebone.economyapi.EconomyAPI;
 import money.Money;
-import net.lldv.llamaeconomy.LlamaEconomy;
 import net.player.api.Point;
 
 /**
@@ -14,7 +13,6 @@ public class LoadMoney {
     public static final int MONEY = 1;
     public static final int ECONOMY_API = 0;
     public static final int PLAYER_POINT = 2;
-    public static final int LLAMA_ECONOMY = 3;
 
     private int money;
 
@@ -25,9 +23,7 @@ public class LoadMoney {
             money = MONEY;
         }else if(Server.getInstance().getPluginManager().getPlugin("PlayerPoint") != null){
             money = PLAYER_POINT;
-        }else if(Server.getInstance().getPluginManager().getPlugin("LlamaEconomy") != null){
-            money = LLAMA_ECONOMY;
-        } else{
+        }else{
             money = -2;
         }
 
@@ -63,8 +59,6 @@ public class LoadMoney {
                 return EconomyAPI.getInstance().myMoney(player) ;
             case PLAYER_POINT:
                 return Point.myPoint(player);
-            case LLAMA_ECONOMY:
-                return LlamaEconomy.getAPI().getMoney(player);
             default:break;
         }
         return 0;
@@ -88,8 +82,6 @@ public class LoadMoney {
             case PLAYER_POINT:
                 Point.addPoint(player, money);
                 return;
-            case LLAMA_ECONOMY:
-                LlamaEconomy.getAPI().addMoney(player, money);
             default:break;
         }
     }
@@ -111,8 +103,6 @@ public class LoadMoney {
             case PLAYER_POINT:
                 Point.reducePoint(player, money);
                 return;
-            case LLAMA_ECONOMY:
-                LlamaEconomy.getAPI().reduceMoney(player, money);
             default:break;
         }
     }
