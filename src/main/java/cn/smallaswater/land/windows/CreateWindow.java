@@ -205,9 +205,9 @@ public class CreateWindow {
         for(LandData data:DataTool.getSellLandAll()){
             if(data.isSell()){
                 simple.addButton(new ElementButton(
-                        LandModule.getModule().getLanguage().showSellLandButton
-                                .replace("%type%",((data instanceof LandSubData)?LandModule.getModule().getLanguage().subLand
-                                        :LandModule.getModule().getLanguage().masterLand))
+                        LandModule.getModule().getLanguage().translateString("showSellLandButton")
+                                .replace("%type%",((data instanceof LandSubData)?LandModule.getModule().getLanguage().translateString("subLand")
+                                        :LandModule.getModule().getLanguage().translateString("masterLand")))
                                 .replace("%name%",data.getLandName())
                                 .replace("%player%",data.getMaster())
                                 .replace("%day%",(LandModule.getModule().getConfig().getShowTime() - DataTool.getOutDay(data))+"")
@@ -231,7 +231,7 @@ public class CreateWindow {
                 money = data.getSellMoney();
             }
             FormWindowSimple simple = new FormWindowSimple(LandModule.getModule().getConfig().getTitle(), "");
-            String content = LandModule.getModule().getLanguage().showSellLandMenu
+            String content = LandModule.getModule().getLanguage().translateString("showSellLandMenu")
                     .replace("%id%",data.getLandId()+"")
                     .replace("%name%", data.getLandName())
                     .replace("%size%", data.getVector().size() + "")
@@ -249,7 +249,7 @@ public class CreateWindow {
                     .replace("%message%",data.getSellMessage());
             simple.setContent(content);
             simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("transferButton"),new ElementButtonImageData("path","textures/ui/mashup_world")));
-            simple.addButton(new ElementButton(LandModule.getModule().getLanguage().buyLandButton, new ElementButtonImageData("path", "textures/ui/MCoin")));
+            simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("buyLandButton"), new ElementButtonImageData("path", "textures/ui/MCoin")));
             simple.addButton(getBackButton());
             player.showFormWindow(simple, BUY_LAND_MENU);
         }
@@ -260,8 +260,8 @@ public class CreateWindow {
      * */
     static void sendSellSetting(Player player){
         FormWindowCustom simple = new FormWindowCustom(LandModule.getModule().getConfig().getTitle());
-        simple.addElement(new ElementInput(LandModule.getModule().getLanguage().isSellInputMoney));
-        simple.addElement(new ElementInput(LandModule.getModule().getLanguage().isSellInputMessage));
+        simple.addElement(new ElementInput(LandModule.getModule().getLanguage().translateString("isSellInputMoney")));
+        simple.addElement(new ElementInput(LandModule.getModule().getLanguage().translateString("isSellInputMessage")));
         player.showFormWindow(simple,IS_SELL_MENU);
     }
 
@@ -300,7 +300,7 @@ public class CreateWindow {
         if(simple.getButtons().size() == 0){
             simple.setContent(LandModule.getModule().getLanguage().translateString("notHaveLand"));
         }else{
-            simple.setContent(LandModule.getModule().getLanguage().landLists
+            simple.setContent(LandModule.getModule().getLanguage().translateString("landLists")
                     .replace("%count%",LandModule.getModule().getList().getData().size()+"")
                     .replace("%i%",PAGES.get(player)+"")
                     .replace("%max%",getPages()+""));
@@ -374,9 +374,9 @@ public class CreateWindow {
             simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("subLandSetting"),new ElementButtonImageData("path","textures/ui/dev_glyph_color")));
         }
         if(data.isSell()) {
-            simple.addButton(new ElementButton(LandModule.getModule().getLanguage().inSellFalseButton, new ElementButtonImageData("path", "textures/ui/Feedback")));
+            simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("inSellFalseButton"), new ElementButtonImageData("path", "textures/ui/Feedback")));
         }else{
-            simple.addButton(new ElementButton(LandModule.getModule().getLanguage().inSellButton, new ElementButtonImageData("path", "textures/ui/Feedback")));
+            simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("inSellButton"), new ElementButtonImageData("path", "textures/ui/Feedback")));
         }
         simple.addButton(getBackButton());
         player.showFormWindow(simple,SET_LAND);

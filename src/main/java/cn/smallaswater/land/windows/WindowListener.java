@@ -310,7 +310,7 @@ public class WindowListener implements Listener {
         if(data.isSell()){
             data.setSell(false);
             data.setSellDay("");
-            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellFalseText.replace("%name%",data.getLandName()));
+            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("setSellFalseText").replace("%name%",data.getLandName()));
         }else{
             if(!"".equalsIgnoreCase(message)){
                 data.setSellMessage(message);
@@ -319,10 +319,10 @@ public class WindowListener implements Listener {
             data.setSellDay(DataTool.getDateToString(new Date()));
             if(m != -1){
                 data.setSellMoney(m);
-                p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellMoneyMessage.replace("%name%",data.getLandName())
+                p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("setSellMoneyMessage").replace("%name%",data.getLandName())
                         .replace("%money%",String.format("%.2f",m).replace("%name%",data.getLandName())));
             }
-            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellText.replace("%name%",data.getLandName())
+            p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("setSellText").replace("%name%",data.getLandName())
                     .replace("%day%",LandModule.getModule().getConfig().getShowTime()+""));
         }
     }
@@ -493,7 +493,7 @@ public class WindowListener implements Listener {
         if(id == 1){
             //购买
             if(p.getName().equalsIgnoreCase(data.getMaster())){
-                p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandMe);
+                p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("buyLandMe"));
                 return;
             }
             if(data.isSell()){
@@ -522,20 +522,20 @@ public class WindowListener implements Listener {
                     LandModule.getModule().getMoney().addMoney(data.getMaster(),money);
                     Player master = Server.getInstance().getPlayer(data.getMaster());
                     if(master != null){
-                        master.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandMaster.replace("%player%",p.getName()).replace("%name%",data.getLandName()).replace("%money%",String.format("%.2f",money)));
+                        master.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("buyLandMaster").replace("%player%",p.getName()).replace("%name%",data.getLandName()).replace("%money%",String.format("%.2f",money)));
                     }
-                    p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandTrue.replace("%name%",data.getLandName()).replace("%money%",String.format("%.2f",money)));
+                    p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("buyLandTrue").replace("%name%",data.getLandName()).replace("%money%",String.format("%.2f",money)));
                     if(data instanceof LandSubData){
                         ((LandSubData) data).setSellPlayer(!data.getMaster().equalsIgnoreCase(((LandSubData) data).getMasterData().getMaster()));
                     }
                     data.setMaster(p.getName());
                     data.setSell(false);
                 }else{
-                    p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandNotHaveMoney.replace("%name%",data.getLandName()).replace("%money%",String.format("%.2f",money)));
+                    p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("buyLandNotHaveMoney").replace("%name%",data.getLandName()).replace("%money%",String.format("%.2f",money)));
                 }
 
             }else{
-                p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.buyLandFalse.replace("%name%",data.getLandName()));
+                p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("buyLandFalse").replace("%name%",data.getLandName()));
             }
 
         }
@@ -553,8 +553,8 @@ public class WindowListener implements Listener {
                     return;
                 }
 
-                if(simple.getResponse().getClickedButton().getText().equalsIgnoreCase(language.inSellButton) ||
-                        simple.getResponse().getClickedButton().getText().equalsIgnoreCase(language.inSellFalseButton) ){
+                if(simple.getResponse().getClickedButton().getText().equalsIgnoreCase(language.translateString("inSellButton")) ||
+                        simple.getResponse().getClickedButton().getText().equalsIgnoreCase(language.translateString("inSellFalseButton")) ){
                     if(data instanceof LandSubData){
                         if(!data.getMaster().equalsIgnoreCase(((LandSubData) data).getMasterData().getMaster())){
                             p.sendMessage(language.notHavePermission);
@@ -564,7 +564,7 @@ public class WindowListener implements Listener {
                     if(data.isSell()){
                         data.setSell(false);
                         data.setSellDay("");
-                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.setSellFalseText.replace("%name%",data.getLandName()));
+                        p.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("setSellFalseText").replace("%name%",data.getLandName()));
                     }else{
                         CreateWindow.sendSellSetting(p);
                     }

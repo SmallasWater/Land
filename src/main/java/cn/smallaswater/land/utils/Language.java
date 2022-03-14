@@ -14,7 +14,6 @@ import java.util.Objects;
  */
 public class Language {
 
-    public String landLists = "当前服务器拥有 %count% 个领地 第 %i% 页/共 %max% 页";
     public String quitLandButton = "离开领地";
     public String sellLandButton = "出售领地 ( - %c% ％)";
     public String giveLandButton = "转让领地";
@@ -35,7 +34,6 @@ public class Language {
     public String acceptErrorMaxMaster = "玩家 %p% 的领地已经到达上限 无法加入 %name%领地";
     public String acceptErrorMaxTarget = "你的的领地已经到达上限啦..无法加入%n%的 %name%领地";
     public String acceptMessageMember = "你加入了 %p% 的%name%领地...";
-    public String inviteTimeOut = "邀请 %p% 加入 %name% 领地的请求已超时";
     public String denyMessageMaster = "玩家 %p% 拒绝了你的 %name% 领地邀请..";
     public String denyMessageMember = "你拒绝了 %p% 的领地邀请...";
     public String notHaveInvite = "你没有任何领地邀请";
@@ -61,40 +59,12 @@ public class Language {
     public String inputTextJoin = "请设置玩家进入领地的提示 %n% 代表领地名称 %master% 是领主 %member%是领地成员";
     public String inputTextQuit = "请设置玩家离开领地的提示 %n% 代表领地名称 %master% 是领主 %member%是领地成员";
     public String integerError = "请输入正确的数值";
-    public String mathLandMoney = "正在计算拓展领地需要花费的金钱...";
-    public String placeInLandData = "请站在领地内...";
-    public String expandNeedNotHaveMoney = "你的钱不够哦~~ 无法拓展领地 需要花费 %money%";
-    public String expandNeedSuccess = "成功拓展 %count% 格 %name% 领地 花费 %money%";
-    public String sellOtherLand = "主领地领主出售了 %name% 子领地 你失去了 %name% 的权限";
-    public String showSellLandButton = "(%type%) %name% 售卖中 领主: %player% (%day%天后下架)\n点我查看详情";
-    public String showSellLandMenu = "领地名称: %name%&r\n\n领地大小: %size% 方块\n\n领地位置: %pos%\n\n领地地图: %level%\n\n公示时间: %day%天后下架\n\n领地价格: %money%\n\n领地介绍: %message%";
-    public String masterLand = "主领地";
-    public String subLand = "子领地";
-    public String buyLandButton = "是我的了，购买！";
-    public String setSellText = "你将%name%领地挂在了寄售行 公示期 %day%天， 公示期结束后下架领地";
-    public String setSellFalseText = "你将 %name% 领地从寄售行下架了";
-    public String buyLandFalse = "%name% 领地不在寄售行了";
-    public String buyLandMe = "你不能购买自己的领地";
-    public String buyLandTrue = "你成功购买了 %name% 领地 花费 %money%";
-    public String buyLandMaster = "%player% 购买了你的 %name% 获得 %money%";
-    public String buyLandNotHaveMoney = "你没有足够的金钱购买 %name% 需要花费 %money%";
-    public String inSellButton = "寄售领地";
-    public String inSellFalseButton = "取消寄售领地";
-    public String isSellInputMoney = "请设置领地出售金钱..";
-    public String isSellInputMessage = "请设置宣传标语..";
-    public String setSellMoneyMessage = "成功设置 %name% 领地出售价格为 %money%";
-
-    public String masterSellHaveLandSell = "此领地中 %name% 子领地处于寄售状态..无法出售";
-    public String masterGiveHaveLandSell = "此领地中 %name% 子领地处于寄售状态..无法给予玩家";
-
-    public String giveSellLandError = "此领地正在寄售..无法给予任何玩家";
-
 
 
     private final Config locale;
 
     public Language(@NotNull File file) {
-        this(new Config(file, Config.PROPERTIES));
+        this(new Config(file, Config.YAML));
     }
 
     public Language(@NotNull File file, int type) {
@@ -107,11 +77,7 @@ public class Language {
     }
 
     @Deprecated
-    private void loadLocaleA(){
-        this.expandNeedSuccess = TextFormat.colorize('&', this.locale.getString("expandNeedSuccess", expandNeedSuccess));
-        this.expandNeedNotHaveMoney = TextFormat.colorize('&', this.locale.getString("expandNeedNotHaveMoney", expandNeedNotHaveMoney));
-        this.placeInLandData = TextFormat.colorize('&', this.locale.getString("placeInLandData", placeInLandData));
-        this.mathLandMoney = TextFormat.colorize('&', this.locale.getString("mathLandMoney", mathLandMoney));
+    private void loadLocale(){
         this.integerError = TextFormat.colorize('&', this.locale.getString("integerError", integerError));
         this.inputTextQuit = TextFormat.colorize('&', this.locale.getString("inputTextQuit", inputTextQuit));
         this.inputTextJoin = TextFormat.colorize('&', this.locale.getString("inputTextJoin", inputTextJoin));
@@ -159,39 +125,6 @@ public class Language {
         this.quitLandButton = TextFormat.colorize('&', this.locale.getString("quitLandButton", quitLandButton));
     }
 
-    @Deprecated
-    private void loadLocale(){
-        loadLocaleA();
-
-        //-----//
-        this.sellOtherLand = TextFormat.colorize('&', this.locale.getString("sellOtherLand", sellOtherLand));
-        this.showSellLandButton = TextFormat.colorize('&', this.locale.getString("showSellLandButton", showSellLandButton));
-        this.showSellLandMenu = TextFormat.colorize('&',this.locale.getString("showSellLandMenu",showSellLandMenu));
-        this.masterLand = TextFormat.colorize('&', this.locale.getString("masterLand", masterLand));
-        this.subLand = TextFormat.colorize('&', this.locale.getString("subLand", subLand));
-        this.buyLandButton = TextFormat.colorize('&',this.locale.getString("buyLandButton",buyLandButton));
-        this.setSellText = TextFormat.colorize('&', this.locale.getString("setSellText", setSellText));
-        this.setSellFalseText = TextFormat.colorize('&', this.locale.getString("setSellFalseText", setSellFalseText));
-        this.buyLandFalse = TextFormat.colorize('&',this.locale.getString("buyLandFalse",buyLandFalse));
-        this.buyLandMe = TextFormat.colorize('&', this.locale.getString("buyLandMe", buyLandMe));
-        this.buyLandTrue = TextFormat.colorize('&', this.locale.getString("buyLandTrue", buyLandTrue));
-        this.buyLandMaster = TextFormat.colorize('&',this.locale.getString("buyLandMaster",buyLandMaster));
-        this.inviteTimeOut = TextFormat.colorize('&',this.locale.getString("inviteTimeOut",inviteTimeOut));
-
-
-        this.masterSellHaveLandSell = TextFormat.colorize('&', this.locale.getString("masterSellHaveLandSell", masterSellHaveLandSell));
-        this.masterGiveHaveLandSell = TextFormat.colorize('&',this.locale.getString("masterGiveHaveLandSell",masterGiveHaveLandSell));
-
-        this.buyLandNotHaveMoney = TextFormat.colorize('&', this.locale.getString("buyLandNotHaveMoney", buyLandNotHaveMoney));
-        this.inSellButton = TextFormat.colorize('&', this.locale.getString("inSellButton", inSellButton));
-        this.inSellFalseButton = TextFormat.colorize('&',this.locale.getString("inSellFalseButton",inSellFalseButton));
-        this.giveSellLandError = TextFormat.colorize('&', this.locale.getString("giveSellLandError", giveSellLandError));
-        this.isSellInputMessage = TextFormat.colorize('&',this.locale.getString("isSellInputMessage",isSellInputMessage));
-        this.isSellInputMoney = TextFormat.colorize('&',this.locale.getString("isSellInputMoney",isSellInputMoney));
-        this.setSellMoneyMessage = TextFormat.colorize('&',this.locale.getString("setSellMoneyMessage",setSellMoneyMessage));
-        this.landLists = TextFormat.colorize('&',this.locale.getString("landLists",landLists));
-    }
-
     public String translateString(String key) {
         return this.translateString(key, new Object[]{});
     }
@@ -207,7 +140,7 @@ public class Language {
     }
 
     public void update(File newFile) {
-        this.update(newFile, Config.PROPERTIES);
+        this.update(newFile, Config.YAML);
     }
 
     public void update(File newFile, int type) {

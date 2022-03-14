@@ -44,7 +44,7 @@ public class ExpandSubCommand extends BaseSubCommand {
                 LandData data = DataTool.getPlayerLandData(((Player) commandSender).getPosition());
                 if(data != null) {
                     Vector vector;
-                    commandSender.sendMessage(title+language.mathLandMoney);
+                    commandSender.sendMessage(title+language.translateString("mathLandMoney"));
                     vector = newLandDataVector((Player) commandSender,i,data.getVector().clone());
                     LandData name = DataTool.checkOverlap(vector);
                     if(data instanceof LandSubData) {
@@ -68,15 +68,15 @@ public class ExpandSubCommand extends BaseSubCommand {
                     if(LandModule.getModule().getMoney().myMoney(commandSender.getName()) >= money){
                         LandModule.getModule().getMoney().reduceMoney(commandSender.getName(),money);
                         data.setVector(vector);
-                        commandSender.sendMessage(title+language.expandNeedSuccess
+                        commandSender.sendMessage(title+language.translateString("expandNeedSuccess")
                                 .replace("%count%",i+"").replace("%name%",data.getLandName()).replace("%money%",money+""));
                         return true;
                     }else{
-                        commandSender.sendMessage(title+language.expandNeedNotHaveMoney.replace("%money%",money+""));
+                        commandSender.sendMessage(title+language.translateString("expandNeedNotHaveMoney").replace("%money%",money+""));
                         return true;
                     }
                 }else{
-                    commandSender.sendMessage(title+language.placeInLandData);
+                    commandSender.sendMessage(title+language.translateString("placeInLandData"));
                     return true;
                 }
 

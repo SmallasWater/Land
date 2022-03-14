@@ -117,7 +117,7 @@ public class LandListener implements Listener {
     public void onInviteTimeOut(PlayerInviteTimeOutEvent event){
         Player master = Server.getInstance().getPlayer(event.getMasterPlayerName());
         if(master != null){
-            master.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().inviteTimeOut
+            master.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("inviteTimeOut")
                     .replace("%p%",event.getMemberPlayerName())
                     .replace("%name%",event.data.getLandName()));
         }
@@ -164,7 +164,7 @@ public class LandListener implements Listener {
         Player player = event.getPlayer();
         LandData data = event.getData();
         if(data.isSell()){
-            player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().giveSellLandError);
+            player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("giveSellLandError"));
             event.setCancelled();
         }
         if(data instanceof LandSubData){
@@ -176,7 +176,7 @@ public class LandListener implements Listener {
             for(LandSubData data1:data.getSubData()){
                 if(data1.isSell()){
                     player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule()
-                            .getLanguage().masterGiveHaveLandSell.replace("%name%",data1.getLandName()));
+                            .getLanguage().translateString("masterGiveHaveLandSell").replace("%name%",data1.getLandName()));
                     event.setCancelled();
                     return;
                 }
@@ -249,7 +249,7 @@ public class LandListener implements Listener {
                         ((LandSubData) data).setSellPlayer(false);
                         if (player1 != null) {
                             player1.sendMessage(LandModule.getModule().getConfig().getTitle()
-                                    + LandModule.getModule().getLanguage().sellOtherLand.replace("%name%", data.getLandName()));
+                                    + LandModule.getModule().getLanguage().translateString("sellOtherLand").replace("%name%", data.getLandName()));
                         }
                     }
                 }
@@ -258,7 +258,7 @@ public class LandListener implements Listener {
             for(LandSubData data1:data.getSubData()){
                 if(data1.isSell()){
                     player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule()
-                            .getLanguage().masterSellHaveLandSell.replace("%name%",data1.getLandName()));
+                            .getLanguage().translateString("masterSellHaveLandSell").replace("%name%",data1.getLandName()));
                     event.setCancelled();
                     return;
                 }
