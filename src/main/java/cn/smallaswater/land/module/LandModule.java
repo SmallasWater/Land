@@ -32,6 +32,8 @@ import cn.smallaswater.land.windows.WindowListener;
 import cn.smallaswater.land.commands.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -47,6 +49,7 @@ public class LandModule {
     private LandList landList;
 
     private Config languageConfig;
+    private Language language;
 
     public ArrayList<KeyHandle> keyHanle = new ArrayList<>();
 
@@ -93,6 +96,18 @@ public class LandModule {
             languageFile = new File(getModuleInfo().getDataFolder() + "/language/eng.yml");
         }
         this.languageConfig = new Config(languageFile, Config.YAML);
+        this.language = new Language(this.languageConfig);
+        InputStream internalLanguageResource = LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".yml");
+        if (internalLanguageResource != null) {
+            try {
+                Config internalLanguageConfig = new Config(Config.YAML);
+                internalLanguageConfig.load(internalLanguageResource);
+                this.language.update(internalLanguageConfig);
+                internalLanguageResource.close();
+            }catch (IOException e) {
+                LandMainClass.MAIN_CLASS.getLogger().info("Language update failed " + this.config.getLanguage());
+            }
+        }
         LandMainClass.MAIN_CLASS.getLogger().info("Language is set to: " + this.config.getLanguage());
     }
 
@@ -168,7 +183,6 @@ public class LandModule {
 
 
     private void registerListener(){
-
         if("PowerNukkit".equalsIgnoreCase(Nukkit.CODENAME)){
             LandMainClass.MAIN_CLASS.getLogger().info("enable PowerNukkit listener");
             LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new LandListenerPn(),LandMainClass.MAIN_CLASS);
@@ -374,9 +388,11 @@ public class LandModule {
         return names.toArray(new String[0]);
     }
 
-    public Language getLanguage(){
-        return new Language(languageConfig);
+    public Language getLanguage() {
+        if (this.language == null) {
+            this.language = new Language(this.languageConfig);
+        }
+        return this.language;
     }
-
 
 }
