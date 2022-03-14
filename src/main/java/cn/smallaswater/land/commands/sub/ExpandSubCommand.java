@@ -55,7 +55,7 @@ public class ExpandSubCommand extends BaseSubCommand {
                                 return true;
                             }
                         }else{
-                            commandSender.sendMessage(language.subInMaster.replace("%name%",((LandSubData) data).getMasterData().getLandName()));
+                            commandSender.sendMessage(language.translateString("subInMaster").replace("%name%",((LandSubData) data).getMasterData().getLandName()));
                             return true;
                         }
                     }else{

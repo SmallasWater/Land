@@ -14,8 +14,6 @@ import java.util.Objects;
  */
 public class Language {
 
-    public String playerBuyLandSuccess = "成功购买领地 %name% 花费 %money%";
-    public String playerBuyLandError = "购买领地失败，，你没有足够的金钱";
     public String landLists = "当前服务器拥有 %count% 个领地 第 %i% 页/共 %max% 页";
     public String quitLandButton = "离开领地";
     public String sellLandButton = "出售领地 ( - %c% ％)";
@@ -67,14 +65,6 @@ public class Language {
     public String placeInLandData = "请站在领地内...";
     public String expandNeedNotHaveMoney = "你的钱不够哦~~ 无法拓展领地 需要花费 %money%";
     public String expandNeedSuccess = "成功拓展 %count% 格 %name% 领地 花费 %money%";
-    public String cancelChose = "你取消了操作";
-    public String subInMaster = "请保证子领地全部在主领地 %name% 内";
-    public String inLandData = "请站在你自己的领地内";
-    public String subLandSetting = "子领地管理";
-    public String showParticle = "领地范围显示";
-    public String subLandButton = "子领地: %name% 身份: %p%\n点击查看详情";
-    public String backButton = "返回上一步";
-    public String protectLevel = "此世界被圈地之前禁止交互";
     public String sellOtherLand = "主领地领主出售了 %name% 子领地 你失去了 %name% 的权限";
     public String showSellLandButton = "(%type%) %name% 售卖中 领主: %player% (%day%天后下架)\n点我查看详情";
     public String showSellLandMenu = "领地名称: %name%&r\n\n领地大小: %size% 方块\n\n领地位置: %pos%\n\n领地地图: %level%\n\n公示时间: %day%天后下架\n\n领地价格: %money%\n\n领地介绍: %message%";
@@ -170,26 +160,9 @@ public class Language {
     }
 
     @Deprecated
-    private void loadLocalB(){
-        this.playerBuyLandError = TextFormat.colorize('&', this.locale.getString("playerBuyLandError", playerBuyLandError));
-        this.playerBuyLandSuccess = TextFormat.colorize('&', this.locale.getString("playerBuyLandSuccess", playerBuyLandSuccess));
-        this.cancelChose = TextFormat.colorize('&', this.locale.getString("cancelChose", cancelChose));
-        this.subInMaster = TextFormat.colorize('&', this.locale.getString("subInMaster", subInMaster));
-        this.inLandData = TextFormat.colorize('&', this.locale.getString("inLandData", inLandData));
-        this.subLandSetting = TextFormat.colorize('&', this.locale.getString("subLandSetting", subLandSetting));
-        this.subLandButton = TextFormat.colorize('&', this.locale.getString("subLandButton", subLandButton));
-        this.showParticle = TextFormat.colorize('&', this.locale.getString("showParticle", showParticle));
-        this.backButton = TextFormat.colorize('&', this.locale.getString("backButton", backButton));
-        this.protectLevel = TextFormat.colorize('&',this.locale.getString("protectLevel",protectLevel));
-        this.showParticle = TextFormat.colorize('&', this.locale.getString("showParticle", showParticle));
-        this.backButton = TextFormat.colorize('&', this.locale.getString("backButton", backButton));
-        this.protectLevel = TextFormat.colorize('&',this.locale.getString("protectLevel",protectLevel));
-    }
-
-    @Deprecated
     private void loadLocale(){
         loadLocaleA();
-        loadLocalB();
+
         //-----//
         this.sellOtherLand = TextFormat.colorize('&', this.locale.getString("sellOtherLand", sellOtherLand));
         this.showSellLandButton = TextFormat.colorize('&', this.locale.getString("showSellLandButton", showSellLandButton));

@@ -175,7 +175,7 @@ public class CreateWindow {
 
 
     private static ElementButton getBackButton(){
-        return new ElementButton(LandModule.getModule().getLanguage().backButton,new ElementButtonImageData("path","textures/ui/refresh_light"));
+        return new ElementButton(LandModule.getModule().getLanguage().translateString("backButton"),new ElementButtonImageData("path","textures/ui/refresh_light"));
     }
 
     private static ElementButton getButton(Player player,LandData data){
@@ -187,7 +187,7 @@ public class CreateWindow {
         }
         String s = LandModule.getModule().getLanguage().translateString("landButtonText");
         if(data instanceof LandSubData){
-            s = LandModule.getModule().getLanguage().subLandButton;
+            s = LandModule.getModule().getLanguage().translateString("subLandButton");
         }
         if(data instanceof LandSubData){
             if(((LandSubData) data).getMasterData().getMaster().equalsIgnoreCase(player.getName())){
@@ -369,9 +369,9 @@ public class CreateWindow {
         simple.addButton(new ElementButton(LandModule.getModule().getLanguage().giveLandButton,new ElementButtonImageData("path","textures/ui/Friend1")));
         simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("setTransfer"),new ElementButtonImageData("path","textures/ui/Feedback")));
         simple.addButton(new ElementButton(LandModule.getModule().getLanguage().setTextButton,new ElementButtonImageData("path","textures/ui/copy")));
-        simple.addButton(new ElementButton(LandModule.getModule().getLanguage().showParticle,new ElementButtonImageData("path","textures/ui/water_breathing_effect")));
+        simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("showParticle"),new ElementButtonImageData("path","textures/ui/water_breathing_effect")));
         if(!(data instanceof LandSubData)){
-            simple.addButton(new ElementButton(LandModule.getModule().getLanguage().subLandSetting,new ElementButtonImageData("path","textures/ui/dev_glyph_color")));
+            simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("subLandSetting"),new ElementButtonImageData("path","textures/ui/dev_glyph_color")));
         }
         if(data.isSell()) {
             simple.addButton(new ElementButton(LandModule.getModule().getLanguage().inSellFalseButton, new ElementButtonImageData("path", "textures/ui/Feedback")));

@@ -204,7 +204,7 @@ public class LandListener implements Listener {
             if (data == null) {
                 if(!player.isOp()){
                     if(LandMainClass.MAIN_CLASS.getModule().getConfig().isEchoProtectListMessage()){
-                        player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().protectLevel);
+                        player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("protectLevel"));
                     }
                     return false;
                 }

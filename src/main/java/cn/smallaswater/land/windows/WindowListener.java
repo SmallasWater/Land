@@ -181,7 +181,7 @@ public class WindowListener implements Listener {
                             givePlayerLand(player,data,p);
                             return;
                         } else {
-                            p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.cancelChose);
+                            p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("cancelChose"));
                         }
                         break;
 
@@ -227,7 +227,7 @@ public class WindowListener implements Listener {
                                     data.close();
                                 }
                             }else{
-                                p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.cancelChose);
+                                p.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("cancelChose"));
                             }
                         }else{
                             if(modal.getResponse().getClickedButtonText().equalsIgnoreCase(language.choseTrue)){
@@ -785,7 +785,7 @@ public class WindowListener implements Listener {
     private boolean sendBack(Player p, FormWindowSimple simple, int formId, Language language) {
         if(simple.getResponse().getClickedButton().getImage() != null) {
             if (simple.getResponse().getClickedButton().getImage().getData()
-                    .equalsIgnoreCase(CreateWindow.backImage) && simple.getResponse().getClickedButton().getText().equalsIgnoreCase(language.backButton)) {
+                    .equalsIgnoreCase(CreateWindow.backImage) && simple.getResponse().getClickedButton().getText().equalsIgnoreCase(language.translateString("backButton"))) {
                 onBackSimpleWindow(p, formId);
                 return true;
             }
