@@ -58,7 +58,7 @@ public class CreateWindow {
     static final int SET_SUB_LAND_BUTTON = 8;
     static String backImage = "textures/ui/refresh_light";
 
-    private static Language language = LandModule.getModule().getLanguage();
+    private static final Language language = LandModule.getModule().getLanguage();
 
     public static LinkedHashMap<Player,Integer> PAGES = new LinkedHashMap<>();
 
@@ -134,11 +134,11 @@ public class CreateWindow {
     /**TODO 领地查找*/
     public static void sendScreenMenu(Player player){
         FormWindowCustom custom = new FormWindowCustom(LandModule.getModule().getConfig().getTitle()+"--search");
-        custom.addElement(new ElementLabel("Different options will affect search results"));
-        custom.addElement(new ElementDropdown("The index set", ScreenSetting.strings,0));
-        custom.addElement(new ElementToggle("Automatic sorting",false));
-        custom.addElement(new ElementToggle("Whether to sell in the territory",true));
-        custom.addElement(new ElementInput("The input index","Please set input according to the index"));
+        custom.addElement(new ElementLabel(language.translateString("screenMenu_content")));
+        custom.addElement(new ElementDropdown(language.translateString("screenMenu_indexSet"), ScreenSetting.strings,0));
+        custom.addElement(new ElementToggle(language.translateString("screenMenu_automaticSorting"),false));
+        custom.addElement(new ElementToggle(language.translateString("screenMenu_showingTerritoriesForSale"),true));
+        custom.addElement(new ElementInput(language.translateString("screenMenu_inputIndex_text"),language.translateString("screenMenu_inputIndex_placeholder")));
         player.showFormWindow(custom,SCREEN_MENU);
 
     }
