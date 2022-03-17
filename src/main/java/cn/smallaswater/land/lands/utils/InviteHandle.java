@@ -60,7 +60,7 @@ public class InviteHandle {
             if(this.data instanceof LandSubData){
                 if(((LandSubData) this.data).getMasterData() == null){
                     if (m != null) {
-                        m.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().dataNotExists.replace("%name%",this.data.getLandName()));
+                        m.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("dataNotExists").replace("%name%",this.data.getLandName()));
                     }
                     this.close();
                     return;
@@ -68,7 +68,7 @@ public class InviteHandle {
             }else{
                 if(!LandModule.getModule().getList().contains(this.data)){
                     if (m != null) {
-                        m.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().dataNotExists.replace("%name%",this.data.getLandName()));
+                        m.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("dataNotExists").replace("%name%",this.data.getLandName()));
                     }
                     this.close();
                     return;

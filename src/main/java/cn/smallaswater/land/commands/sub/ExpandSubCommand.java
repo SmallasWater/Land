@@ -34,11 +34,11 @@ public class ExpandSubCommand extends BaseSubCommand {
                 try{
                     i = Integer.parseInt(strings[1]);
                 }catch (Exception ignore){
-                    commandSender.sendMessage(title+language.integerError);
+                    commandSender.sendMessage(title+language.translateString("integerError"));
                     return false;
                 }
                 if(i <= 0){
-                    commandSender.sendMessage(title+language.integerError);
+                    commandSender.sendMessage(title+language.translateString("integerError"));
                     return true;
                 }
                 LandData data = DataTool.getPlayerLandData(((Player) commandSender).getPosition());

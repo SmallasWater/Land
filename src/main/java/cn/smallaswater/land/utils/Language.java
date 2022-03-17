@@ -14,10 +14,6 @@ import java.util.Objects;
  */
 public class Language {
 
-    public String quitLandButton = "离开领地";
-    public String sellLandButton = "出售领地 ( - %c% ％)";
-    public String giveLandButton = "转让领地";
-    public String setLandButton = "领地设置";
     public String setTextButton = "领地进入 / 退出提示";
     public String choseCanSell = "你确定要出售这个领地吗 当前出售价格 %money% ( - %c% ％)";
     public String choseQuitLand = "你确定要退出这个领地吗?";
@@ -44,22 +40,6 @@ public class Language {
     public String choseTrue = "确定";
     public String choseFalse = "取消";
     public String saveSetting = "%p% 权限设置已保存..";
-    public String saveTransfer = "%name% 传送点已保存 ";
-    public String saveText = "%name% 已保存";
-    public String saveTransferError = "请在 %name% 领地内设置传送点";
-    public String invitePlayerMaster = "成功向 %p% 发送了加入 %name% 领地邀请 (有效时间 %time% 秒)";
-    public String invitePlayerTarget = "%p% 向你发送了 %name% 领地邀请\n/领地 accept <%p%> 同意领地邀请\n/领地 deny <%p%> 拒绝邀请";
-    public String invitePlayerExists = "你已经邀请了 %p% 啦...";
-    public String invitePlayerInArray = "%p% 已经是 %name% 的成员啦.";
-    public String dataNotExists = "%name% 领地不存在啦...";
-    public String playerOffOnline = "%p% 不在线~~";
-    public String givePlayerLandTarget = "%p% 成为了 %name% 的新领主~";
-    public String givePlayerLandMaster = "你失去了 %name% 领地的领主身份，转让给了 %p%~";
-    public String whiteWorld = "%level% 世界禁止圈地";
-    public String inputTextJoin = "请设置玩家进入领地的提示 %n% 代表领地名称 %master% 是领主 %member%是领地成员";
-    public String inputTextQuit = "请设置玩家离开领地的提示 %n% 代表领地名称 %master% 是领主 %member%是领地成员";
-    public String integerError = "请输入正确的数值";
-
 
     private final Config locale;
 
@@ -78,21 +58,6 @@ public class Language {
 
     @Deprecated
     private void loadLocale(){
-        this.integerError = TextFormat.colorize('&', this.locale.getString("integerError", integerError));
-        this.inputTextQuit = TextFormat.colorize('&', this.locale.getString("inputTextQuit", inputTextQuit));
-        this.inputTextJoin = TextFormat.colorize('&', this.locale.getString("inputTextJoin", inputTextJoin));
-        this.whiteWorld = TextFormat.colorize('&', this.locale.getString("whiteWorld", whiteWorld));
-        this.givePlayerLandMaster = TextFormat.colorize('&', this.locale.getString("givePlayerLandMaster", givePlayerLandMaster));
-        this.givePlayerLandTarget = TextFormat.colorize('&', this.locale.getString("givePlayerLandTarget", givePlayerLandTarget));
-        this.playerOffOnline = TextFormat.colorize('&', this.locale.getString("playerOffOnline", playerOffOnline));
-        this.dataNotExists = TextFormat.colorize('&', this.locale.getString("dataNotExists", dataNotExists));
-        this.invitePlayerInArray = TextFormat.colorize('&', this.locale.getString("invitePlayerInArray", invitePlayerInArray));
-        this.invitePlayerExists = TextFormat.colorize('&', this.locale.getString("invitePlayerExists", invitePlayerExists));
-        this.invitePlayerTarget = TextFormat.colorize('&', this.locale.getString("invitePlayerTarget", invitePlayerTarget));
-        this.invitePlayerMaster = TextFormat.colorize('&', this.locale.getString("invitePlayerMaster", invitePlayerMaster));
-        this.saveTransferError = TextFormat.colorize('&', this.locale.getString("saveTransferError", saveTransferError));
-        this.saveText = TextFormat.colorize('&', this.locale.getString("saveText", saveText));
-        this.saveTransfer = TextFormat.colorize('&', this.locale.getString("saveTransfer", saveTransfer));
         this.saveSetting = TextFormat.colorize('&', this.locale.getString("saveSetting", saveSetting));
         this.choseFalse = TextFormat.colorize('&', this.locale.getString("choseFalse", choseFalse));
         this.choseTrue = TextFormat.colorize('&', this.locale.getString("choseTrue", choseTrue));
@@ -119,10 +84,6 @@ public class Language {
         this.choseQuitLand = TextFormat.colorize('&', this.locale.getString("choseQuitLand", choseQuitLand));
         this.choseCanSell = TextFormat.colorize('&', this.locale.getString("choseCanSell", choseCanSell));
         this.setTextButton = TextFormat.colorize('&', this.locale.getString("setTextButton", setTextButton));
-        this.setLandButton = TextFormat.colorize('&', this.locale.getString("setLandButton", setLandButton));
-        this.giveLandButton = TextFormat.colorize('&', this.locale.getString("giveLandButton", giveLandButton));
-        this.sellLandButton = TextFormat.colorize('&', this.locale.getString("sellLandButton", sellLandButton));
-        this.quitLandButton = TextFormat.colorize('&', this.locale.getString("quitLandButton", quitLandButton));
     }
 
     public String translateString(String key) {

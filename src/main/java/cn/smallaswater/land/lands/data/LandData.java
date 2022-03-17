@@ -275,11 +275,11 @@ public class LandData  {
         Player player1 = Server.getInstance().getPlayer(master);
         Player player2 = Server.getInstance().getPlayer(this.master);
         if(player1 != null){
-            player1.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().givePlayerLandTarget
+            player1.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("givePlayerLandTarget")
                     .replace("%p%","You").replace("%name%",getLandName()));
         }
         if(player2 != null) {
-            player2.sendMessage(LandModule.getModule().getConfig().getTitle() + LandModule.getModule().getLanguage().givePlayerLandMaster
+            player2.sendMessage(LandModule.getModule().getConfig().getTitle() + LandModule.getModule().getLanguage().translateString("givePlayerLandMaster")
                     .replace("%p%", master).replace("%name%", getLandName()));
         }
         this.master = master;

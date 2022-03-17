@@ -107,21 +107,21 @@ public class CreateWindow {
                     .replace("%level%",data.getVector().getLevel().getFolderName()));
             if(data.getMember().containsKey(player.getName())){
                 simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("transferButton"),new ElementButtonImageData("path","textures/ui/mashup_world")));
-                simple.addButton(new ElementButton(LandModule.getModule().getLanguage().quitLandButton,new ElementButtonImageData("path","textures/ui/invite_hover")));
+                simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("quitLandButton"),new ElementButtonImageData("path","textures/ui/invite_hover")));
                 if(data instanceof LandSubData){
                     if(((LandSubData) data).getMasterData().getMaster().equalsIgnoreCase(player.getName())){
-                        simple.addButton(new ElementButton(LandModule.getModule().getLanguage().setLandButton,new ElementButtonImageData("path","textures/ui/dev_glyph_color")));
+                        simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("setLandButton"),new ElementButtonImageData("path","textures/ui/dev_glyph_color")));
                     }
                 }
             }else{
                 if(data.getMaster().equalsIgnoreCase(player.getName())){
                     simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("transferButton"),new ElementButtonImageData("path","textures/ui/mashup_world")));
-                    simple.addButton(new ElementButton(LandModule.getModule().getLanguage().setLandButton,new ElementButtonImageData("path","textures/ui/dev_glyph_color")));
+                    simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("setLandButton"),new ElementButtonImageData("path","textures/ui/dev_glyph_color")));
                 }else{
                     simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("transferButton"),new ElementButtonImageData("path","textures/ui/mashup_world")));
                     if(data instanceof LandSubData){
                         if(((LandSubData) data).getMasterData().getMaster().equalsIgnoreCase(player.getName())){
-                            simple.addButton(new ElementButton(LandModule.getModule().getLanguage().setLandButton,new ElementButtonImageData("path","textures/ui/dev_glyph_color")));
+                            simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("setLandButton"),new ElementButtonImageData("path","textures/ui/dev_glyph_color")));
                         }
                     }
                 }
@@ -364,9 +364,9 @@ public class CreateWindow {
 //        simple.addButton(new ElementButton(language.setPlayerButton,new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
         simple.addButton(new ElementButton(language.translateString("setting"),new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
 //        simple.addButton(new ElementButton(language.setOtherButton,new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
-        simple.addButton(new ElementButton(LandModule.getModule().getLanguage().sellLandButton.replace("%c%",
+        simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("sellLandButton").replace("%c%",
                 LandModule.getModule().getConfig().getSellMoney()+""),new ElementButtonImageData("path","textures/ui/MCoin")));
-        simple.addButton(new ElementButton(LandModule.getModule().getLanguage().giveLandButton,new ElementButtonImageData("path","textures/ui/Friend1")));
+        simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("giveLandButton"),new ElementButtonImageData("path","textures/ui/Friend1")));
         simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("setTransfer"),new ElementButtonImageData("path","textures/ui/Feedback")));
         simple.addButton(new ElementButton(LandModule.getModule().getLanguage().setTextButton,new ElementButtonImageData("path","textures/ui/copy")));
         simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("showParticle"),new ElementButtonImageData("path","textures/ui/water_breathing_effect")));
@@ -485,8 +485,8 @@ public class CreateWindow {
     static void onJoinQuitTextMenu(Player player){
         Language language = LandModule.getModule().getLanguage();
         FormWindowCustom custom = new FormWindowCustom(LandModule.getModule().getConfig().getTitle());
-        custom.addElement(new ElementInput(language.inputTextJoin,language.translateString("playerJoinMessage"),language.translateString("playerJoinMessage")));
-        custom.addElement(new ElementInput(language.inputTextQuit,language.translateString("playerQuitMessage"),language.translateString("playerQuitMessage")));
+        custom.addElement(new ElementInput(language.translateString("inputTextJoin"),language.translateString("playerJoinMessage"),language.translateString("playerJoinMessage")));
+        custom.addElement(new ElementInput(language.translateString("inputTextQuit"),language.translateString("playerQuitMessage"),language.translateString("playerQuitMessage")));
         player.showFormWindow(custom,JOIN_QUIT_TEXT);
     }
 }

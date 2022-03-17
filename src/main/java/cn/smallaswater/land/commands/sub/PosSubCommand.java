@@ -35,7 +35,7 @@ public class PosSubCommand extends BaseSubCommand {
                 if ("1".equalsIgnoreCase(strings[1])) {
                     if(LandModule.getModule().getConfig().getBlackList().contains(((Player) sender).getLevel().getFolderName()) && !sender.isOp()){
                         if(LandMainClass.MAIN_CLASS.getModule().getConfig().isEchoBlackListMessage()){
-                            sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.whiteWorld.replace("%level%",((Player) sender).level.getFolderName()));
+                            sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("whiteWorld").replace("%level%",((Player) sender).level.getFolderName()));
                             return true;
                         }
                         return true;

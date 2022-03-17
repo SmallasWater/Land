@@ -388,7 +388,7 @@ public class LandListener implements Listener {
                 if(!LandModule.getModule().pos.containsKey(player.getName()) || LandModule.getModule().pos.get(player.getName()).size() > 1){
                     if(LandModule.getModule().getConfig().getBlackList().contains(block.getLevel().getFolderName()) && !player.isOp()){
                         if(LandMainClass.MAIN_CLASS.getModule().getConfig().isEchoBlackListMessage()){
-                            player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.whiteWorld.replace("%level%",block.level.getFolderName()));
+                            player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("whiteWorld").replace("%level%",block.level.getFolderName()));
                             return;
                         }
                         return;
