@@ -85,22 +85,22 @@ public class LandModule {
         landList = null;
         getList();
 
-        getModuleInfo().saveResource("language/chs.yml");
-        getModuleInfo().saveResource("language/eng.yml");
+        getModuleInfo().saveResource("language/chs.properties");
+        getModuleInfo().saveResource("language/eng.properties");
         if ("auto".equalsIgnoreCase(this.config.getLanguage())) {
             this.config.setLanguage(Server.getInstance().getConfig("settings.language", "eng"));
         }
-        File languageFile = new File(getModuleInfo().getDataFolder() + "/language/" + this.config.getLanguage() + ".yml");
+        File languageFile = new File(getModuleInfo().getDataFolder() + "/language/" + this.config.getLanguage() + ".properties");
         if (!languageFile.exists()) {
             this.config.setLanguage("eng");
-            languageFile = new File(getModuleInfo().getDataFolder() + "/language/eng.yml");
+            languageFile = new File(getModuleInfo().getDataFolder() + "/language/eng.properties");
         }
-        this.languageConfig = new Config(languageFile, Config.YAML);
+        this.languageConfig = new Config(languageFile, Config.PROPERTIES);
         this.language = new Language(this.languageConfig);
-        InputStream internalLanguageResource = LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".yml");
+        InputStream internalLanguageResource = LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".properties");
         if (internalLanguageResource != null) {
             try {
-                Config internalLanguageConfig = new Config(Config.YAML);
+                Config internalLanguageConfig = new Config(Config.PROPERTIES);
                 internalLanguageConfig.load(internalLanguageResource);
                 this.language.update(internalLanguageConfig);
                 internalLanguageResource.close();

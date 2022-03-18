@@ -44,7 +44,7 @@ public class Language {
     private final Config locale;
 
     public Language(@NotNull File file) {
-        this(new Config(file, Config.YAML));
+        this(new Config(file, Config.PROPERTIES));
     }
 
     public Language(@NotNull File file, int type) {
@@ -101,7 +101,7 @@ public class Language {
     }
 
     public void update(File newFile) {
-        this.update(newFile, Config.YAML);
+        this.update(newFile, Config.PROPERTIES);
     }
 
     public void update(File newFile, int type) {
