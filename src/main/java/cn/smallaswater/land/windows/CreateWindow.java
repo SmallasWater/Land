@@ -344,7 +344,7 @@ public class CreateWindow {
         LandData data =  LandModule.getModule().clickData.get(player);
         if(data != null) {
             FormWindowCustom custom = new FormWindowCustom(LandModule.getModule().getConfig().getTitle());
-            custom.addElement(new ElementLabel(language.labelText.replace("%p%",(playerName!=null?playerName:language.translateString("other")))));
+            custom.addElement(new ElementLabel(language.translateString("labelText").replace("%p%",(playerName!=null?playerName:language.translateString("other")))));
             for(LandSetting setting: LandSetting.values()){
                 custom.addElement(new ElementToggle(setting.getName(),data.hasPermission(playerName,setting)));
             }
@@ -359,8 +359,8 @@ public class CreateWindow {
         LandData data = LandModule.getModule().clickData.get(player);
 
         FormWindowSimple simple = new FormWindowSimple(LandModule.getModule().getConfig().getTitle(), "");
-        simple.addButton(new ElementButton(language.inviteButton,new ElementButtonImageData("path","textures/ui/invite_base")));
-        simple.addButton(new ElementButton(language.kickButton,new ElementButtonImageData("path","textures/ui/realms_red_x")));
+        simple.addButton(new ElementButton(language.translateString("inviteButton"),new ElementButtonImageData("path","textures/ui/invite_base")));
+        simple.addButton(new ElementButton(language.translateString("kickButton"),new ElementButtonImageData("path","textures/ui/realms_red_x")));
 //        simple.addButton(new ElementButton(language.setPlayerButton,new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
         simple.addButton(new ElementButton(language.translateString("setting"),new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
 //        simple.addButton(new ElementButton(language.setOtherButton,new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
@@ -368,7 +368,7 @@ public class CreateWindow {
                 LandModule.getModule().getConfig().getSellMoney()+""),new ElementButtonImageData("path","textures/ui/MCoin")));
         simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("giveLandButton"),new ElementButtonImageData("path","textures/ui/Friend1")));
         simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("setTransfer"),new ElementButtonImageData("path","textures/ui/Feedback")));
-        simple.addButton(new ElementButton(LandModule.getModule().getLanguage().setTextButton,new ElementButtonImageData("path","textures/ui/copy")));
+        simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("setTextButton"),new ElementButtonImageData("path","textures/ui/copy")));
         simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("showParticle"),new ElementButtonImageData("path","textures/ui/water_breathing_effect")));
         if(!(data instanceof LandSubData)){
             simple.addButton(new ElementButton(LandModule.getModule().getLanguage().translateString("subLandSetting"),new ElementButtonImageData("path","textures/ui/dev_glyph_color")));
@@ -398,9 +398,9 @@ public class CreateWindow {
 
     public static void sendLandAllSettingMenu(Player player){
         FormWindowSimple simple = new FormWindowSimple(LandModule.getModule().getConfig().getTitle(), "");
-        simple.addButton(new ElementButton(language.setPlayerButton,new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
+        simple.addButton(new ElementButton(language.translateString("setPlayerButton"),new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
         simple.addButton(new ElementButton(language.translateString("landSetting"),new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
-        simple.addButton(new ElementButton(language.setOtherButton,new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
+        simple.addButton(new ElementButton(language.translateString("setOtherButton"),new ElementButtonImageData("path","textures/ui/recipe_book_icon")));
         simple.addButton(getBackButton());
         player.showFormWindow(simple,LAND_ALL_SETTING);
     }
@@ -425,8 +425,8 @@ public class CreateWindow {
      * */
     static void sendKickMenu(Player player, String name){
         Language language = LandModule.getModule().getLanguage();
-        FormWindowModal modal = new FormWindowModal(LandModule.getModule().getConfig().getTitle(),"",language.choseTrue,language.choseFalse);
-        modal.setContent(language.kickText.replace("%p%",name));
+        FormWindowModal modal = new FormWindowModal(LandModule.getModule().getConfig().getTitle(),"",language.translateString("choseTrue"),language.translateString("choseFalse"));
+        modal.setContent(language.translateString("kickText").replace("%p%",name));
         player.showFormWindow(modal,KICK_MENU);
     }
     /**
@@ -449,8 +449,8 @@ public class CreateWindow {
         Language language = LandModule.getModule().getLanguage();
         LandData data = LandModule.getModule().clickData.get(player);
         if(data != null) {
-            FormWindowModal modal = new FormWindowModal(LandModule.getModule().getConfig().getTitle(), "", language.choseTrue, language.choseFalse);
-            modal.setContent(language.giveText.replace("%p%", name).replace("%n%", data.getLandName()));
+            FormWindowModal modal = new FormWindowModal(LandModule.getModule().getConfig().getTitle(), "", language.translateString("choseTrue"), language.translateString("choseFalse"));
+            modal.setContent(language.translateString("giveText").replace("%p%", name).replace("%n%", data.getLandName()));
             player.showFormWindow(modal, GIVE_MENU);
         }
     }
@@ -460,7 +460,7 @@ public class CreateWindow {
      * */
     static void sendQuitOrSellMenu(Player player){
         Language language = LandModule.getModule().getLanguage();
-        FormWindowModal modal = new FormWindowModal(LandModule.getModule().getConfig().getTitle(),"",language.choseTrue,language.choseFalse);
+        FormWindowModal modal = new FormWindowModal(LandModule.getModule().getConfig().getTitle(),"",language.translateString("choseTrue"),language.translateString("choseFalse"));
         LandData data =  LandModule.getModule().clickData.get(player);
         if(data != null) {
             boolean isMaster = data.getMaster().equalsIgnoreCase(player.getName());
@@ -469,12 +469,12 @@ public class CreateWindow {
             }
             if(isMaster){
                 double m = DataTool.getGettingMoney(data);
-                modal.setContent(language.choseCanSell
+                modal.setContent(language.translateString("choseCanSell")
                         .replace("%money%",String.format("%.2f",m))
                         .replace("%c%",LandModule.getModule().getConfig().getSellMoney()+"")
                         .replace("%name%",data.getLandName()));
             }else{
-                modal.setContent(language.choseQuitLand.replace("%name%",data.getLandName()));
+                modal.setContent(language.translateString("choseQuitLand").replace("%name%",data.getLandName()));
             }
             player.showFormWindow(modal,CHOSE);
         }

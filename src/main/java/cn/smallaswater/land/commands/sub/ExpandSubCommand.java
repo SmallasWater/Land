@@ -51,7 +51,7 @@ public class ExpandSubCommand extends BaseSubCommand {
                         LandData in = DataTool.inLandAll(vector);
                         if(in != null && in.getLandName().equalsIgnoreCase(((LandSubData) data).getMasterData().getLandName())){
                             if(!data.getMaster().equalsIgnoreCase(((LandSubData) data).getMasterData().getMaster())){
-                                commandSender.sendMessage(title + language.notHavePermission);
+                                commandSender.sendMessage(title + language.translateString("notHavePermission"));
                                 return true;
                             }
                         }else{

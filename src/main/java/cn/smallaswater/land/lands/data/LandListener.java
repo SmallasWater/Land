@@ -169,7 +169,7 @@ public class LandListener implements Listener {
         }
         if(data instanceof LandSubData){
             if(((LandSubData) data).isSellPlayer()){
-                player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().notHavePermission);
+                player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("notHavePermission"));
                 event.setCancelled();
             }
         }else{
@@ -219,7 +219,7 @@ public class LandListener implements Listener {
         LandData data = DataTool.getPlayerLandData(position);
         if(data != null){
             if(!data.hasPermission(player.getName(), setting)){
-                player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().notHavePermission
+                player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("notHavePermission")
                         .replace("%title%",LandModule.getModule().getConfig().getTitle())
                         .replace("%setting%",setting.getName()));
                 return true;
@@ -474,7 +474,7 @@ public class LandListener implements Listener {
             if(!((LandSubData) data).getMasterData().getMaster().equalsIgnoreCase(player.getName())){
                 if(!((LandSubData) data).getMasterData().hasPermission(player.getName(),LandSetting.SUB_ZONE)){
                     event.setCancelled();
-                    player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().notHavePermission);
+                    player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("notHavePermission"));
                 }
             }
         }

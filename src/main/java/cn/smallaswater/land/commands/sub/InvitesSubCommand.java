@@ -29,13 +29,13 @@ public class InvitesSubCommand extends BaseSubCommand {
             if(handles != null){
                 StringBuilder stringBuilder = new StringBuilder();
                 for(InviteHandle handle:handles){
-                    stringBuilder.append(language.listValue
+                    stringBuilder.append(language.translateString("listValue")
                             .replace("%p%",handle.getMaster()).replace("%name%",handle.getData().getLandName())).append("\n");
                 }
-                commandSender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.inviteList.replace("%list%", stringBuilder.toString()));
+                commandSender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("inviteList").replace("%list%", stringBuilder.toString()));
                 return true;
             }else{
-                commandSender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.notHaveInvite);
+                commandSender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("notHaveInvite"));
                 return true;
             }
         }
