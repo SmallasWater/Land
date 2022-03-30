@@ -32,6 +32,8 @@ import cn.smallaswater.land.windows.WindowListener;
 import cn.smallaswater.land.commands.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -47,6 +49,7 @@ public class LandModule {
     private LandList landList;
 
     private Config languageConfig;
+    private Language language;
 
     public ArrayList<KeyHandle> keyHanle = new ArrayList<>();
 
@@ -82,17 +85,29 @@ public class LandModule {
         landList = null;
         getList();
 
-        getModuleInfo().saveResource("language/chs.yml");
-        getModuleInfo().saveResource("language/eng.yml");
+        getModuleInfo().saveResource("language/chs.properties");
+        getModuleInfo().saveResource("language/eng.properties");
         if ("auto".equalsIgnoreCase(this.config.getLanguage())) {
             this.config.setLanguage(Server.getInstance().getConfig("settings.language", "eng"));
         }
-        File languageFile = new File(getModuleInfo().getDataFolder() + "/language/" + this.config.getLanguage() + ".yml");
+        File languageFile = new File(getModuleInfo().getDataFolder() + "/language/" + this.config.getLanguage() + ".properties");
         if (!languageFile.exists()) {
             this.config.setLanguage("eng");
-            languageFile = new File(getModuleInfo().getDataFolder() + "/language/eng.yml");
+            languageFile = new File(getModuleInfo().getDataFolder() + "/language/eng.properties");
         }
-        this.languageConfig = new Config(languageFile, Config.YAML);
+        this.languageConfig = new Config(languageFile, Config.PROPERTIES);
+        this.language = new Language(this.languageConfig);
+        InputStream internalLanguageResource = LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".properties");
+        if (internalLanguageResource != null) {
+            try {
+                Config internalLanguageConfig = new Config(Config.PROPERTIES);
+                internalLanguageConfig.load(internalLanguageResource);
+                this.language.update(internalLanguageConfig);
+                internalLanguageResource.close();
+            }catch (IOException e) {
+                LandMainClass.MAIN_CLASS.getLogger().info("Language update failed " + this.config.getLanguage());
+            }
+        }
         LandMainClass.MAIN_CLASS.getLogger().info("Language is set to: " + this.config.getLanguage());
     }
 
@@ -168,7 +183,6 @@ public class LandModule {
 
 
     private void registerListener(){
-
         if("PowerNukkit".equalsIgnoreCase(Nukkit.CODENAME)){
             LandMainClass.MAIN_CLASS.getLogger().info("enable PowerNukkit listener");
             LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new LandListenerPn(),LandMainClass.MAIN_CLASS);
@@ -187,15 +201,15 @@ public class LandModule {
             LinkedList<InviteHandle> handles = inviteLands.get(target.getName());
             InviteHandle handle = new InviteHandle(master.getName(), target.getName(), data, 60);
             if (!handles.contains(handle)) {
-                target.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().invitePlayerTarget.replace("%p%", master.getName()).replace("%name%", data.getLandName()));
-                master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().invitePlayerMaster
+                target.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerTarget").replace("%p%", master.getName()).replace("%name%", data.getLandName()));
+                master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerMaster")
                         .replace("%p%", target.getName()).replace("%name%", data.getLandName()).replace("%time%", "60"));
                 handles.add(handle);
             } else {
-                master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().invitePlayerExists.replace("%p%", target.getName()));
+                master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerExists").replace("%p%", target.getName()));
             }
         }else{
-            master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().invitePlayerInArray.replace("%p%",target.getName()).replace("%name%",data.getLandName()));
+            master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerInArray").replace("%p%",target.getName()).replace("%name%",data.getLandName()));
         }
     }
 
@@ -374,9 +388,11 @@ public class LandModule {
         return names.toArray(new String[0]);
     }
 
-    public Language getLanguage(){
-        return new Language(languageConfig);
+    public Language getLanguage() {
+        if (this.language == null) {
+            this.language = new Language(this.languageConfig);
+        }
+        return this.language;
     }
-
 
 }

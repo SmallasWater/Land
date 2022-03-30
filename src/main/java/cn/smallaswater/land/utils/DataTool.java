@@ -263,7 +263,7 @@ public class DataTool {
     }
 
     public static String getPosToString(Position position){
-        return LandModule.getModule().getLanguage().position
+        return LandModule.getModule().getLanguage().translateString("position")
                 .replace("%x%",position.getFloorX()+"")
                 .replace("%y%",position.getFloorY()+"")
                 .replace("%z%",position.getFloorZ()+"")
