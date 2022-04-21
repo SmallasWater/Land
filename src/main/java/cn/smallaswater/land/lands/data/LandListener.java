@@ -27,8 +27,10 @@ import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.Vector;
 
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -496,19 +498,28 @@ public class LandListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onExplosionPrime(ExplosionPrimeEvent event) {
-        event.setCancelled(canTnt(event.getEntity()));
-    }
-
-    private boolean canTnt(Position pos){
+    private boolean canNotTnt(Position pos){
         return DataTool.getPlayerTouchArea(pos) != null;
     }
 
+    @EventHandler
+    public void onExplosionPrime(ExplosionPrimeEvent event) {
+        event.setCancelled(canNotTnt(event.getEntity()));
+    }
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
-        event.setCancelled(canTnt(event.getEntity()));
+        if (canNotTnt(event.getEntity())) {
+            event.setCancelled(true);
+        }else {
+            List<Block> blockList = new ArrayList<>(event.getBlockList());
+            for (Block block : event.getBlockList()) {
+                if (canNotTnt(block)) {
+                    blockList.remove(block);
+                }
+            }
+            event.setBlockList(blockList);
+        }
     }
 
 
