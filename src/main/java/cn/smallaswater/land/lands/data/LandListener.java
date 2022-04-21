@@ -499,7 +499,8 @@ public class LandListener implements Listener {
     }
 
     private boolean canNotTnt(Position pos){
-        return DataTool.getPlayerTouchArea(pos) != null;
+        LandData landData = DataTool.getPlayerTouchArea(pos);
+        return landData != null && !landData.getDefaultSetting().getSetting(LandSetting.BREAK.getName());
     }
 
     @EventHandler
