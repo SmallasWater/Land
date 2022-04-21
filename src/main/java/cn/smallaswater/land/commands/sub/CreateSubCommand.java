@@ -47,18 +47,18 @@ public class CreateSubCommand extends BaseSubCommand {
                         if (isInLand((Player) sender)) {
                             String landName = getLandName(positions);
                             if (landName != null) {
-                                sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.playerBuyLandErrorLandInArray.replace("%name%", landName));
+                                sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerBuyLandErrorLandInArray").replace("%name%", landName));
                                 getPos().remove(sender.getName());
                             } else {
                                 if (canExistsLand(name)) {
-                                    sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.playerBuyLandErrorLandExists.replace("%name%", name));
+                                    sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerBuyLandErrorLandExists").replace("%name%", name));
                                     return true;
                                 } else {
                                     double money = getMoney(new Vector(positions.get(0), positions.get(1)));
                                     if (LandModule.getModule().getMoney().myMoney(sender.getName()) >= money) {
                                         if (DataTool.getLands(sender.getName()).size() >= getMaxLand()) {
                                             getPos().remove(sender.getName());
-                                            sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.playerLandMax.replace("%count%", getMaxLand() + ""));
+                                            sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerLandMax").replace("%count%", getMaxLand() + ""));
                                             return true;
                                         } else {
                                             Vector vector = new Vector(positions.get(0), positions.get(1));
@@ -66,13 +66,13 @@ public class CreateSubCommand extends BaseSubCommand {
                                                 return true;
                                             }
                                             LandModule.getModule().getMoney().reduceMoney(sender.getName(), money);
-                                            sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.playerBuyLandSuccess.replace("%name%", name).replace("%money%", money + ""));
+                                            sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerBuyLandSuccess").replace("%name%", name).replace("%money%", money + ""));
                                             getPos().remove(sender.getName());
 
                                             return true;
                                         }
                                     } else {
-                                        sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.playerBuyLandError.replace("%money%", money + ""));
+                                        sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerBuyLandError").replace("%money%", money + ""));
                                         getPos().remove(sender.getName());
                                         return true;
                                     }
@@ -82,10 +82,10 @@ public class CreateSubCommand extends BaseSubCommand {
                             getPos().remove(sender.getName());
                         }
                     }else{
-                        sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.createNotHavePos2);
+                        sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("createNotHavePos2"));
                     }
                 }else{
-                    sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.createNotHavePos);
+                    sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("createNotHavePos"));
                 }
 
             }
@@ -125,9 +125,17 @@ public class CreateSubCommand extends BaseSubCommand {
         return LandModule.getModule().getConfig().getMaxLand();
     }
     protected boolean createLandData(String name,Player sender,Vector vector,Language language){
-        LandData data = new LandData(LandModule.getModule().getList().size(),name, sender.getName(), vector
-                , new MemberSetting(new LinkedHashMap<>()),
-                PlayerSetting.getDefaultSetting(), language.playerJoinMessage, language.playerQuitMessage, DataTool.getDefaultPosition(vector));
+        LandData data = new LandData(
+                LandModule.getModule().getList().size(),
+                name,
+                sender.getName(),
+                vector,
+                new MemberSetting(new LinkedHashMap<>()),
+                PlayerSetting.getDefaultSetting(),
+                language.translateString("playerJoinMessage"),
+                language.translateString("playerQuitMessage"),
+                DataTool.getDefaultPosition(vector)
+        );
         PlayerCreateLandEvent event = new PlayerCreateLandEvent(sender, data);
         Server.getInstance().getPluginManager().callEvent(event);
         if(event.isCancelled()){

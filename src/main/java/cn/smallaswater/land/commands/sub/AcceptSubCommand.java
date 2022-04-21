@@ -34,11 +34,11 @@ public class AcceptSubCommand extends BaseSubCommand {
                         handle.accept();
                         return true;
                     }else{
-                        commandSender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.notHaveTargetInvite.replace("%p%",target));
+                        commandSender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("notHaveTargetInvite").replace("%p%",target));
                         return true;
                     }
                 }else{
-                    commandSender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.notHaveInvite);
+                    commandSender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("notHaveInvite"));
                     return true;
                 }
             }

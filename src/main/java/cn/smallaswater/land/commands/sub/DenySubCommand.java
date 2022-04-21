@@ -33,10 +33,10 @@ public class DenySubCommand extends BaseSubCommand {
                     if (handle != null) {
                         handle.deny();
                     } else {
-                        commandSender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.notHaveTargetInvite.replace("%p%", target));
+                        commandSender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("notHaveTargetInvite").replace("%p%", target));
                     }
                 } else {
-                    commandSender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.notHaveInvite);
+                    commandSender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("notHaveInvite"));
                 }
             }
 

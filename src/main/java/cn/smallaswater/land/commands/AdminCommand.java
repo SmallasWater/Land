@@ -49,7 +49,7 @@ public class AdminCommand extends BaseCommand {
                         commandSender.sendMessage(LandModule.getModule().getConfig().getTitle()+"§e删除成功!!");
                         return true;
                     }else{
-                        commandSender.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().placeInLandData);
+                        commandSender.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("placeInLandData"));
                     }
                 }
                 return false;

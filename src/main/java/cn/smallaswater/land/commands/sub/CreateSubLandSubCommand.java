@@ -61,10 +61,10 @@ public class CreateSubLandSubCommand extends CreateSubCommand {
                 return true;
             }
         }else if(data == null){
-            player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().inLandData);
+            player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("inLandData"));
             return false;
         }
-        player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().subInMaster.replace("%name%",data.getLandName()));
+        player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("subInMaster").replace("%name%",data.getLandName()));
         return false;
     }
 

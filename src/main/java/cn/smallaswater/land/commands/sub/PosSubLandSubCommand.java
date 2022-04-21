@@ -28,7 +28,7 @@ public class PosSubLandSubCommand extends PosSubCommand{
 
     @Override
     protected String getPos2String() {
-        return LandModule.getModule().getLanguage().playerSetSubPos2;
+        return LandModule.getModule().getLanguage().translateString("playerSetSubPos2");
     }
 
     @Override

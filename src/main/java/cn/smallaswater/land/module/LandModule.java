@@ -32,6 +32,8 @@ import cn.smallaswater.land.windows.WindowListener;
 import cn.smallaswater.land.commands.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -47,6 +49,7 @@ public class LandModule {
     private LandList landList;
 
     private Config languageConfig;
+    private Language language;
 
     public ArrayList<KeyHandle> keyHanle = new ArrayList<>();
 
@@ -81,10 +84,31 @@ public class LandModule {
         config = getConfig();
         landList = null;
         getList();
-        if(!new File(getModuleInfo().getDataFolder()+"/language.yml").exists()){
-            getModuleInfo().saveResource("language.yml");
+
+        getModuleInfo().saveResource("language/chs.properties");
+        getModuleInfo().saveResource("language/eng.properties");
+        if ("auto".equalsIgnoreCase(this.config.getLanguage())) {
+            this.config.setLanguage(Server.getInstance().getConfig("settings.language", "eng"));
         }
-        languageConfig = new Config(getModuleInfo().getDataFolder()+"/language.yml",2);
+        File languageFile = new File(getModuleInfo().getDataFolder() + "/language/" + this.config.getLanguage() + ".properties");
+        if (!languageFile.exists()) {
+            this.config.setLanguage("eng");
+            languageFile = new File(getModuleInfo().getDataFolder() + "/language/eng.properties");
+        }
+        this.languageConfig = new Config(languageFile, Config.PROPERTIES);
+        this.language = new Language(this.languageConfig);
+        InputStream internalLanguageResource = LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".properties");
+        if (internalLanguageResource != null) {
+            try {
+                Config internalLanguageConfig = new Config(Config.PROPERTIES);
+                internalLanguageConfig.load(internalLanguageResource);
+                this.language.update(internalLanguageConfig);
+                internalLanguageResource.close();
+            }catch (IOException e) {
+                LandMainClass.MAIN_CLASS.getLogger().info("Language update failed " + this.config.getLanguage());
+            }
+        }
+        LandMainClass.MAIN_CLASS.getLogger().info("Language is set to: " + this.config.getLanguage());
     }
 
     public void saveList(){
@@ -100,20 +124,24 @@ public class LandModule {
         money = new LoadMoney();
         if(config.getLoadEconomy() != -1){
             money.setMoney(config.getLoadEconomy());
+
             if(config.getLoadEconomy() == LoadMoney.ECONOMY_API){
-                LandMainClass.MAIN_CLASS.getLogger().info("Land经济核心已启用:"+ TextFormat.GREEN+" EconomyAPI");
+                LandMainClass.MAIN_CLASS.getLogger().info("Land Economy enable:"+ TextFormat.GREEN+" EconomyAPI");
             }
             if(config.getLoadEconomy() == LoadMoney.MONEY){
-                LandMainClass.MAIN_CLASS.getLogger().info("Land经济核心已启用:"+ TextFormat.GREEN+" Money");
+                LandMainClass.MAIN_CLASS.getLogger().info("Land Economy enable:"+ TextFormat.GREEN+" Money");
             }
             if(config.getLoadEconomy() == LoadMoney.PLAYER_POINT){
-                LandMainClass.MAIN_CLASS.getLogger().info("Land经济核心已启用:"+ TextFormat.GREEN+" PlayerPoint");
+                LandMainClass.MAIN_CLASS.getLogger().info("Land Economy enable:"+ TextFormat.GREEN+" PlayerPoint");
+            }
+            if(config.getLoadEconomy() == LoadMoney.LLAMA_ECONOMY){
+                LandMainClass.MAIN_CLASS.getLogger().info("Land Economy enable:"+ TextFormat.GREEN+" LlamaEconomy");
             }
         }else{
-            LandMainClass.MAIN_CLASS.getLogger().info("Land经济核心已启用:"+ TextFormat.GREEN+" 自动");
+            LandMainClass.MAIN_CLASS.getLogger().info("Land Economy enable:"+ TextFormat.GREEN+" auto");
         }
         if(money.getMoney() == -2){
-            LandMainClass.MAIN_CLASS.getLogger().info("未检测到经济核心");
+            LandMainClass.MAIN_CLASS.getLogger().info("not to check economy");
             LandMainClass.MAIN_CLASS.getPluginLoader().disablePlugin(LandMainClass.MAIN_CLASS);
             return;
         }
@@ -149,8 +177,8 @@ public class LandModule {
     }
 
     private void registerCommand(){
-        getModuleInfo().getServer().getCommandMap().register("landCommand",new LandCommand("领地","领地主命令"));
-        getModuleInfo().getServer().getCommandMap().register("landAdminCommand",new AdminCommand("领地管理","领地管理主命令"));
+        getModuleInfo().getServer().getCommandMap().register("landCommand",new LandCommand("land","land main command"));
+        getModuleInfo().getServer().getCommandMap().register("landAdminCommand",new AdminCommand("landadmin","land admin main command"));
     }
 
 
@@ -169,15 +197,15 @@ public class LandModule {
             LinkedList<InviteHandle> handles = inviteLands.get(target.getName());
             InviteHandle handle = new InviteHandle(master.getName(), target.getName(), data, 60);
             if (!handles.contains(handle)) {
-                target.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().invitePlayerTarget.replace("%p%", master.getName()).replace("%name%", data.getLandName()));
-                master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().invitePlayerMaster
+                target.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerTarget").replace("%p%", master.getName()).replace("%name%", data.getLandName()));
+                master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerMaster")
                         .replace("%p%", target.getName()).replace("%name%", data.getLandName()).replace("%time%", "60"));
                 handles.add(handle);
             } else {
-                master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().invitePlayerExists.replace("%p%", target.getName()));
+                master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerExists").replace("%p%", target.getName()));
             }
         }else{
-            master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().invitePlayerInArray.replace("%p%",target.getName()).replace("%name%",data.getLandName()));
+            master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerInArray").replace("%p%",target.getName()).replace("%name%",data.getLandName()));
         }
     }
 
@@ -215,25 +243,25 @@ public class LandModule {
                                 }
                                 data.add(data1);
                             } else {
-                                getModuleInfo().getLogger().warning("" + name + "领地 加载失败， 原因: 配置文件异常");
+                                getModuleInfo().getLogger().warning("" + name + "land load error， because: yaml error");
 
                             }
                         } else {
-                            getModuleInfo().getLogger().info("检测到空白文件" + name + " 避免影响使用，正在删除");
+                            getModuleInfo().getLogger().info("check null file" + name + " deleting");
                             File file = new File(getModuleInfo().getDataFolder() + "/lands/" + name + ".yml");
                             if (!file.delete()) {
-                                getModuleInfo().getLogger().warning("空白文件" + name + " 删除失败");
+                                getModuleInfo().getLogger().warning("null file" + name + " delete  error");
                             } else {
-                                getModuleInfo().getLogger().info("空白文件" + name + " 删除成功");
+                                getModuleInfo().getLogger().info("null file" + name + " delete success");
                             }
                         }
                     }catch (Exception e){
-                        getModuleInfo().getLogger().info("检测到异常文件" + name.trim() + " 避免影响使用，正在删除");
+                        getModuleInfo().getLogger().info("check error file" + name.trim() + " deleting");
                         File file = new File(getModuleInfo().getDataFolder() + "/lands/" + name + ".yml");
                         if (!file.delete()) {
-                            getModuleInfo().getLogger().warning("异常文件" + name + " 删除失败");
+                            getModuleInfo().getLogger().warning("error file" + name + "  delete  error");
                         } else {
-                            getModuleInfo().getLogger().info("异常文件" + name + " 删除成功");
+                            getModuleInfo().getLogger().info("error file" + name + " delete success");
                         }
                         landId++;
                     }
@@ -284,7 +312,7 @@ public class LandModule {
                 set = LandOtherSet.getLandOtherSetByMap((Map) m.get("otherLandSetting"));
             }
             data.setLandOtherSet(set);
-            data.setSellMessage(m.containsKey("sellMessage") ? m.get("sellMessage").toString():"领地出售中~~");
+            data.setSellMessage(m.containsKey("sellMessage") ? m.get("sellMessage").toString():"land selling~~");
             data.setSell(m.containsKey("isSell") && (boolean) m.get("isSell"));
             data.setSellDay((m.containsKey("sellDay") ? (String) m.get("sellDay") : ""));
             data.setMoney(Double.parseDouble((m.containsKey("money") ? m.get("money").toString() : "-1.0")));
@@ -346,7 +374,7 @@ public class LandModule {
                             names.add(file.getName().substring(0, file.getName().lastIndexOf(".")));
                         }else{
                             if(file.delete()){
-                                getModuleInfo().getLogger().info("检测到错误文件"+file.getName()+" 已删除");
+                                getModuleInfo().getLogger().info("check error file "+file.getName()+" has been deleted");
                             }
                         }
                     }
@@ -356,9 +384,11 @@ public class LandModule {
         return names.toArray(new String[0]);
     }
 
-    public Language getLanguage(){
-        return new Language(languageConfig);
+    public Language getLanguage() {
+        if (this.language == null) {
+            this.language = new Language(this.languageConfig);
+        }
+        return this.language;
     }
-
 
 }

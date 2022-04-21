@@ -275,11 +275,11 @@ public class LandData  {
         Player player1 = Server.getInstance().getPlayer(master);
         Player player2 = Server.getInstance().getPlayer(this.master);
         if(player1 != null){
-            player1.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().givePlayerLandTarget
-                    .replace("%p%","你").replace("%name%",getLandName()));
+            player1.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("givePlayerLandTarget")
+                    .replace("%p%","You").replace("%name%",getLandName()));
         }
         if(player2 != null) {
-            player2.sendMessage(LandModule.getModule().getConfig().getTitle() + LandModule.getModule().getLanguage().givePlayerLandMaster
+            player2.sendMessage(LandModule.getModule().getConfig().getTitle() + LandModule.getModule().getLanguage().translateString("givePlayerLandMaster")
                     .replace("%p%", master).replace("%name%", getLandName()));
         }
         this.master = master;
@@ -319,11 +319,11 @@ public class LandData  {
             if(event.isCancelled()){
                 return;
             }
-            player.sendMessage(LandModule.getModule().getLanguage().playerJoinLandMessageTarget.replace("%p%",master).replace("%name%",landName));
+            player.sendMessage(LandModule.getModule().getLanguage().translateString("playerJoinLandMessageTarget").replace("%p%",master).replace("%name%",landName));
         }
         player = Server.getInstance().getPlayer(master);
         if(player != null){
-            player.sendMessage(LandModule.getModule().getLanguage().playerJoinLandMessageMaster.replace("%p%",member).replace("%name%",getLandName()));
+            player.sendMessage(LandModule.getModule().getLanguage().translateString("playerJoinLandMessageMaster").replace("%p%",member).replace("%name%",getLandName()));
         }
         this.member.put(member,PlayerSetting.getPlayerDefaultSetting());
     }
@@ -356,11 +356,11 @@ public class LandData  {
             if(event.isCancelled()){
                 return;
             }
-            player.sendMessage(LandModule.getModule().getLanguage().playerQuitLandMessageTarget.replace("%p%",master).replace("%name%",landName));
+            player.sendMessage(LandModule.getModule().getLanguage().translateString("playerQuitLandMessageTarget").replace("%p%",master).replace("%name%",landName));
         }
         player = Server.getInstance().getPlayer(master);
         if(player != null){
-            player.sendMessage(LandModule.getModule().getLanguage().playerQuitLandMessageMaster.replace("%p%",member).replace("%name%",getLandName()));
+            player.sendMessage(LandModule.getModule().getLanguage().translateString("playerQuitLandMessageMaster").replace("%p%",member).replace("%name%",getLandName()));
         }
         this.member.remove(member);
     }
@@ -418,7 +418,7 @@ public class LandData  {
         File file = new File(LandModule.getModule().getModuleInfo().getDataFolder()+"/lands/"+landName+".yml");
         if(file.exists()){
             if(!file.delete()){
-                System.out.println("删除"+landName+".yml 文件失败");
+                System.out.println("delete "+landName+".yml file error");
             }
         }
     }

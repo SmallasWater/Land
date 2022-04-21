@@ -4,6 +4,8 @@ import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
 import cn.smallaswater.land.LandMainClass;
 import cn.smallaswater.land.utils.LoadMoney;
+import lombok.Getter;
+import lombok.Setter;
 
 
 import java.io.File;
@@ -13,6 +15,10 @@ import java.util.ArrayList;
  * @author 若水
  */
 public class  LandConfig {
+
+    @Setter
+    @Getter
+    private String language;
 
     private String title;
 
@@ -107,19 +113,24 @@ public class  LandConfig {
         if("playerpoint".equalsIgnoreCase(economy)){
             load = LoadMoney.PLAYER_POINT;
         }
-        LandConfig config1 = new LandConfig(title,landMoney,subLandMoney,sellMoney,blackList,protectList,max,subMax,time,load);
-        config1.setShowTime(config.getInt("售卖领地显示时间",7));
-        Item i = Item.fromString(config.getString("landTool","290:0"));
-        config1.setLandTool(i);
-        config1.setEnableTransferTime(config.getBoolean("transfer-time-setting.enable",true));
-        config1.setTransferCold(config.getInt("transfer-time-setting.cold",30));
-        config1.setTransferTime(config.getInt("transfer-time-setting.time",5));
-        config1.setEchoBlackListMessage(config.getBoolean("echoBlackListMessage",true));
-        config1.setEchoProtectListMessage(config.getBoolean("echoProtectListMessage",true));
-        config1.setAutoSave(config.getBoolean("auto-save-land.open",true));
-        config1.setAutoSaveTime(config.getInt("auto-save-land.time",5));
+        if("llamaeconomy".equalsIgnoreCase(economy)){
+            load = LoadMoney.LLAMA_ECONOMY;
+        }
 
-        return config1;
+        LandConfig landConfig = new LandConfig(title,landMoney,subLandMoney,sellMoney,blackList,protectList,max,subMax,time,load);
+        landConfig.setLanguage(config.getString("language", "eng"));
+        landConfig.setShowTime(config.getInt("sell-showTime",7));
+        Item i = Item.fromString(config.getString("landTool","290:0"));
+        landConfig.setLandTool(i);
+        landConfig.setEnableTransferTime(config.getBoolean("transfer-time-setting.enable",true));
+        landConfig.setTransferCold(config.getInt("transfer-time-setting.cold",30));
+        landConfig.setTransferTime(config.getInt("transfer-time-setting.time",5));
+        landConfig.setEchoBlackListMessage(config.getBoolean("echoBlackListMessage",true));
+        landConfig.setEchoProtectListMessage(config.getBoolean("echoProtectListMessage",true));
+        landConfig.setAutoSave(config.getBoolean("auto-save-land.open",true));
+        landConfig.setAutoSaveTime(config.getInt("auto-save-land.time",5));
+
+        return landConfig;
     }
 
     public boolean isEnableTransferTime() {
