@@ -88,7 +88,9 @@ public class LandModule {
         getModuleInfo().saveResource("language/chs.properties");
         getModuleInfo().saveResource("language/eng.properties");
         if ("auto".equalsIgnoreCase(this.config.getLanguage())) {
-            this.config.setLanguage(Server.getInstance().getConfig("settings.language", "eng"));
+            //TODO fix
+            //this.config.setLanguage(Server.getInstance().getConfig("settings.language", "eng"));
+            this.config.setLanguage("eng");
         }
         File languageFile = new File(getModuleInfo().getDataFolder() + "/language/" + this.config.getLanguage() + ".properties");
         if (!languageFile.exists()) {
