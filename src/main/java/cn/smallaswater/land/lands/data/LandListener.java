@@ -5,6 +5,7 @@ import cn.nukkit.Server;
 import cn.nukkit.block.*;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityHuman;
+import cn.nukkit.entity.item.EntityFishingHook;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.*;
@@ -447,7 +448,12 @@ public class LandListener implements Listener {
             Entity damager = ((EntityDamageByEntityEvent) event).getDamager();
             if(damager instanceof Player){
                 if(entity instanceof Player) {
-                    if(notHasPermission((Player) damager, damager.getLocation(), LandSetting.PVP)){
+                    if(notHasPermission((Player) damager, damager.getLocation(), LandSetting.PVP)) {
+                        if (event instanceof EntityDamageByChildEntityEvent) {
+                            if (((EntityDamageByChildEntityEvent) event).getDamager() instanceof EntityFishingHook) {
+                                ((Player) damager).stopFishing(false);
+                            }
+                        }
                         event.setCancelled();
                     }
                 }else {
