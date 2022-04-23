@@ -5,6 +5,7 @@ import cn.nukkit.Server;
 import cn.nukkit.block.*;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityHuman;
+import cn.nukkit.entity.item.EntityFishingHook;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.*;
@@ -444,16 +445,22 @@ public class LandListener implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event){
         if(event instanceof EntityDamageByEntityEvent){
-            Entity entity1 = event.getEntity();
-            Entity entity = ((EntityDamageByEntityEvent) event).getDamager();
-            if(entity instanceof Player && entity1 instanceof Player){
-                if(notHasPermission((Player) entity, entity.getLocation(), LandSetting.PVP)){
-                    event.setCancelled();
-                }
-            }
-            if(entity instanceof Player){
-                if(notHasPermission((Player) entity, entity1.getLocation(), LandSetting.DAMAGE_ENTITY)){
-                    event.setCancelled();
+            Entity entity = event.getEntity();
+            Entity damager = ((EntityDamageByEntityEvent) event).getDamager();
+            if(damager instanceof Player){
+                if(entity instanceof Player) {
+                    if(notHasPermission((Player) damager, damager.getLocation(), LandSetting.PVP)) {
+                        if (event instanceof EntityDamageByChildEntityEvent) {
+                            if (((EntityDamageByChildEntityEvent) event).getDamager() instanceof EntityFishingHook) {
+                                ((Player) damager).stopFishing(false);
+                            }
+                        }
+                        event.setCancelled();
+                    }
+                }else {
+                    if (notHasPermission((Player) damager, entity.getLocation(), LandSetting.DAMAGE_ENTITY)) {
+                        event.setCancelled();
+                    }
                 }
             }
         }

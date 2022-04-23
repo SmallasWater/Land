@@ -13,7 +13,7 @@ public enum OtherLandSetting {
     RED_STONE_OUT("阻止领地外活塞"),
     FIRE("火蔓延");
 
-    protected String name;
+    private String name;
     OtherLandSetting(String name){
         this.name = name;
     }
