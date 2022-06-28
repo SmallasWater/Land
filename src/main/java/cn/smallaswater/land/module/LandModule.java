@@ -80,34 +80,27 @@ public class LandModule {
     }
 
     public void loadAll(){
-        config = null;
-        config = getConfig();
-        landList = null;
-        getList();
+        this.config = null;
+        this.config = this.getConfig();
 
-        getModuleInfo().saveResource("language/chs.properties");
-        getModuleInfo().saveResource("language/eng.properties");
+        this.landList = null;
+        this.getList();
+
+        this.loadLanguage();
+    }
+
+    private void loadLanguage() {
+        List<String> supportLanguageList = Arrays.asList("chs", "eng");
         if ("auto".equalsIgnoreCase(this.config.getLanguage())) {
             this.config.setLanguage(Server.getInstance().getConfig("settings.language", "eng"));
         }
-        File languageFile = new File(getModuleInfo().getDataFolder() + "/language/" + this.config.getLanguage() + ".properties");
-        if (!languageFile.exists()) {
+        if (!supportLanguageList.contains(this.config.getLanguage())) {
             this.config.setLanguage("eng");
-            languageFile = new File(getModuleInfo().getDataFolder() + "/language/eng.properties");
         }
-        this.languageConfig = new Config(languageFile, Config.PROPERTIES);
+        this.languageConfig = new Config(Config.PROPERTIES);
+        this.languageConfig.load(LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".properties"));
         this.language = new Language(this.languageConfig);
-        InputStream internalLanguageResource = LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".properties");
-        if (internalLanguageResource != null) {
-            try {
-                Config internalLanguageConfig = new Config(Config.PROPERTIES);
-                internalLanguageConfig.load(internalLanguageResource);
-                this.language.update(internalLanguageConfig);
-                internalLanguageResource.close();
-            }catch (IOException e) {
-                LandMainClass.MAIN_CLASS.getLogger().info("Language update failed " + this.config.getLanguage());
-            }
-        }
+
         LandMainClass.MAIN_CLASS.getLogger().info("Language is set to: " + this.config.getLanguage());
     }
 

@@ -54,8 +54,8 @@ public class LandCommand extends BaseCommand {
         sender.sendMessage("§e/land §7all <page> (当前共有 " + CreateWindow.getPages() + " 页) 显示所有领地列表)/(The current total of "+CreateWindow.getPages()+" page) The list shows all territory");
         sender.sendMessage("§e/land §7pos <1/2> §a设置领地坐标/Set the territory coordinates");
         sender.sendMessage("§e/land §7subpos <1/2> §a设置子领地坐标/Set the child domain coordinates");
-        sender.sendMessage("§e/land §7create <name> §a创建领地 p.s每个方块: $"+ String.format("%2f",LandModule.getModule().getConfig().getLandMoney() + "/Create land p.sOne block: $"+ String.format("%2f",LandModule.getModule().getConfig().getLandMoney())));
-        sender.sendMessage("§e/land §7subcreate <name> §a创建子领地 p.s每个方块: $"+ String.format("%2f",LandModule.getModule().getConfig().getSubLandMoney() + "/Create SubLand p.sOne block: $"+ String.format("%2f",LandModule.getModule().getConfig().getSubLandMoney())));
+        sender.sendMessage("§e/land §7create <name> §a创建领地 p.s每个方块: $"+ String.format("%.2f",LandModule.getModule().getConfig().getLandMoney()) + "/Create land p.sOne block: $"+ String.format("%.2f",LandModule.getModule().getConfig().getLandMoney()));
+        sender.sendMessage("§e/land §7subcreate <name> §a创建子领地 p.s每个方块: $"+ String.format("%.2f",LandModule.getModule().getConfig().getSubLandMoney()) + "/Create SubLand p.sOne block: $"+ String.format("%.2f",LandModule.getModule().getConfig().getSubLandMoney()));
         sender.sendMessage("§e/land §7accept <player> §a同意该玩家的领地邀请/Agree to the player's territory invitation");
         sender.sendMessage("§e/land §7deny <player> §a拒绝玩家的领地邀请/Refuse to the domain of the players invited");
         sender.sendMessage("§e/land §7invites §a查看邀请列表/Check the invitation list");
