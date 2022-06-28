@@ -97,8 +97,8 @@ public class LandModule {
         if (!supportLanguageList.contains(this.config.getLanguage())) {
             this.config.setLanguage("eng");
         }
-        this.languageConfig = new Config(Config.PROPERTIES);
-        this.languageConfig.load(LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".properties"));
+        this.languageConfig = new Config(Config.YAML);
+        this.languageConfig.load(LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".yml"));
         this.language = new Language(this.languageConfig);
 
         LandMainClass.MAIN_CLASS.getLogger().info("Language is set to: " + this.config.getLanguage());
