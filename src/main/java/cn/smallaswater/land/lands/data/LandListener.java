@@ -6,6 +6,7 @@ import cn.nukkit.block.*;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.entity.item.EntityFishingHook;
+import cn.nukkit.entity.item.EntityItem;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.*;
@@ -55,20 +56,22 @@ public class LandListener implements Listener {
         }
     }
 
-
-
     @EventHandler
-    public void onCultivatedLandProtect(BlockFromToEvent event){
-        Position position = event.getBlock();
-        LandData data = DataTool.getPlayerLandData(position);
-        if(data != null){
-            if(!data.getLandOtherSet().isOpen(OtherLandSetting.BLOCK_UPDATE)){
+    public void onCultivatedLandProtect(BlockFromToEvent event) {
+        LandData fromData = DataTool.getPlayerLandData(event.getFrom());
+        if(fromData != null) {
+            if(!fromData.getLandOtherSet().isOpen(OtherLandSetting.BLOCK_UPDATE)) {
+                event.setCancelled();
+                return;
+            }
+        }
+        LandData toData = DataTool.getPlayerLandData(event.getTo());
+        if (toData != null) {
+            if(!toData.getLandOtherSet().isOpen(OtherLandSetting.BLOCK_UPDATE)) {
                 event.setCancelled();
             }
         }
     }
-
-
 
     @EventHandler
     public void onMove(PlayerMoveEvent event){
@@ -145,13 +148,13 @@ public class LandListener implements Listener {
     }
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent e){
+    public void onQuit(PlayerQuitEvent e) {
         KeyHandleManager.clearPlayerKey(e.getPlayer());
         move.remove(e.getPlayer());
     }
 
     @EventHandler
-    public void onPlayer(BlockPlaceEvent event){
+    public void onPlayer(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         if(notCancel(player, event.getBlock())) {
             if (notHasPermission(player, event.getBlock(), LandSetting.PLACE)) {
@@ -269,10 +272,6 @@ public class LandListener implements Listener {
         }
     }
 
-
-
-
-
     @EventHandler
     public void onUseChest(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -335,9 +334,10 @@ public class LandListener implements Listener {
     }
 
     @EventHandler
-    public void onEntitySpawn(EntitySpawnEvent event){
+    public void onEntitySpawn(EntitySpawnEvent event) {
         Entity entity = event.getEntity();
-        if(entity instanceof EntityHuman){
+        //不拦截human实体和掉落物品实体
+        if(entity instanceof EntityHuman || entity instanceof EntityItem) {
             return;
         }
 
@@ -464,6 +464,7 @@ public class LandListener implements Listener {
             }
         }
     }
+
     @EventHandler
     public void onQuitLandEvent(PlayerQuitLandEvent event){
         LandData data = event.getData();
@@ -529,6 +530,5 @@ public class LandListener implements Listener {
             event.setBlockList(blockList);
         }
     }
-
 
 }
