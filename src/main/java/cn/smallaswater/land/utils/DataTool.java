@@ -19,11 +19,9 @@ import java.util.*;
  */
 public class DataTool {
 
-
-
-    private static boolean checkIt(Vector vector,LandData overlap){
+    private static boolean checkIt(Vector vector, LandData overlap) {
         if(vector != null && overlap != null) {
-            if (overlap.getVector().getLevel().getFolderName().equals(vector.getLevel().getFolderName())) {
+            if (overlap.getVector().getLevel() == vector.getLevel()) {
                 return vector.getStartX() <= overlap.getVector().getEndX()
                         && vector.getEndX() >= overlap.getVector().getStartX() &&
                         vector.getStartY() <= overlap.getVector().getEndY()
@@ -62,26 +60,28 @@ public class DataTool {
         return data;
     }
 
-    public static LandData checkOverlap(Vector vector,LandData sub){
+    public static LandData checkOverlap(Vector vector, LandData sub) {
         vector = vector.clone();
         vector.sort();
         if(sub == null) {
             for (LandData overlap : LandModule.getModule().getList().getData()) {
-                if(checkIt(vector,overlap)) {
+                if(checkIt(vector, overlap)) {
                     return overlap;
                 }
             }
         }else{
-            for(LandSubData data:sub.getSubData()){
-                if(checkIt(vector,data)){
+            for(LandSubData data : sub.getSubData()){
+                if(checkIt(vector, data)){
                     return data;
                 }
             }
         }
         return null;
     }
+
     /**
-     * 判断是否存在区域重复
+     * 根据区域获取领地数据（检查重叠）
+     * @param vector 区域
      * */
     public static LandData checkOverlap(Vector vector){
         return checkOverlap(vector,null);
@@ -364,7 +364,7 @@ public class DataTool {
             max = index;
             builder.insert(index,"[\\s\\S]*");
         }
-        return "("+builder.append("[\\s\\S]*").toString()+")";
+        return "("+ builder.append("[\\s\\S]*") +")";
         //之前的
     }
 

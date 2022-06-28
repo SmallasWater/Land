@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * @author 若水
  */
-public class Vector implements Cloneable{
+public class Vector implements Cloneable {
 
     public Level level;
 
@@ -26,6 +26,7 @@ public class Vector implements Cloneable{
     private int startZ;
 
     private int endZ;
+
     public Vector(Level level, int startX, int endX, int startY, int endY, int startZ, int endZ) {
         this.level = level;
         this.startX = startX;
@@ -35,9 +36,8 @@ public class Vector implements Cloneable{
         this.startZ = startZ;
         this.endZ = endZ;
 
+        this.sort();
     }
-
-
 
     public Vector(Position pos1, Position pos2) {
         this.level = pos1.getLevel();
@@ -47,9 +47,11 @@ public class Vector implements Cloneable{
         this.endY = (int) pos2.getY();
         this.startZ = (int) pos1.getZ();
         this.endZ = (int) pos2.getZ();
+
+        this.sort();
     }
 
-    public LinkedHashMap<String,Object> getConfig(){
+    public LinkedHashMap<String,Object> getConfig() {
         LinkedHashMap<String,Object> obj = new LinkedHashMap<>();
         obj.put("level",level.getFolderName());
         obj.put("startX",startX);
@@ -97,7 +99,7 @@ public class Vector implements Cloneable{
         return this;
     }
 
-    public Vector sort(){
+    public Vector sort() {
         int temp;
         if(this.startX > this.endX){
             temp = this.endX;
@@ -228,7 +230,7 @@ public class Vector implements Cloneable{
             }
         }catch (Exception e){
             LandMainClass.MAIN_CLASS.getLogger().error("出现未知问题 无法将两点进行匹配");
-            LandMainClass.MAIN_CLASS.getLogger().debug("obj: "+obj.toString());
+            LandMainClass.MAIN_CLASS.getLogger().debug("obj: "+ obj);
             LandMainClass.MAIN_CLASS.getLogger().debug("this: "+this);
             return false;
         }

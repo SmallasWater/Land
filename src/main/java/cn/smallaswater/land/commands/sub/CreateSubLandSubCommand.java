@@ -14,7 +14,6 @@ import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.Vector;
 
-
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
@@ -93,8 +92,8 @@ public class CreateSubLandSubCommand extends CreateSubCommand {
     }
 
     @Override
-    protected boolean canExistsLand(String name){
-        return data.getSubLandByName(name) != null;
+    protected boolean canExistsLand(String name) {
+        return data.getSubLandByName(name) == null;
     }
 
     @Override

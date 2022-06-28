@@ -13,11 +13,11 @@ position: "x=%x% y=%y% z=%z% level=%level%"
 playerSetPos2: |-
   &a已设置领地第二点 坐标&d %pos%  
   &6当前领地价格为$&e %money% 
-  &7如果你的金钱充足 输&a/领地 create <名称>创建
+  &7如果你的金钱充足 输&a/land create <名称>创建
 playerSetSubPos2: |-
   &a已设置领地第二点 坐标&d %pos%  
   &6当前领地价格为$&e %money% 
-  &7如果你的金钱充足 输&a/领地 subcreate <名称>创建
+  &7如果你的金钱充足 输&a/land subcreate <名称>创建
 playerBuyLandSuccess: "&e成功购买领地&e %name% &a花费&6 %money%"
 playerBuyLandError: "&c购买领地失败，，你没有足够的金钱"
 playerBuyLandErrorLandExists: "&c领地 %name% 已经存在"
@@ -66,7 +66,7 @@ notHaveInvite: "&c你没有任何领地邀请"
 inviteTimeOut: "&c邀请 &a%p% 加入&2 %name% &c领地的请求已超时"
 notHaveTargetInvite: "&c你没有&a %p% &c的领地邀请.."
 inviteList: "&e>>::::::::&a邀请列表&e:::::::<<\n%list%"
-listValue: "&a%p% &b邀请你加入&e %name% &b领地 &7(输/领地 accept <%p%> 同意邀请)"
+listValue: "&a%p% &b邀请你加入&e %name% &b领地 &7(输/land accept <%p%> 同意邀请)"
 notHavePermission: "&c你没有 &b%setting%&c 权限..."
 choseTrue: "确定"
 choseFalse: "取消"
@@ -75,7 +75,7 @@ saveTransfer: "&a%name% 传送点已保存"
 saveText: "&a%name% 已保存"
 saveTransferError: "&c请在 %name% 领地内设置传送点"
 invitePlayerMaster: "&a成功向 %p% 发送了加入 %name% 领地邀请 &7(有效时间 %time% 秒)"
-invitePlayerTarget: "&b%p% 向你发送了 %name% 领地邀请\n&7/领地 accept <%p%> 同意领地邀请\n/领地 deny <%p%> 拒绝邀请"
+invitePlayerTarget: "&b%p% 向你发送了 %name% 领地邀请\n&7/land accept <%p%> 同意领地邀请\n/land deny <%p%> 拒绝邀请"
 invitePlayerExists: "&c你已经邀请了 %p% 啦..."
 invitePlayerInArray: "&c%p% 已经是 %name% 的成员啦."
 dataNotExists: "&c%name% 领地不存在啦..."
@@ -100,7 +100,15 @@ backButton: "返回上一步"
 protectLevel: "此世界被圈地之前禁止交互"
 sellOtherLand: "&d主领地领主出售了&a %name% &d子领地 &c你失去了&a %name% &c的权限"
 showSellLandButton: "&7(&r%type%&7)&a %name% &e售卖中 &7(&2%day%天后下架&7)\n&6点我查看详情"
-showSellLandMenu: "领地ID=&a%id%&r\n\n领地名称=%name%\n\n领地大小=%size% 方块\n\n领地位置=%pos%\n\n领地地图=%level%\n\n公示时间=%day%天后下架\n\n领地价格=%money%\n\n领地介绍=%message%"
+showSellLandMenu: |-
+  领地ID=&a%id%&r
+  领地名称=%name%
+  领地大小=%size% 方块
+  领地位置=%pos%
+  领地地图=%level%
+  公示时间=%day%天后下架
+  领地价格=%money%
+  领地介绍=%message%"
 masterLand: "&c主领地"
 subLand: "&2子领地"
 buyLandButton: "是我的了，购买！"
