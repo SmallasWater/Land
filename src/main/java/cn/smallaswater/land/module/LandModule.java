@@ -8,32 +8,30 @@ import cn.nukkit.scheduler.Task;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import cn.smallaswater.land.LandMainClass;
+import cn.smallaswater.land.commands.AdminCommand;
+import cn.smallaswater.land.commands.LandCommand;
 import cn.smallaswater.land.handle.KeyHandle;
 import cn.smallaswater.land.lands.LandList;
+import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.LandListener;
 import cn.smallaswater.land.lands.data.LandListenerPn;
 import cn.smallaswater.land.lands.data.LandOtherSet;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
-import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.utils.InviteHandle;
 import cn.smallaswater.land.lands.utils.LandConfig;
 import cn.smallaswater.land.players.MemberSetting;
 import cn.smallaswater.land.players.PlayerSetting;
 import cn.smallaswater.land.tasks.AutoSaveLandTask;
+import cn.smallaswater.land.tasks.ShowParticleTask;
 import cn.smallaswater.land.tasks.ShowSellLandTask;
 import cn.smallaswater.land.tasks.TransferColdTask;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.LoadMoney;
 import cn.smallaswater.land.utils.Vector;
-import cn.smallaswater.land.tasks.ShowParticleTask;
 import cn.smallaswater.land.windows.WindowListener;
 
-import cn.smallaswater.land.commands.*;
-
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -175,8 +173,8 @@ public class LandModule {
     }
 
 
-    private void registerListener(){
-        if("PowerNukkit".equalsIgnoreCase(Nukkit.CODENAME)){
+    private void registerListener() {
+        if("PowerNukkit".equalsIgnoreCase(Nukkit.CODENAME) || "PowerNukkitX".equalsIgnoreCase(Nukkit.CODENAME)) {
             LandMainClass.MAIN_CLASS.getLogger().info("enable PowerNukkit listener");
             LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new LandListenerPn(),LandMainClass.MAIN_CLASS);
         }
