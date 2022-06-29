@@ -14,13 +14,11 @@ abstract public class BaseSubCommand {
         this.name = name;
     }
 
-
-
     /**
      * @param sender CommandSender
      * @return boolean
      */
-    boolean canUse(CommandSender sender){
+    public boolean canUse(CommandSender sender){
         return sender.isPlayer();
     }
 
@@ -49,8 +47,6 @@ abstract public class BaseSubCommand {
      * @return true if true
      */
     public abstract boolean execute(CommandSender sender,String label, String[] args);
-
-
 
     /**
      * 指令参数.

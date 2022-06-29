@@ -10,7 +10,6 @@ import cn.smallaswater.land.lands.utils.InviteHandle;
 import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.windows.CreateWindow;
 
-
 import java.util.LinkedList;
 
 /**
@@ -46,22 +45,12 @@ public class LandCommand extends BaseCommand {
 
     @Override
     public void sendHelp(CommandSender sender) {
-        sender.sendMessage("§e>>§a-------------------§bHelps of Land§a-------------------§e<<");
-        sender.sendMessage("§e/land §7help §aCheck the plugin to help");
-        sender.sendMessage("§e/land §7my§aList according to their own territory");
-        sender.sendMessage("§e/land §7sell§aDisplay the list of domain is for sale");
-        sender.sendMessage("§e/land §7all <page> (The current total of "+CreateWindow.getPages()+" page) The list shows all territory");
-        sender.sendMessage("§e/land §7pos <1/2> §aSet the territory coordinates");
-        sender.sendMessage("§e/land §7subpos <1/2> §aSet the child domain coordinates");
-        sender.sendMessage("§e/land §7create <name> §aCreate land p.sOne block: $"+ String.format("%2f",LandModule.getModule().getConfig().getLandMoney()));
-        sender.sendMessage("§e/land §7subcreate <name> §aCreate SubLand p.sOne block: $"+ String.format("%2f",LandModule.getModule().getConfig().getSubLandMoney()));
-        sender.sendMessage("§e/land §7accept <player> §aAgree to the player's territory invitation");
-        sender.sendMessage("§e/land §7deny <player> §aRefuse to the domain of the players invited");
-        sender.sendMessage("§e/land §7invites §aCheck the invitation list");
-        sender.sendMessage("§e/land §7expand <size> §aExpand the territory");
-        sender.sendMessage("§e/land §7screen  §aFind the domain");
-        sender.sendMessage("§e>>§a-------------------§bHelps of Land§a-------------------§e<<");
-
+        sender.sendMessage(LandModule.getModule().getLanguage()
+                .translateString("commandUserHelp",
+                        CreateWindow.getPages(),
+                        String.format("%.2f",LandModule.getModule().getConfig().getLandMoney()),
+                        String.format("%.2f",LandModule.getModule().getConfig().getSubLandMoney())
+                ));
     }
 
     @Override

@@ -8,32 +8,31 @@ import cn.nukkit.scheduler.Task;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import cn.smallaswater.land.LandMainClass;
+import cn.smallaswater.land.commands.AdminCommand;
+import cn.smallaswater.land.commands.LandCommand;
 import cn.smallaswater.land.handle.KeyHandle;
 import cn.smallaswater.land.lands.LandList;
+import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.LandListener;
 import cn.smallaswater.land.lands.data.LandListenerPn;
 import cn.smallaswater.land.lands.data.LandOtherSet;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
-import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.utils.InviteHandle;
 import cn.smallaswater.land.lands.utils.LandConfig;
 import cn.smallaswater.land.players.MemberSetting;
 import cn.smallaswater.land.players.PlayerSetting;
 import cn.smallaswater.land.tasks.AutoSaveLandTask;
+import cn.smallaswater.land.tasks.ShowParticleTask;
 import cn.smallaswater.land.tasks.ShowSellLandTask;
 import cn.smallaswater.land.tasks.TransferColdTask;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.LoadMoney;
 import cn.smallaswater.land.utils.Vector;
-import cn.smallaswater.land.tasks.ShowParticleTask;
 import cn.smallaswater.land.windows.WindowListener;
-
-import cn.smallaswater.land.commands.*;
+import lombok.Getter;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -48,7 +47,7 @@ public class LandModule {
 
     private LandList landList;
 
-    private Config languageConfig;
+    @Getter
     private Language language;
 
     public ArrayList<KeyHandle> keyHanle = new ArrayList<>();
@@ -74,42 +73,30 @@ public class LandModule {
 
     private void saveAll(){
         saveList();
-        if(languageConfig != null){
-            languageConfig.save();
-        }
     }
 
     public void loadAll(){
-        config = null;
-        config = getConfig();
-        landList = null;
-        getList();
+        this.config = null;
+        this.config = this.getConfig();
 
-        getModuleInfo().saveResource("language/chs.properties");
-        getModuleInfo().saveResource("language/eng.properties");
+        this.landList = null;
+        this.getList();
+
+        this.loadLanguage();
+    }
+
+    private void loadLanguage() {
+        List<String> supportLanguageList = Arrays.asList("chs", "eng");
         if ("auto".equalsIgnoreCase(this.config.getLanguage())) {
-            //TODO fix
-            //this.config.setLanguage(Server.getInstance().getConfig("settings.language", "eng"));
+            this.config.setLanguage(Server.getInstance().getConfig("settings.language", "eng"));
+        }
+        if (!supportLanguageList.contains(this.config.getLanguage())) {
             this.config.setLanguage("eng");
         }
-        File languageFile = new File(getModuleInfo().getDataFolder() + "/language/" + this.config.getLanguage() + ".properties");
-        if (!languageFile.exists()) {
-            this.config.setLanguage("eng");
-            languageFile = new File(getModuleInfo().getDataFolder() + "/language/eng.properties");
-        }
-        this.languageConfig = new Config(languageFile, Config.PROPERTIES);
-        this.language = new Language(this.languageConfig);
-        InputStream internalLanguageResource = LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".properties");
-        if (internalLanguageResource != null) {
-            try {
-                Config internalLanguageConfig = new Config(Config.PROPERTIES);
-                internalLanguageConfig.load(internalLanguageResource);
-                this.language.update(internalLanguageConfig);
-                internalLanguageResource.close();
-            }catch (IOException e) {
-                LandMainClass.MAIN_CLASS.getLogger().info("Language update failed " + this.config.getLanguage());
-            }
-        }
+        Config languageConfig = new Config(Config.YAML);
+        languageConfig.load(LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".yml"));
+        this.language = new Language(languageConfig);
+
         LandMainClass.MAIN_CLASS.getLogger().info("Language is set to: " + this.config.getLanguage());
     }
 
@@ -384,13 +371,6 @@ public class LandModule {
             }
         }
         return names.toArray(new String[0]);
-    }
-
-    public Language getLanguage() {
-        if (this.language == null) {
-            this.language = new Language(this.languageConfig);
-        }
-        return this.language;
     }
 
 }
