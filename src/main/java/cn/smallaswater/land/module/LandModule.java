@@ -30,6 +30,7 @@ import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.LoadMoney;
 import cn.smallaswater.land.utils.Vector;
 import cn.smallaswater.land.windows.WindowListener;
+import lombok.Getter;
 
 import java.io.File;
 import java.util.*;
@@ -46,7 +47,7 @@ public class LandModule {
 
     private LandList landList;
 
-    private Config languageConfig;
+    @Getter
     private Language language;
 
     public ArrayList<KeyHandle> keyHanle = new ArrayList<>();
@@ -72,9 +73,6 @@ public class LandModule {
 
     private void saveAll(){
         saveList();
-        if(languageConfig != null){
-            languageConfig.save();
-        }
     }
 
     public void loadAll(){
@@ -95,9 +93,9 @@ public class LandModule {
         if (!supportLanguageList.contains(this.config.getLanguage())) {
             this.config.setLanguage("eng");
         }
-        this.languageConfig = new Config(Config.YAML);
-        this.languageConfig.load(LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".yml"));
-        this.language = new Language(this.languageConfig);
+        Config languageConfig = new Config(Config.YAML);
+        languageConfig.load(LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".yml"));
+        this.language = new Language(languageConfig);
 
         LandMainClass.MAIN_CLASS.getLogger().info("Language is set to: " + this.config.getLanguage());
     }
@@ -377,13 +375,6 @@ public class LandModule {
             }
         }
         return names.toArray(new String[0]);
-    }
-
-    public Language getLanguage() {
-        if (this.language == null) {
-            this.language = new Language(this.languageConfig);
-        }
-        return this.language;
     }
 
 }

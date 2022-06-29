@@ -1,3 +1,26 @@
+commandUserHelp: |-
+  §e>>§a-------------------§bHelps of Land§a-------------------§e<<
+  §e/land §7help §aCheck the plugin to help
+  §e/land §7my §aList according to their own territory
+  §e/land §7sell §aDisplay the list of domain is for sale
+  §e/land §7all <page> §a(The current total of %1% page) The list shows all territory
+  §e/land §7pos <1/2> §aSet the territory coordinates
+  §e/land §7subpos <1/2> §aSet the child domain coordinates
+  §e/land §7create <name> §aCreate land p.sOne block: $%2%
+  §e/land §7subcreate <name> §aCreate SubLand p.sOne block: $%3%
+  §e/land §7accept <player> §aAgree to the player's territory invitation
+  §e/land §7deny <player> §aRefuse to the domain of the players invited
+  §e/land §7invites §aCheck the invitation list
+  §e/land §7expand <size> §aExpand the territory
+  §e/land §7screen  §aFind the domain
+  §e>>§a-------------------§bHelps of Land§a-------------------§e<<
+commandAdminHelp: |-
+  §e>>§a-------------------§bHelps of LandAdmin§a-------------------§e<<
+  §e/lad §7help §aView plugin help
+  §e/lad §7del §aDelete foot territories (delete sub territories if you are standing on them)
+  §e/lad §7reload §aReload the configuration file
+  §e/lad §7money <money> §aForced setting of money for sale in the footer territory %1%
+  §e>>§a-------------------§bHelps of LandAdmin§a-------------------§e<<
 playerJoinMessage: "&aYou join &e %n% &aland &bmaster:&2 %master%"
 playerQuitMessage: "&7You leave &e %n% &7land &bmaster:&2 %master%"
 playerSetPos1: "&aset land pos1 &6position&d %pos% \n&ePlease stand in another second set domain"

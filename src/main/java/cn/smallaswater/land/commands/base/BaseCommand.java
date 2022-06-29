@@ -24,8 +24,6 @@ abstract public class BaseCommand extends Command {
         super(name,description);
     }
 
-
-
     /**
      * 获取权限
      * @param sender 玩家
