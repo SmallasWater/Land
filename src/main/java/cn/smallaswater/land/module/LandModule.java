@@ -1,6 +1,5 @@
 package cn.smallaswater.land.module;
 
-import cn.nukkit.Nukkit;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Position;
@@ -14,7 +13,6 @@ import cn.smallaswater.land.handle.KeyHandle;
 import cn.smallaswater.land.lands.LandList;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.LandListener;
-import cn.smallaswater.land.lands.data.LandListenerPn;
 import cn.smallaswater.land.lands.data.LandOtherSet;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
 import cn.smallaswater.land.lands.utils.InviteHandle;
@@ -87,9 +85,6 @@ public class LandModule {
 
     private void loadLanguage() {
         List<String> supportLanguageList = Arrays.asList("chs", "eng");
-        if ("auto".equalsIgnoreCase(this.config.getLanguage())) {
-            this.config.setLanguage(Server.getInstance().getConfig("settings.language", "eng"));
-        }
         if (!supportLanguageList.contains(this.config.getLanguage())) {
             this.config.setLanguage("eng");
         }
