@@ -20,14 +20,13 @@ import cn.nukkit.level.Position;
 import cn.smallaswater.land.LandMainClass;
 import cn.smallaswater.land.event.player.*;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
+import cn.smallaswater.land.lands.settings.LandSetting;
 import cn.smallaswater.land.lands.settings.OtherLandSetting;
 import cn.smallaswater.land.manager.KeyHandleManager;
-import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.module.LandModule;
-import cn.smallaswater.land.lands.settings.LandSetting;
+import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.Vector;
-
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -204,7 +203,14 @@ public class LandListener implements Listener {
         }
     }
 
-    private boolean notCancel(Player player, Position position){
+    private boolean notCancel(Player player, Position position) {
+        //点击空气一般是食用物品，不会操作地图，可以直接忽略
+        if (position instanceof Block) {
+            Block block = (Block) position;
+            if (block.getId() == BlockID.AIR) {
+                return true;
+            }
+        }
         LandData data = DataTool.getPlayerTouchArea(position);
         if(LandModule.getModule().getConfig().getProtectList().contains(position.level.getFolderName())) {
             if (data == null) {
