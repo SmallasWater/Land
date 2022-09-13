@@ -2,22 +2,15 @@ package cn.smallaswater.land.lands.data;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockChest;
-import cn.nukkit.block.BlockShulkerBox;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockPistonEvent;
-import cn.nukkit.event.player.PlayerInteractEvent;
-import cn.nukkit.item.Item;
 import cn.nukkit.level.Position;
-import cn.nukkit.utils.TextFormat;
-import cn.smallaswater.land.lands.settings.LandSetting;
 import cn.smallaswater.land.lands.settings.OtherLandSetting;
 import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.utils.DataTool;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 /**
  * @author SmallasWater
@@ -28,24 +21,24 @@ public class LandListenerPn implements Listener {
 
 
     @EventHandler
-    public void onBlockPiston(BlockPistonEvent event){
+    public void onBlockPiston(BlockPistonEvent event) {
         Block block = event.getBlock();
         LandData data;
-        ArrayList<Position> positions = new ArrayList<>();
-        positions.add(block.add(3));
-        positions.add(block.add(-3));
-        positions.add(block.add(0, 0, 3));
-        positions.add(block.add(0, 0, -3));
-        positions.addAll(event.getBlocks());
-        positions.addAll(event.getDestroyedBlocks());
-        LinkedList<Player> players;
-        for (Position position : positions) {
+        ArrayList<Position> checkPositions = new ArrayList<>();
+        checkPositions.add(block.add(3, 0, 0));
+        checkPositions.add(block.add(-3, 0, 0));
+        checkPositions.add(block.add(0, 3, 0));
+        checkPositions.add(block.add(0, -3, 0));
+        checkPositions.add(block.add(0, 0, 3));
+        checkPositions.add(block.add(0, 0, -3));
+        checkPositions.addAll(event.getBlocks());
+        checkPositions.addAll(event.getDestroyedBlocks());
+        for (Position position : checkPositions) {
             data = DataTool.getPlayerLandData(position);
             if (data != null) {
                 if (data.getLandOtherSet().isOpen(OtherLandSetting.RED_STONE_OUT)) {
-                    players = DataTool.getAroundPlayers(block, 5);
-                    for (Player player : players) {
-                        player.sendMessage(TextFormat.colorize('&', LandModule.getModule().getConfig().getTitle() + " &aPlease don't in the territory &e"+data.getLandName()+" &aUsing the piston outside"));
+                    for (Player player : DataTool.getAroundPlayers(block, 5)) {
+                        player.sendMessage(LandModule.getModule().getConfig().getTitle() + LandModule.getModule().getLanguage().translateString("usingThePistonOutside", data.getLandName()));
                     }
                     event.setCancelled();
                     return;

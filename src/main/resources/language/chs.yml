@@ -164,3 +164,5 @@ screenMenu_automaticSorting: "自动排序"
 screenMenu_showingTerritoriesForSale: "是否显示出售中领地"
 screenMenu_inputIndex_text: "输入索引"
 screenMenu_inputIndex_placeholder: "请根据索引设置输入"
+
+usingThePistonOutside: " &a请不要在领地 &e%1% &a外使用活塞"
