@@ -86,16 +86,35 @@ public class LandModule {
     }
 
     private void loadLanguage() {
+        LandMainClass.MAIN_CLASS.saveResource("Language/chs.yml", "Language/chs_customize.yml", false);
+        LandMainClass.MAIN_CLASS.saveResource("Language/eng.yml", "Language/eng_customize.yml", false);
+
         List<String> supportLanguageList = Arrays.asList("chs", "eng");
+
+        String serverLang = Server.getInstance().getConfig("settings.language", "eng");
+        if (!supportLanguageList.contains(serverLang)) {
+            serverLang = "eng";
+        }
+
         if ("auto".equalsIgnoreCase(this.config.getLanguage())) {
-            this.config.setLanguage(Server.getInstance().getConfig("settings.language", "eng"));
+            this.config.setLanguage(serverLang);
         }
-        if (!supportLanguageList.contains(this.config.getLanguage())) {
-            this.config.setLanguage("eng");
+
+        File languageFile = new File(LandMainClass.MAIN_CLASS.getDataFolder() + "/Language/" + this.config.getLanguage() + ".yml");
+        if (supportLanguageList.contains(this.config.getLanguage())) {
+            Config languageConfig = new Config(Config.YAML);
+            languageConfig.load(LandMainClass.MAIN_CLASS.getResource("Language/" + this.config.getLanguage() + ".yml"));
+            this.language = new Language(languageConfig);
+        }else if (languageFile.exists()) {
+            this.language = new Language(new Config(languageFile, Config.YAML));
+            Config config = new Config();
+            config.load(LandMainClass.MAIN_CLASS.getResource("Language/chs.yml"));
+            this.language.update(config);
+        }else {
+            Config languageConfig = new Config(Config.YAML);
+            languageConfig.load(LandMainClass.MAIN_CLASS.getResource("Language/" + serverLang + ".yml"));
+            this.language = new Language(languageConfig);
         }
-        Config languageConfig = new Config(Config.YAML);
-        languageConfig.load(LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".yml"));
-        this.language = new Language(languageConfig);
 
         LandMainClass.MAIN_CLASS.getLogger().info("Language is set to: " + this.config.getLanguage());
     }
