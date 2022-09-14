@@ -28,10 +28,7 @@ import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.Vector;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -151,6 +148,7 @@ public class LandListener implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         KeyHandleManager.clearPlayerKey(e.getPlayer());
         move.remove(e.getPlayer());
+        playerTouchLandCooling.remove(e.getPlayer());
     }
 
     @EventHandler
@@ -384,6 +382,8 @@ public class LandListener implements Listener {
         }
     }
 
+    private final HashSet<Player> playerTouchLandCooling = new HashSet<>();
+
     @EventHandler
     public void onTouchLand(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -393,6 +393,11 @@ public class LandListener implements Listener {
             Item playerHand = event.getItem();
             if (playerHand.equals(LandModule.getModule().getConfig().getLandTool(), true)) {
                 event.setCancelled();
+                if (this.playerTouchLandCooling.contains(player)) {
+                    return;
+                }
+                this.playerTouchLandCooling.add(player);
+                Server.getInstance().getScheduler().scheduleDelayedTask(LandMainClass.MAIN_CLASS, () -> this.playerTouchLandCooling.remove(player), 10);
                 Block block = event.getBlock();
                 Language language = LandModule.getModule().getLanguage();
                 if (!LandModule.getModule().pos.containsKey(player.getName()) || LandModule.getModule().pos.get(player.getName()).size() > 1) {
@@ -440,12 +445,8 @@ public class LandListener implements Listener {
                         player.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerSetPos2ErrorLevel"));
                     }
                 }
-
-
             }
-
         }
-
     }
 
     @EventHandler
