@@ -3,6 +3,7 @@ package cn.smallaswater.land.windows;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerFormRespondedEvent;
 import cn.nukkit.form.window.FormWindowCustom;
@@ -14,6 +15,7 @@ import cn.smallaswater.land.handle.TimeHandle;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.LandOtherSet;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
+import cn.smallaswater.land.lands.settings.LandSetting;
 import cn.smallaswater.land.lands.settings.OtherLandSetting;
 import cn.smallaswater.land.lands.utils.ScreenSetting;
 import cn.smallaswater.land.manager.KeyHandleManager;
@@ -22,7 +24,9 @@ import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.players.PlayerSetting;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
-import cn.smallaswater.land.lands.settings.LandSetting;
+import cn.smallaswater.land.utils.form.windows.AdvancedFormWindowCustom;
+import cn.smallaswater.land.utils.form.windows.AdvancedFormWindowModal;
+import cn.smallaswater.land.utils.form.windows.AdvancedFormWindowSimple;
 
 import java.util.*;
 
@@ -41,6 +45,17 @@ public class WindowListener implements Listener {
     private static LinkedList<Player> screenKey = new LinkedList<>();
 
     static LinkedHashMap<Player, LinkedList<LandData>> screenLands = new LinkedHashMap<>();
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerFormResponded(PlayerFormRespondedEvent event) {
+        if (AdvancedFormWindowSimple.onEvent(event.getWindow(), event.getPlayer())) {
+            return;
+        }
+        if (AdvancedFormWindowModal.onEvent(event.getWindow(), event.getPlayer())) {
+            return;
+        }
+        AdvancedFormWindowCustom.onEvent(event.getWindow(), event.getPlayer());
+    }
 
     @EventHandler
     public void onWindow(PlayerFormRespondedEvent event){
