@@ -1,6 +1,5 @@
 package cn.smallaswater.land.module;
 
-import cn.nukkit.Nukkit;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Position;
@@ -91,10 +90,7 @@ public class LandModule {
 
         List<String> supportLanguageList = Arrays.asList("chs", "eng");
 
-        String serverLang = Server.getInstance().getConfig("settings.language", "eng");
-        if (!supportLanguageList.contains(serverLang)) {
-            serverLang = "eng";
-        }
+        String serverLang = "eng";
 
         if ("auto".equalsIgnoreCase(this.config.getLanguage())) {
             this.config.setLanguage(serverLang);
