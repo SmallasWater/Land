@@ -12,13 +12,12 @@ import cn.smallaswater.land.commands.base.BaseSubCommand;
 import cn.smallaswater.land.event.land.LandCreateEvent;
 import cn.smallaswater.land.event.player.PlayerCreateLandEvent;
 import cn.smallaswater.land.lands.data.LandData;
-import cn.smallaswater.land.players.MemberSetting;
 import cn.smallaswater.land.module.LandModule;
+import cn.smallaswater.land.players.MemberSetting;
 import cn.smallaswater.land.players.PlayerSetting;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.Vector;
-
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -35,57 +34,59 @@ public class CreateSubCommand extends BaseSubCommand {
     public boolean execute(CommandSender sender, String s, String[] strings) {
         Language language = LandModule.getModule().getLanguage();
         if(sender instanceof Player) {
+            Player player = (Player) sender;
             if (strings.length > 1) {
                 String name = strings[1].trim();
                 if(!isValidFileName(name)){
-                    sender.sendMessage(LandModule.getModule().getConfig().getTitle() + TextFormat.RED+"领地名称含有\\/:*?\"<>| 非法字符 请更换名称");
+                    player.sendMessage(LandModule.getModule().getConfig().getTitle() + TextFormat.RED+"领地名称含有\\/:*?\"<>| 非法字符 请更换名称");
                     return true;
                 }
-                if(getPos().containsKey(sender.getName())){
-                    LinkedList<Position> positions = getPos().get(sender.getName());
-                    if(positions.size() > 1){
-                        if (isInLand((Player) sender)) {
+                if(getPos().containsKey(player.getName())) {
+                    LinkedList<Position> positions = getPos().get(player.getName());
+                    if(positions.size() > 1) {
+                        if (isInLand(player)) {
                             String landName = getLandName(positions);
                             if (landName != null) {
-                                sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.playerBuyLandErrorLandInArray.replace("%name%", landName));
-                                getPos().remove(sender.getName());
+                                player.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerBuyLandErrorLandInArray").replace("%name%", landName));
+                                getPos().remove(player.getName());
+                                return true;
                             } else {
-                                if (canExistsLand(name)) {
-                                    sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.playerBuyLandErrorLandExists.replace("%name%", name));
+                                if (!canExistsLand(name)) {
+                                    player.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerBuyLandErrorLandExists").replace("%name%", name));
                                     return true;
                                 } else {
                                     double money = getMoney(new Vector(positions.get(0), positions.get(1)));
-                                    if (LandModule.getModule().getMoney().myMoney(sender.getName()) >= money) {
-                                        if (DataTool.getLands(sender.getName()).size() >= getMaxLand()) {
-                                            getPos().remove(sender.getName());
-                                            sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.playerLandMax.replace("%count%", getMaxLand() + ""));
+                                    if (LandModule.getModule().getMoney().myMoney(player.getName()) >= money) {
+                                        if (DataTool.getLands(player.getName()).size() >= getMaxLand()) {
+                                            getPos().remove(player.getName());
+                                            player.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerLandMax").replace("%count%", getMaxLand() + ""));
                                             return true;
                                         } else {
                                             Vector vector = new Vector(positions.get(0), positions.get(1));
-                                            if(!createLandData(name, (Player) sender, vector, language)){
+                                            if(!createLandData(name, player, vector, language)){
                                                 return true;
                                             }
-                                            LandModule.getModule().getMoney().reduceMoney(sender.getName(), money);
-                                            sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.playerBuyLandSuccess.replace("%name%", name).replace("%money%", money + ""));
-                                            getPos().remove(sender.getName());
+                                            LandModule.getModule().getMoney().reduceMoney(player.getName(), money);
+                                            player.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerBuyLandSuccess").replace("%name%", name).replace("%money%", money + ""));
+                                            getPos().remove(player.getName());
 
                                             return true;
                                         }
                                     } else {
-                                        sender.sendMessage(LandModule.getModule().getConfig().getTitle() + language.playerBuyLandError.replace("%money%", money + ""));
-                                        getPos().remove(sender.getName());
+                                        player.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerBuyLandError").replace("%money%", money + ""));
+                                        getPos().remove(player.getName());
                                         return true;
                                     }
                                 }
                             }
                         }else{
-                            getPos().remove(sender.getName());
+                            getPos().remove(player.getName());
                         }
                     }else{
-                        sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.createNotHavePos2);
+                        player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("createNotHavePos2"));
                     }
                 }else{
-                    sender.sendMessage(LandModule.getModule().getConfig().getTitle()+language.createNotHavePos);
+                    player.sendMessage(LandModule.getModule().getConfig().getTitle()+language.translateString("createNotHavePos"));
                 }
 
             }
@@ -117,17 +118,25 @@ public class CreateSubCommand extends BaseSubCommand {
         }
     }
 
-    protected boolean canExistsLand(String name){
-        return LandModule.getModule().getList().getLandDataByName(name) != null;
+    protected boolean canExistsLand(String name) {
+        return LandModule.getModule().getList().getLandDataByName(name) == null;
     }
 
     protected int getMaxLand(){
         return LandModule.getModule().getConfig().getMaxLand();
     }
     protected boolean createLandData(String name,Player sender,Vector vector,Language language){
-        LandData data = new LandData(LandModule.getModule().getList().size(),name, sender.getName(), vector
-                , new MemberSetting(new LinkedHashMap<>()),
-                PlayerSetting.getDefaultSetting(), language.playerJoinMessage, language.playerQuitMessage, DataTool.getDefaultPosition(vector));
+        LandData data = new LandData(
+                LandModule.getModule().getList().size(),
+                name,
+                sender.getName(),
+                vector,
+                new MemberSetting(new LinkedHashMap<>()),
+                PlayerSetting.getDefaultSetting(),
+                language.translateString("playerJoinMessage"),
+                language.translateString("playerQuitMessage"),
+                DataTool.getDefaultPosition(vector)
+        );
         PlayerCreateLandEvent event = new PlayerCreateLandEvent(sender, data);
         Server.getInstance().getPluginManager().callEvent(event);
         if(event.isCancelled()){

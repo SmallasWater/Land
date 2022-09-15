@@ -6,12 +6,14 @@
 
     <groupId>cn.smallaswater.land</groupId>
     <artifactId>Land</artifactId>
-    <version>1.7.7-SNAPSHOT</version>
+    <version>1.7.9-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <distributionManagement>
@@ -56,6 +58,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+            <scope>provided</scope>
+        </dependency>
+
 <!--        <dependency>-->
 <!--            <groupId>cn.nukkit</groupId>-->
 <!--            <artifactId>nukkit</artifactId>-->
@@ -66,7 +75,7 @@
         <dependency>
             <groupId>org.powernukkit</groupId>
             <artifactId>powernukkit</artifactId>
-            <version>1.5.2.1-PN</version>
+            <version>1.6.0.1-PN</version>
             <scope>provided</scope>
         </dependency>
 
@@ -76,6 +85,14 @@
             <version>1.1.7</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/Money-3.3.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>net.lldv.llamaeconomy</groupId>
+            <artifactId>LlamaEconomy</artifactId>
+            <version>1.0.0.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/LlamaEconomy-1.0.0.1-SNAPSHOT.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -109,8 +126,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.5.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
             <plugin>

@@ -7,8 +7,8 @@ import cn.nukkit.command.data.CommandParameter;
 import cn.smallaswater.land.commands.base.BaseCommand;
 import cn.smallaswater.land.commands.base.BaseSubCommand;
 import cn.smallaswater.land.lands.data.LandData;
-import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.module.LandModule;
+import cn.smallaswater.land.utils.DataTool;
 
 /**
  * @author 若水
@@ -20,6 +20,11 @@ public class AdminCommand extends BaseCommand {
         this.setAliases(new String[]{"lad"});
         this.setPermission("Land.admin");
         this.addSubCommand(new BaseSubCommand("del") {
+
+            @Override
+            public boolean canUse(CommandSender sender) {
+                return sender.isOp();
+            }
 
             @Override
             public CommandParameter[] getParameters() {
@@ -49,13 +54,19 @@ public class AdminCommand extends BaseCommand {
                         commandSender.sendMessage(LandModule.getModule().getConfig().getTitle()+"§e删除成功!!");
                         return true;
                     }else{
-                        commandSender.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().placeInLandData);
+                        commandSender.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("placeInLandData"));
                     }
                 }
                 return false;
             }
         });
         this.addSubCommand(new BaseSubCommand("reload") {
+
+            @Override
+            public boolean canUse(CommandSender sender) {
+                return sender.isOp();
+            }
+
             @Override
             public CommandParameter[] getParameters() {
                 return new CommandParameter[0];
@@ -83,6 +94,11 @@ public class AdminCommand extends BaseCommand {
             }
         });
         this.addSubCommand(new BaseSubCommand("money") {
+
+            @Override
+            public boolean canUse(CommandSender sender) {
+                return sender.isOp();
+            }
 
             @Override
             public CommandParameter[] getParameters() {
@@ -151,12 +167,7 @@ public class AdminCommand extends BaseCommand {
     @Override
     public void sendHelp(CommandSender sender) {
         if (sender.isOp()) {
-            sender.sendMessage("§e>>§a-------------------§bHelps of LandAdmin§a-------------------§e<<");
-            sender.sendMessage("§e/lad §7help §a查看插件帮助");
-            sender.sendMessage("§e/lad §7del §a删除脚下领地(如果站在子领地上就删除子领地)");
-            sender.sendMessage("§e/lad §7reload 重新加载配置文件");
-            sender.sendMessage("§e/lad §7money <金钱> 强制设置脚底下领地出售金钱"+(sender.isPlayer()?"(请在游戏内执行)":""));
-            sender.sendMessage("§e>>§a-------------------§bHelps of LandAdmin§a-------------------§e<<");
+            sender.sendMessage(LandModule.getModule().getLanguage().translateString("commandAdminHelp", (sender.isPlayer()?"(请在游戏内执行)":"")));
         }
     }
 }

@@ -34,33 +34,33 @@ public class ExpandSubCommand extends BaseSubCommand {
                 try{
                     i = Integer.parseInt(strings[1]);
                 }catch (Exception ignore){
-                    commandSender.sendMessage(title+language.integerError);
+                    commandSender.sendMessage(title+language.translateString("integerError"));
                     return false;
                 }
                 if(i <= 0){
-                    commandSender.sendMessage(title+language.integerError);
+                    commandSender.sendMessage(title+language.translateString("integerError"));
                     return true;
                 }
                 LandData data = DataTool.getPlayerLandData(((Player) commandSender).getPosition());
                 if(data != null) {
                     Vector vector;
-                    commandSender.sendMessage(title+language.mathLandMoney);
+                    commandSender.sendMessage(title+language.translateString("mathLandMoney"));
                     vector = newLandDataVector((Player) commandSender,i,data.getVector().clone());
                     LandData name = DataTool.checkOverlap(vector);
                     if(data instanceof LandSubData) {
                         LandData in = DataTool.inLandAll(vector);
                         if(in != null && in.getLandName().equalsIgnoreCase(((LandSubData) data).getMasterData().getLandName())){
                             if(!data.getMaster().equalsIgnoreCase(((LandSubData) data).getMasterData().getMaster())){
-                                commandSender.sendMessage(title + language.notHavePermission);
+                                commandSender.sendMessage(title + language.translateString("notHavePermission"));
                                 return true;
                             }
                         }else{
-                            commandSender.sendMessage(language.subInMaster.replace("%name%",((LandSubData) data).getMasterData().getLandName()));
+                            commandSender.sendMessage(language.translateString("subInMaster").replace("%name%",((LandSubData) data).getMasterData().getLandName()));
                             return true;
                         }
                     }else{
                         if (name != null && !name.equals(data)) {
-                            commandSender.sendMessage(title + language.playerBuyLandErrorLandInArray.replace("%name%", name.getLandName()));
+                            commandSender.sendMessage(title + language.translateString("playerBuyLandErrorLandInArray").replace("%name%", name.getLandName()));
                             return true;
                         }
                     }
@@ -68,15 +68,15 @@ public class ExpandSubCommand extends BaseSubCommand {
                     if(LandModule.getModule().getMoney().myMoney(commandSender.getName()) >= money){
                         LandModule.getModule().getMoney().reduceMoney(commandSender.getName(),money);
                         data.setVector(vector);
-                        commandSender.sendMessage(title+language.expandNeedSuccess
+                        commandSender.sendMessage(title+language.translateString("expandNeedSuccess")
                                 .replace("%count%",i+"").replace("%name%",data.getLandName()).replace("%money%",money+""));
                         return true;
                     }else{
-                        commandSender.sendMessage(title+language.expandNeedNotHaveMoney.replace("%money%",money+""));
+                        commandSender.sendMessage(title+language.translateString("expandNeedNotHaveMoney").replace("%money%",money+""));
                         return true;
                     }
                 }else{
-                    commandSender.sendMessage(title+language.placeInLandData);
+                    commandSender.sendMessage(title+language.translateString("placeInLandData"));
                     return true;
                 }
 

@@ -14,7 +14,6 @@ import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.Vector;
 
-
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
@@ -61,10 +60,10 @@ public class CreateSubLandSubCommand extends CreateSubCommand {
                 return true;
             }
         }else if(data == null){
-            player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().inLandData);
+            player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("inLandData"));
             return false;
         }
-        player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().subInMaster.replace("%name%",data.getLandName()));
+        player.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("subInMaster").replace("%name%",data.getLandName()));
         return false;
     }
 
@@ -93,8 +92,8 @@ public class CreateSubLandSubCommand extends CreateSubCommand {
     }
 
     @Override
-    protected boolean canExistsLand(String name){
-        return data.getSubLandByName(name) != null;
+    protected boolean canExistsLand(String name) {
+        return data.getSubLandByName(name) == null;
     }
 
     @Override
