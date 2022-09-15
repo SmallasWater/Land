@@ -29,6 +29,7 @@ import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.LoadMoney;
 import cn.smallaswater.land.utils.Vector;
+import cn.smallaswater.land.windows.CreateWindow;
 import cn.smallaswater.land.windows.WindowListener;
 import lombok.Getter;
 
@@ -201,7 +202,7 @@ public class LandModule {
 
 
 
-    public void invitePlayer(Player master,Player target,LandData data){
+    public void invitePlayer(Player master, Player target, LandData data) {
         if(!data.getMaster().equalsIgnoreCase(target.getName()) && !data.getMember().containsKey(target.getName())) {
             if (!inviteLands.containsKey(target.getName())) {
                 inviteLands.put(target.getName(), new LinkedList<>());
@@ -211,12 +212,16 @@ public class LandModule {
             if (!handles.contains(handle)) {
                 target.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerTarget").replace("%p%", master.getName()).replace("%name%", data.getLandName()));
                 master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerMaster")
-                        .replace("%p%", target.getName()).replace("%name%", data.getLandName()).replace("%time%", "60"));
+                        .replace("%p%", target.getName())
+                        .replace("%name%", data.getLandName())
+                        .replace("%time%", "60")
+                );
                 handles.add(handle);
+                CreateWindow.sendInviteAcceptMenu(master, target, data);
             } else {
                 master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerExists").replace("%p%", target.getName()));
             }
-        }else{
+        }else {
             master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerInArray").replace("%p%",target.getName()).replace("%name%",data.getLandName()));
         }
     }

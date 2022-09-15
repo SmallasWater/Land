@@ -101,6 +101,7 @@ invitePlayerMaster: "An invitation %name% land to&a%p% &7(valid time %time% seco
 invitePlayerTarget: "&b%p% send %name% land invite \n&7/land accept <%p%> Agreed territory invited\n/land deny <%p%> Refused to invite"
 invitePlayerExists: "&cYou has been invite to %p% ..."
 invitePlayerInArray: "&c%p% has been %name% member."
+invitePlayerAcceptMenuTitle: "Invite Accept"
 dataNotExists: "&c%name% does not exist..."
 playerOffOnline: "&c%p% don't online~~"
 givePlayerLandTarget: "&d%p% have become %name% land master~"

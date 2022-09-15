@@ -101,6 +101,7 @@ invitePlayerMaster: "&a成功向 %p% 发送了加入 %name% 领地邀请 &7(有�
 invitePlayerTarget: "&b%p% 向你发送了 %name% 领地邀请\n&7/land accept <%p%> 同意领地邀请\n/land deny <%p%> 拒绝邀请"
 invitePlayerExists: "&c你已经邀请了 %p% 啦..."
 invitePlayerInArray: "&c%p% 已经是 %name% 的成员啦."
+invitePlayerAcceptMenuTitle: "邀请确认"
 dataNotExists: "&c%name% 领地不存在啦..."
 playerOffOnline: "&c%p% 不在线~~"
 givePlayerLandTarget: "&d%p% 成为了 %name% 领地的新领主~"
