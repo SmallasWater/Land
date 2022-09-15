@@ -1,5 +1,6 @@
 package cn.smallaswater.land.module;
 
+import cn.nukkit.Nukkit;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Position;
@@ -27,6 +28,7 @@ import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.LoadMoney;
 import cn.smallaswater.land.utils.Vector;
+import cn.smallaswater.land.windows.CreateWindow;
 import cn.smallaswater.land.windows.WindowListener;
 import lombok.Getter;
 
@@ -84,13 +86,35 @@ public class LandModule {
     }
 
     private void loadLanguage() {
+        LandMainClass.MAIN_CLASS.saveResource("Language/chs.yml", "Language/chs_customize.yml", false);
+        LandMainClass.MAIN_CLASS.saveResource("Language/eng.yml", "Language/eng_customize.yml", false);
+
         List<String> supportLanguageList = Arrays.asList("chs", "eng");
-        if (!supportLanguageList.contains(this.config.getLanguage())) {
-            this.config.setLanguage("eng");
+
+        String serverLang = Server.getInstance().getConfig("settings.language", "eng");
+        if (!supportLanguageList.contains(serverLang)) {
+            serverLang = "eng";
         }
-        Config languageConfig = new Config(Config.YAML);
-        languageConfig.load(LandMainClass.MAIN_CLASS.getResource("language/" + this.config.getLanguage() + ".yml"));
-        this.language = new Language(languageConfig);
+
+        if ("auto".equalsIgnoreCase(this.config.getLanguage())) {
+            this.config.setLanguage(serverLang);
+        }
+
+        File languageFile = new File(LandMainClass.MAIN_CLASS.getDataFolder() + "/Language/" + this.config.getLanguage() + ".yml");
+        if (supportLanguageList.contains(this.config.getLanguage())) {
+            Config languageConfig = new Config(Config.YAML);
+            languageConfig.load(LandMainClass.MAIN_CLASS.getResource("Language/" + this.config.getLanguage() + ".yml"));
+            this.language = new Language(languageConfig);
+        }else if (languageFile.exists()) {
+            this.language = new Language(new Config(languageFile, Config.YAML));
+            Config config = new Config();
+            config.load(LandMainClass.MAIN_CLASS.getResource("Language/chs.yml"));
+            this.language.update(config);
+        }else {
+            Config languageConfig = new Config(Config.YAML);
+            languageConfig.load(LandMainClass.MAIN_CLASS.getResource("Language/" + serverLang + ".yml"));
+            this.language = new Language(languageConfig);
+        }
 
         LandMainClass.MAIN_CLASS.getLogger().info("Language is set to: " + this.config.getLanguage());
     }
@@ -166,14 +190,14 @@ public class LandModule {
     }
 
 
-    private void registerListener(){
+    private void registerListener() {
         LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new LandListener(),LandMainClass.MAIN_CLASS);
         LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new WindowListener(),LandMainClass.MAIN_CLASS);
     }
 
 
 
-    public void invitePlayer(Player master,Player target,LandData data){
+    public void invitePlayer(Player master, Player target, LandData data) {
         if(!data.getMaster().equalsIgnoreCase(target.getName()) && !data.getMember().containsKey(target.getName())) {
             if (!inviteLands.containsKey(target.getName())) {
                 inviteLands.put(target.getName(), new LinkedList<>());
@@ -183,12 +207,16 @@ public class LandModule {
             if (!handles.contains(handle)) {
                 target.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerTarget").replace("%p%", master.getName()).replace("%name%", data.getLandName()));
                 master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerMaster")
-                        .replace("%p%", target.getName()).replace("%name%", data.getLandName()).replace("%time%", "60"));
+                        .replace("%p%", target.getName())
+                        .replace("%name%", data.getLandName())
+                        .replace("%time%", "60")
+                );
                 handles.add(handle);
+                CreateWindow.sendInviteAcceptMenu(master, target, data);
             } else {
                 master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerExists").replace("%p%", target.getName()));
             }
-        }else{
+        }else {
             master.sendMessage(LandModule.getModule().getConfig().getTitle()+getLanguage().translateString("invitePlayerInArray").replace("%p%",target.getName()).replace("%name%",data.getLandName()));
         }
     }
