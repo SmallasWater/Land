@@ -23,6 +23,7 @@ public class LandListenerPn implements Listener {
     @EventHandler
     public void onBlockPiston(BlockPistonEvent event) {
         Block blockPistonBase = event.getBlock();
+        LandData firstLand = DataTool.getPlayerLandData(blockPistonBase);
         ArrayList<Position> checkPositions = new ArrayList<>();
         Block checkBlock = blockPistonBase;
         int maxDistance = event.isExtending() ? 12 : 2;
@@ -68,6 +69,9 @@ public class LandListenerPn implements Listener {
         checkPositions.addAll(event.getDestroyedBlocks());
         for (Position position : checkPositions) {
             LandData data = DataTool.getPlayerLandData(position);
+            if (firstLand != null && firstLand.equals(data)) {
+                continue; //忽略领地内使用的情况
+            }
             if (data != null) {
                 if (data.getLandOtherSet().isOpen(OtherLandSetting.RED_STONE_OUT)) {
                     for (Player player : DataTool.getAroundPlayers(blockPistonBase, 5)) {
