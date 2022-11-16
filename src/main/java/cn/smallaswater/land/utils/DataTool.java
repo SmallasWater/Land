@@ -89,14 +89,14 @@ public class DataTool {
     }
 
     public static double getLandMoney(Vector vector, boolean sub) {
-
         LandData data = getLand(vector, sub);
         if (data != null) {
             if (data.getMoney() > 0) {
                 return data.getMoney();
             }
         }
-        return vector.size() * (sub ? LandModule.getModule().getConfig().getSubLandMoney() : LandModule.getModule().getConfig().getLandMoney());
+        double money = vector.size() * (sub ? LandModule.getModule().getConfig().getSubLandMoney() : LandModule.getModule().getConfig().getLandMoney());
+        return Math.round(money * 100) * 0.01;
     }
 
 

@@ -67,13 +67,13 @@ public class CreateSubCommand extends BaseSubCommand {
                                                 return true;
                                             }
                                             LandModule.getModule().getMoney().reduceMoney(player.getName(), money);
-                                            player.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerBuyLandSuccess").replace("%name%", name).replace("%money%", money + ""));
+                                            player.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerBuyLandSuccess").replace("%name%", name).replace("%money%", String.format("%.2f", money)));
                                             getPos().remove(player.getName());
 
                                             return true;
                                         }
                                     } else {
-                                        player.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerBuyLandError").replace("%money%", money + ""));
+                                        player.sendMessage(LandModule.getModule().getConfig().getTitle() + language.translateString("playerBuyLandError").replace("%money%", String.format("%.2f", money)));
                                         getPos().remove(player.getName());
                                         return true;
                                     }
