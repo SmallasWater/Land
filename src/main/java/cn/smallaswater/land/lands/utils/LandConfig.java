@@ -7,7 +7,6 @@ import cn.smallaswater.land.utils.LoadMoney;
 import lombok.Getter;
 import lombok.Setter;
 
-
 import java.io.File;
 import java.util.ArrayList;
 
@@ -55,6 +54,10 @@ public class  LandConfig {
     private int transferTime,transferCold;
 
     private boolean enableTransferTime;
+
+    @Setter
+    @Getter
+    private boolean enableEnhancedResourcePack = false;
 
 
 
@@ -119,6 +122,7 @@ public class  LandConfig {
 
         LandConfig landConfig = new LandConfig(title,landMoney,subLandMoney,sellMoney,blackList,protectList,max,subMax,time,load);
         landConfig.setLanguage(config.getString("language", "eng"));
+        landConfig.setEnableEnhancedResourcePack(config.getBoolean("enable-enhanced-resource-pack", true));
         landConfig.setShowTime(config.getInt("sell-showTime",7));
         Item i = Item.fromString(config.getString("landTool","290:0"));
         landConfig.setLandTool(i);
