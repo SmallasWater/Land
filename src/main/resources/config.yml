@@ -2,6 +2,9 @@
 # language  auto/chs/eng
 language: auto
 
+# Use Land's resource pack to achieve enhancements
+enable-enhanced-resource-pack: true
+
 # Title
 title: "[LAND]"
 

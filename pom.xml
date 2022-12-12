@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cn.smallaswater.land</groupId>
+    <groupId>com.smallaswater</groupId>
     <artifactId>Land</artifactId>
-    <version>1.8.0-PM1E<!-- -SNAPSHOT--></version>
+    <version>1.8.2-PM1E<!-- -SNAPSHOT--></version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -75,9 +75,8 @@
         <dependency>
             <groupId>cn.nukkit</groupId>
             <artifactId>Nukkit</artifactId>
-            <version>PM1E</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/Nukkit-PM1E_1.19.21.2292.jar</systemPath>
+            <version>PM1E_1.19.50.2491</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -129,6 +128,7 @@
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
+                    <encoding>${maven.compiler.encoding}</encoding>
                 </configuration>
             </plugin>
             <plugin>
