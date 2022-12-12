@@ -74,7 +74,22 @@ public class ShowParticleTask extends PluginTask<LandMainClass> {
 
         }
 
+        //获取中心
+        int cx = (vector.getEndX() - vector.getStartX())/2 + vector.getStartX();
+        int cy = (vector.getEndY() - vector.getStartY())/2 + vector.getStartY();
+        int cz = (vector.getEndZ() - vector.getStartZ())/2 + vector.getStartZ();
+
         for (Vector3 vector3 : posList) {
+            if (vector3.x > cx) {
+                vector3.x += 1;
+            }
+            if (vector3.y > cy) {
+                vector3.y += 1;
+            }
+            if (vector3.z > cz) {
+                vector3.z += 1;
+            }
+
             if (LandModule.getModule().getConfig().isEnableEnhancedResourcePack()) {
                 SpawnParticleEffectPacket pk = new SpawnParticleEffectPacket();
                 pk.identifier = particleName;
