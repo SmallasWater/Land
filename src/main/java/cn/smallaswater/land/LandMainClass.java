@@ -1,6 +1,7 @@
 package cn.smallaswater.land;
 
 import cn.nukkit.Server;
+import cn.nukkit.network.protocol.ProtocolInfo;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.resourcepacks.ResourcePack;
 import cn.nukkit.resourcepacks.ResourcePackManager;
@@ -32,7 +33,7 @@ public class LandMainClass extends PluginBase {
     public void onLoad() {
         MAIN_CLASS = this;
 
-        this.saveResource("Resource/Land-ResourcePack.zip", true);
+        this.saveResource("assets/Land-ResourcePack.zip", true);
     }
 
     @Override
@@ -57,8 +58,9 @@ public class LandMainClass extends PluginBase {
         module = new LandModule();
         module.moduleRegister();
 
-        if (LandConfig.getLandConfig().isEnableEnhancedResourcePack()) {
-            File file = new File(this.getDataFolder() + "/Resource/Land-ResourcePack.zip");
+        if (LandConfig.getLandConfig().isEnableEnhancedResourcePack() &&
+                (!"PowerNukkitX".equalsIgnoreCase(this.getServer().getCodename()) || ProtocolInfo.CURRENT_PROTOCOL < 568)) { //PNX 1.19.63开始支持自动读取插件内资源包
+            File file = new File(this.getDataFolder() + "/assets/Land-ResourcePack.zip");
             if (file.exists()) {
                 ResourcePackManager manager = this.getServer().getResourcePackManager();
                 synchronized (manager) {
