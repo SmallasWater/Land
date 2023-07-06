@@ -1,20 +1,23 @@
 package cn.smallaswater.land.lands.settings;
 
 /**
+ * 领地权限配置项
+ *
  * @author SmallasWater
  * Create on 2021/3/31 14:22
  * Package cn.smallaswater.land.lands.settings
  */
 public enum OtherLandSetting {
-    /**锁箱子 玩家移动 玩家传送 锁熔炉 锁放置 锁破坏,锁 PVP 锁伤害生物,锁丢弃 生物生成 方块更新*/
+
     BLOCK_UPDATE("方块更新"),
     ENTITY_SPAWN("生物生成"),
     WATER("液体流动"),
     RED_STONE_OUT("阻止领地外活塞"),
     FIRE("火蔓延");
 
-    private String name;
-    OtherLandSetting(String name){
+    private final String name;
+
+    OtherLandSetting(String name) {
         this.name = name;
     }
 

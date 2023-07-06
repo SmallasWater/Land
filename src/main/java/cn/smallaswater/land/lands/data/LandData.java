@@ -11,13 +11,13 @@ import cn.smallaswater.land.event.land.LandCloseEvent;
 import cn.smallaswater.land.event.player.PlayerJoinLandEvent;
 import cn.smallaswater.land.event.player.PlayerQuitLandEvent;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
+import cn.smallaswater.land.lands.settings.LandSetting;
 import cn.smallaswater.land.lands.settings.OtherLandSetting;
+import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.players.MemberSetting;
 import cn.smallaswater.land.players.PlayerSetting;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Vector;
-import cn.smallaswater.land.module.LandModule;
-import cn.smallaswater.land.lands.settings.LandSetting;
 
 import java.io.File;
 import java.util.Date;
@@ -376,10 +376,10 @@ public class LandData  {
 
     @Deprecated
     public boolean hasPermission(String player, cn.smallaswater.land.players.LandSetting setting){
-        return hasPermissionAsOldSetting(player, setting.getName());
+        return hasPermission(player, setting.getName());
     }
 
-    private boolean hasPermissionAsOldSetting(String player, String name) {
+    private boolean hasPermission(String player, String name) {
         if(player != null) {
             Player player1 = Server.getInstance().getPlayer(player);
             if (player1 != null) {
@@ -398,9 +398,8 @@ public class LandData  {
     }
 
     public boolean hasPermission(String player, LandSetting setting){
-        return hasPermissionAsOldSetting(player, setting.getName());
+        return hasPermission(player, setting.getName());
     }
-
 
     public MemberSetting getMember() {
         return member;
@@ -418,7 +417,7 @@ public class LandData  {
         File file = new File(LandModule.getModule().getModuleInfo().getDataFolder()+"/lands/"+landName+".yml");
         if(file.exists()){
             if(!file.delete()){
-                System.out.println("delete "+landName+".yml file error");
+                LandMainClass.MAIN_CLASS.getLogger().error("delete "+landName+".yml file error");
             }
         }
     }
@@ -451,7 +450,6 @@ public class LandData  {
     public int hashCode() {
         return getLandName().hashCode();
     }
-
 
 }
 
