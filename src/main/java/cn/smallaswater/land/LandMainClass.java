@@ -13,6 +13,7 @@ import updata.AutoData;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -38,26 +39,22 @@ public class LandMainClass extends PluginBase {
 
     @Override
     public void onEnable() {
-        if(Server.getInstance().getPluginManager().getPlugin("AutoUpData") != null){
-            if(AutoData.defaultUpData(this,getFile(),"SmallasWater","Land")){
+        if (Server.getInstance().getPluginManager().getPlugin("AutoUpData") != null) {
+            if (AutoData.defaultUpData(this, getFile(), "SmallasWater", "Land")) {
                 return;
             }
         }
 
-        /*File resourcePack = new File(Server.getInstance().getDataPath() + "resource_packs/Land-ResourcePack.zip");
-        if (!resourcePack.exists()) {
-            try {
-                Files.copy(this.getResource("Land-ResourcePack.zip"), resourcePack.toPath());
-                this.getServer().getScheduler().scheduleTask(this, () ->
-                        this.getLogger().warning("Copy of resource pack file complete! Please restart the server to ensure normal reading of the resource pack!"));
-            } catch (Exception e) {
-                this.getLogger().warning("Resource pack file replication failed! This may cause some functions to fail!", e);
-            }
-        }*/
+        this.module = new LandModule();
+        this.module.moduleRegister();
 
-        module = new LandModule();
-        module.moduleRegister();
+        this.loadResourcePack();
+    }
 
+    /**
+     * 加载增强资源包
+     */
+    private void loadResourcePack() {
         if (LandConfig.getLandConfig().isEnableEnhancedResourcePack() &&
                 (!"PowerNukkitX".equalsIgnoreCase(this.getServer().getCodename()) || ProtocolInfo.CURRENT_PROTOCOL < 568)) { //PNX 1.19.63开始支持自动读取插件内资源包
             File file = new File(this.getDataFolder() + "/assets/Land-ResourcePack.zip");
@@ -79,6 +76,16 @@ public class LandMainClass extends PluginBase {
                         resourcePacks.set(manager, packs.toArray(new ResourcePack[0]));
                     } catch (Exception e) {
                         this.getLogger().error("Resource pack loading failed! This may cause some functions to fail!", e);
+                        //注入失败后复制资源包文件
+                        File resourcePack = new File(Server.getInstance().getDataPath() + "resource_packs/Land-ResourcePack.zip");
+                        if (!resourcePack.exists()) {
+                            try {
+                                Files.copy(this.getResource("Land-ResourcePack.zip"), resourcePack.toPath());
+                            } catch (Exception ignored) {
+                                //复制也不行就放弃使用
+                                this.module.getConfig().setEnableEnhancedResourcePack(false);
+                            }
+                        }
                     }
                 }
             }
@@ -91,7 +98,7 @@ public class LandMainClass extends PluginBase {
 
     @Override
     public void onDisable() {
-        if(module != null){
+        if (module != null) {
             module.moduleDisable();
         }
     }

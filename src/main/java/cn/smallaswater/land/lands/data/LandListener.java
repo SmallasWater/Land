@@ -514,6 +514,12 @@ public class LandListener implements Listener {
         }
     }
 
+    /**
+     * 指定坐标是否存在禁止破坏限制
+     *
+     * @param pos 坐标
+     * @return 是否存在禁止破坏限制
+     */
     private boolean canNotTnt(Position pos) {
         LandData landData = DataTool.getPlayerTouchArea(pos);
         return landData != null && !landData.getDefaultSetting().getSetting(LandSetting.BREAK.getName());
@@ -521,21 +527,38 @@ public class LandListener implements Listener {
 
     @EventHandler
     public void onExplosionPrime(ExplosionPrimeEvent event) {
-        event.setCancelled(canNotTnt(event.getEntity()));
+        if (this.canNotTnt(event.getEntity())) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
-        if (canNotTnt(event.getEntity())) {
+        if (this.canNotTnt(event.getEntity())) {
             event.setCancelled(true);
         } else {
             List<Block> blockList = new ArrayList<>(event.getBlockList());
             for (Block block : event.getBlockList()) {
-                if (canNotTnt(block)) {
+                if (this.canNotTnt(block)) {
                     blockList.remove(block);
                 }
             }
             event.setBlockList(blockList);
+        }
+    }
+
+    @EventHandler
+    public void onSignChange(SignChangeEvent event) {
+        Player player = event.getPlayer();
+        Block block = event.getBlock();
+        if (player == null || block == null) {
+            return;
+        }
+        if (this.notCancel(player, block)) {
+            if (this.notHasPermission(player, block, LandSetting.CHANGE_SIGN)) {
+                event.setCancelled();
+                player.sendMessage(LandModule.getModule().getConfig().getTitle() + LandModule.getModule().getLanguage().translateString("notHavePermission"));
+            }
         }
     }
 
