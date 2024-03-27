@@ -13,6 +13,7 @@ import cn.smallaswater.land.handle.KeyHandle;
 import cn.smallaswater.land.lands.LandList;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.LandListener;
+import cn.smallaswater.land.lands.data.LandListenerPn;
 import cn.smallaswater.land.lands.data.LandOtherSet;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
 import cn.smallaswater.land.lands.utils.InviteHandle;
@@ -90,7 +91,10 @@ public class LandModule {
 
         List<String> supportLanguageList = Arrays.asList("chs", "eng");
 
-        String serverLang = "eng";
+        String serverLang = Server.getInstance().getLanguage().getLang();
+        if (!supportLanguageList.contains(serverLang)) {
+            serverLang = "eng";
+        }
 
         if ("auto".equalsIgnoreCase(this.config.getLanguage())) {
             this.config.setLanguage(serverLang);
@@ -187,6 +191,13 @@ public class LandModule {
 
 
     private void registerListener() {
+        try {
+            Class.forName("cn.nukkit.event.block.BlockPistonEvent");
+            LandMainClass.MAIN_CLASS.getLogger().info("enable BlockPistonEvent listener");
+            LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new LandListenerPn(),LandMainClass.MAIN_CLASS);
+        } catch (Exception ignored) {
+
+        }
         LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new LandListener(),LandMainClass.MAIN_CLASS);
         LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new WindowListener(),LandMainClass.MAIN_CLASS);
     }
