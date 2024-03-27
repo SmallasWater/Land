@@ -39,6 +39,17 @@ public class LandListener implements Listener {
 
     private final LinkedHashMap<Player, LandData> move = new LinkedHashMap<>();
 
+    private boolean hasBlockBarrelClass = false;
+
+    public LandListener() {
+        try {
+            Class.forName("cn.nukkit.block.BlockBarrel");
+            this.hasBlockBarrelClass = true;
+        } catch (Exception ignored) {
+
+        }
+    }
+
     @EventHandler
     public void onTransferMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
@@ -285,15 +296,12 @@ public class LandListener implements Listener {
             if (item == null) {
                 item = Item.get(0);
             }
-            try {
-                Class.forName("cn.nukkit.block.BlockBarrel");
+            if (this.hasBlockBarrelClass) {
                 if (event.getBlock() instanceof BlockBarrel) {
                     if (notHasPermission(player, event.getBlock(), LandSetting.LOCK_CHEST)) {
                         event.setCancelled();
                     }
                 }
-            } catch (Exception ignored) {
-
             }
 
             if (event.getBlock() instanceof BlockChest || event.getBlock() instanceof BlockShulkerBox || event.getBlock() instanceof BlockUndyedShulkerBox) {

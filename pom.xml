@@ -69,17 +69,10 @@
             <scope>provided</scope>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>cn.nukkit</groupId>-->
-<!--            <artifactId>nukkit</artifactId>-->
-<!--            <version>1.0-SNAPSHOT</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
-
         <dependency>
-            <groupId>org.powernukkit</groupId>
-            <artifactId>powernukkit</artifactId>
-            <version>1.6.0.1-PN</version>
+            <groupId>cn.nukkit</groupId>
+            <artifactId>Nukkit</artifactId>
+            <version>MOT-java8-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 

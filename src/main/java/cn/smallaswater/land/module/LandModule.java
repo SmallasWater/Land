@@ -1,6 +1,5 @@
 package cn.smallaswater.land.module;
 
-import cn.nukkit.Nukkit;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Position;
@@ -92,7 +91,7 @@ public class LandModule {
 
         List<String> supportLanguageList = Arrays.asList("chs", "eng");
 
-        String serverLang = Server.getInstance().getConfig("settings.language", "eng");
+        String serverLang = Server.getInstance().getLanguage().getLang();
         if (!supportLanguageList.contains(serverLang)) {
             serverLang = "eng";
         }
@@ -192,9 +191,13 @@ public class LandModule {
 
 
     private void registerListener() {
-        if("PowerNukkit".equalsIgnoreCase(Nukkit.CODENAME) || "PowerNukkitX".equalsIgnoreCase(Nukkit.CODENAME)) {
-            LandMainClass.MAIN_CLASS.getLogger().info("enable PowerNukkit listener");
+        try {
+            //兼容NKX
+            Class.forName("cn.nukkit.event.block.BlockPistonEvent");
+            LandMainClass.MAIN_CLASS.getLogger().info("enable BlockPistonEvent listener");
             LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new LandListenerPn(),LandMainClass.MAIN_CLASS);
+        } catch (Exception ignored) {
+
         }
         LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new LandListener(),LandMainClass.MAIN_CLASS);
         LandMainClass.MAIN_CLASS.getServer().getPluginManager().registerEvents(new WindowListener(),LandMainClass.MAIN_CLASS);
