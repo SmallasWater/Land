@@ -56,7 +56,8 @@ public class LandMainClass extends PluginBase {
      */
     private void loadResourcePack() {
         if (LandConfig.getLandConfig().isEnableEnhancedResourcePack() &&
-                (!"PowerNukkitX".equalsIgnoreCase(this.getServer().getCodename()) || ProtocolInfo.CURRENT_PROTOCOL < 568)) { //PNX 1.19.63开始支持自动读取插件内资源包
+                (!"PowerNukkitX".equalsIgnoreCase(this.getServer().getCodename()) || ProtocolInfo.CURRENT_PROTOCOL < 568) &&  //PNX 1.19.63开始支持自动读取插件内资源包
+                (!"MOT".equalsIgnoreCase(this.getServer().getCodename()) || ProtocolInfo.CURRENT_PROTOCOL < 589)) { //MOT 1.20.0开始支持自动读取插件内资源包
             File file = new File(this.getDataFolder() + "/assets/Land-ResourcePack.zip");
             if (file.exists()) {
                 ResourcePackManager manager = this.getServer().getResourcePackManager();
