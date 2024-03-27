@@ -6,7 +6,7 @@
 
     <groupId>com.smallaswater</groupId>
     <artifactId>Land</artifactId>
-    <version>1.8.4<!-- -SNAPSHOT--></version>
+    <version>1.8.5-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,9 +17,13 @@
     </properties>
 
     <distributionManagement>
+        <snapshotRepository>
+            <id>repo-lanink-cn</id>
+            <url>https://repo.lanink.cn/repository/maven-snapshots/</url>
+        </snapshotRepository>
         <repository>
-            <id>maven-repo</id>
-            <url>file:/www/wwwroot/repo.lanink.cn</url>
+            <id>repo-lanink-cn</id>
+            <url>https://repo.lanink.cn/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 
@@ -46,7 +50,7 @@
         </repository>
         <repository>
             <id>repo-lanink-cn</id>
-            <url>https://repo.lanink.cn/</url>
+            <url>https://repo.lanink.cn/repository/maven-public/</url>
         </repository>
     </repositories>
 
@@ -54,14 +58,14 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>24.0.1</version>
+            <version>24.1.0</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
+            <version>1.18.32</version>
             <scope>provided</scope>
         </dependency>
 
@@ -98,7 +102,7 @@
         <dependency>
             <groupId>com.smallaswater.autoupdata</groupId>
             <artifactId>AutoUpData</artifactId>
-            <version>1.2.3</version>
+            <version>1.3.0</version>
             <scope>provided</scope>
         </dependency>
 
