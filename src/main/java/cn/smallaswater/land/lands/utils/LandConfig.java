@@ -59,6 +59,13 @@ public class  LandConfig {
     @Getter
     private boolean enableEnhancedResourcePack = false;
 
+    @Setter
+    @Getter
+    private boolean enableShowPlayerAroundLandRange = false;
+    @Setter
+    @Getter
+    private int showPlayerAroundLandRange = 3;
+
 
 
     private LandConfig(String title, double landMoney,double subLandMoney, int sellMoney, ArrayList<String> blackList,ArrayList<String> protectList, int maxLand,int subMax, int time,int loadEconomy){
@@ -133,6 +140,10 @@ public class  LandConfig {
         landConfig.setEchoProtectListMessage(config.getBoolean("echoProtectListMessage",true));
         landConfig.setAutoSave(config.getBoolean("auto-save-land.open",true));
         landConfig.setAutoSaveTime(config.getInt("auto-save-land.time",5));
+        if (config.getBoolean("showPlayerAroundLandRange.enable")) {
+            landConfig.setEnableShowPlayerAroundLandRange(true);
+            landConfig.setShowPlayerAroundLandRange(config.getInt("showPlayerAroundLandRange.range", 3));
+        }
 
         return landConfig;
     }

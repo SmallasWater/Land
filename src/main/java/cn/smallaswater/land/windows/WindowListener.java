@@ -22,6 +22,7 @@ import cn.smallaswater.land.manager.KeyHandleManager;
 import cn.smallaswater.land.manager.TimerHandleManager;
 import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.players.PlayerSetting;
+import cn.smallaswater.land.tasks.ShowParticleTask;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.form.windows.AdvancedFormWindowCustom;
@@ -484,7 +485,9 @@ public class WindowListener implements Listener {
                 CreateWindow.onJoinQuitTextMenu(p);
                 break;
             case CreateWindow.SHOW_PARTICLE_BUTTON:
-                LandModule.getModule().showTime.put(data,LandModule.getModule().getConfig().getTime());
+                ShowParticleTask.ShowConfig showConfig = new ShowParticleTask.ShowConfig();
+                showConfig.setTime(LandModule.getModule().getConfig().getTime());
+                ShowParticleTask.showList.put(data, showConfig);
                 return true;
             case CreateWindow.SET_SUB_LAND_BUTTON:
                 if(data instanceof LandSubData){

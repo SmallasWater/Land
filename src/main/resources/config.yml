@@ -49,6 +49,14 @@ subMax: 3
 # Set the domain display range of time
 time: 5
 
+# 显示玩附近领地范围
+# show player around land range
+showPlayerAroundLandRange:
+  # 是否启用
+  enable: false
+  # 范围
+  range: 3
+
 # show time(天)
 sell-showTime: 7
 

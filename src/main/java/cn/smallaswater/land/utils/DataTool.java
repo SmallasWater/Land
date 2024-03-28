@@ -9,6 +9,7 @@ import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
 import cn.smallaswater.land.lands.utils.ScreenSetting;
 import cn.smallaswater.land.module.LandModule;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -183,9 +184,9 @@ public class DataTool {
      * @param isMaster 是否只获取主领地
      * @return {@link LandData}
      */
+    @Nullable
     public static LandData getPlayerTouchArea(Position position, boolean isMaster) {
-        LandData landName = null;
-        if (LandModule.getModule().getList().getData().size() > 0) {
+        if (!LandModule.getModule().getList().getData().isEmpty()) {
             Vector vector;
             for (LandData areaClass : LandModule.getModule().getList().getData()) {
                 if (!isMaster) {
@@ -200,12 +201,36 @@ public class DataTool {
                 vector = areaClass.getVector().clone();
                 vector.sort();
                 if (isEquals(position, vector)) {
-                    landName = areaClass;
-                    break;
+                    return areaClass;
                 }
             }
         }
-        return landName;
+        return null;
+    }
+
+    /**
+     * 获取位置周围的领地
+     *
+     * @param position 中心位置
+     * @param size 范围
+     * @return {@link LinkedList<LandData>} 领地列表
+     */
+    public static LinkedList<LandData> getAroundLandData(Position position, int size) {
+        LinkedList<LandData> landDataList = new LinkedList<>();
+        for (LandData landData : LandModule.getModule().getList().getData()) {
+            Vector vector = landData.getVector().clone();
+            vector.addStartX(-size);
+            vector.addStartY(-size);
+            vector.addStartZ(-size);
+            vector.addEndX(size);
+            vector.addEndY(size);
+            vector.addEndZ(size);
+            vector.sort();
+            if (isEquals(position, vector)) {
+                landDataList.add(landData);
+            }
+        }
+        return landDataList;
     }
 
     //检测附近玩家
@@ -233,10 +258,17 @@ public class DataTool {
         return getPlayerTouchArea(position, false);
     }
 
+    /**
+     * 判断指定坐标是否在区域内
+     *
+     * @param position 坐标
+     * @param vector 区域
+     * @return 是否在区域内
+     */
     private static boolean isEquals(Position position, Vector vector) {
         try {
             if (vector != null && position != null) {
-                return position.level.getFolderName().equals(vector.getLevel().getFolderName())
+                return position.level == vector.getLevel()
                         && vector.getStartX() <= position.getFloorX() && vector.getEndX() >= position.getFloorX()
                         && vector.getStartY() <= position.getFloorY() && vector.getEndY() >= position.getFloorY()
                         && vector.getStartZ() <= position.getFloorZ() && vector.getEndZ() >= position.getFloorZ();

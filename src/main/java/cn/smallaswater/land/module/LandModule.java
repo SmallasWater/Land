@@ -52,9 +52,6 @@ public class LandModule {
 
     public ArrayList<KeyHandle> keyHanle = new ArrayList<>();
 
-
-    public LinkedHashMap<LandData,Integer> showTime = new LinkedHashMap<>();
-
     public LinkedHashMap<String, LinkedList<Position>> pos = new LinkedHashMap<>();
 
     public LinkedHashMap<String, LinkedList<Position>> subPos = new LinkedHashMap<>();
@@ -158,7 +155,7 @@ public class LandModule {
             Server.getInstance().getScheduler().scheduleDelayedRepeatingTask(getModuleInfo(),new AutoSaveLandTask(getModuleInfo()),(20 * config.getAutoSaveTime()) * 60,(20 * config.getAutoSaveTime()) * 60);
         }
         Server.getInstance().getScheduler().scheduleRepeatingTask(new TransferColdTask(getModuleInfo()),20);
-        Server.getInstance().getScheduler().scheduleRepeatingTask(new ShowParticleTask(getModuleInfo()),20);
+        Server.getInstance().getScheduler().scheduleRepeatingTask(new ShowParticleTask(getModuleInfo()),20, true);
         //检测公示期
         Server.getInstance().getScheduler().scheduleRepeatingTask(new ShowSellLandTask(getModuleInfo()),40);
 
