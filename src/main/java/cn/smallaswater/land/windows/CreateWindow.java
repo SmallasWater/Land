@@ -73,7 +73,7 @@ public class CreateWindow {
         for (LandData data : DataTool.getPlayerAllLand(player)) {
             simple.addButton(getButton(player, data));
         }
-        if (simple.getButtons().size() == 0) {
+        if (simple.getButtons().isEmpty()) {
             simple.setContent(LandModule.getModule().getLanguage().translateString("notHaveLand"));
         }
         player.showFormWindow(simple, MENU);

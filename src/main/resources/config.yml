@@ -1,4 +1,3 @@
----
 # language  auto/chs/eng
 language: auto
 
@@ -70,11 +69,3 @@ transfer-time-setting:
 auto-save-land:
   open: true
   time: 30
-
-
-
-
-
-
-
-...

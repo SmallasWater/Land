@@ -374,11 +374,6 @@ public class LandData  {
 
     }
 
-    @Deprecated
-    public boolean hasPermission(String player, cn.smallaswater.land.players.LandSetting setting){
-        return hasPermission(player, setting.getName());
-    }
-
     private boolean hasPermission(String player, String name) {
         if(player != null) {
             Player player1 = Server.getInstance().getPlayer(player);
