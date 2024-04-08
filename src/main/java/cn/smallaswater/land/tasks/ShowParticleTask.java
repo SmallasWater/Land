@@ -42,7 +42,9 @@ public class ShowParticleTask extends PluginTask<LandMainClass> {
                     if (!showList.containsKey(landData)) {
                         ShowConfig value = new ShowConfig();
                         value.setTime(1);
-                        value.setPlayers(Collections.singletonList(player));
+                        ArrayList<Player> players = new ArrayList<>();
+                        players.add(player);
+                        value.setPlayers(players);
                         showList.put(landData, value);
                     }
                     ShowConfig showConfig = showList.get(landData);
