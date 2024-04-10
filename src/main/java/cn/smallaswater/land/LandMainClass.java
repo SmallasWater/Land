@@ -40,7 +40,7 @@ public class LandMainClass extends PluginBase {
     @Override
     public void onEnable() {
         if (Server.getInstance().getPluginManager().getPlugin("AutoUpData") != null) {
-            if (AutoData.defaultUpData(this, getFile(), "SmallasWater", "Land")) {
+            if (AutoData.defaultUpDataByMaven(this, getFile(), "com.smallaswater", "Land", "")) {
                 return;
             }
         }
