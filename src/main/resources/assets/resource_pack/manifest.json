@@ -3,15 +3,15 @@
    "header" : {
       "description" : "§l§2Land插件效果增强资源包，优化Land插件使用体验！",
       "name" : "§l§6Land-插件效果增强资源包",
-      "uuid" : "3b683afa-b333-c5d0-7cdd-eb7f3e451234",
-      "version" : [ 0, 0, 1 ]
+      "uuid" : "6f748e1d-9851-4238-bc12-9199d0019324",
+      "version" : [ 0, 0, 2 ]
    },
    "modules" : [
       {
          "description" : "§l§6Land-插件效果增强资源包",
          "type" : "resources",
-         "uuid" : "e30493fa-ab01-9ec4-44ed-4d438f758502",
-         "version" : [ 0, 0, 1 ]
+         "uuid" : "a6f41224-7699-4f0f-aac7-ab23fcbc1b1a",
+         "version" : [ 0, 0, 2 ]
       }
    ]
 }

@@ -159,7 +159,7 @@ public class LandModule {
         //检测公示期
         Server.getInstance().getScheduler().scheduleRepeatingTask(new ShowSellLandTask(getModuleInfo()),40);
 
-        getModuleInfo().getServer().getScheduler().scheduleRepeatingTask(new Task() {
+        getModuleInfo().getServer().getScheduler().scheduleRepeatingTask(LandMainClass.MAIN_CLASS, new Task() {
             @Override
             public void onRun(int i) {
                 for(Player player: Server.getInstance().getOnlinePlayers().values()){
