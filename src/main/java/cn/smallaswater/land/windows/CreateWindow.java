@@ -6,6 +6,7 @@ import cn.nukkit.form.element.*;
 import cn.nukkit.form.window.FormWindowCustom;
 import cn.nukkit.form.window.FormWindowModal;
 import cn.nukkit.form.window.FormWindowSimple;
+import cn.nukkit.network.protocol.ProtocolInfo;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
 import cn.smallaswater.land.lands.settings.LandSetting;
@@ -381,15 +382,22 @@ public class CreateWindow {
         player.showFormWindow(simple, SET_LAND);
     }
 
+
     /**
-     * TODO 发送领地设置
+     * 发送领地其他权限设置菜单
+     *
+     * @param player 玩家
      */
     static void sendLandOtherSettingMenu(Player player) {
         LandData data = LandModule.getModule().clickData.get(player);
         if (data != null) {
             FormWindowCustom custom = new FormWindowCustom(LandModule.getModule().getConfig().getTitle());
             for (OtherLandSetting setting : OtherLandSetting.values()) {
-                custom.addElement(new ElementToggle(setting.getName(), data.hasPermission(setting)));
+                ElementToggle element = new ElementToggle(setting.getName(), data.hasPermission(setting));
+                if (ProtocolInfo.CURRENT_PROTOCOL >= 844) { //仅在支持的nk版本上调用方法
+                    element.setTooltip(setting.getTip());
+                }
+                custom.addElement(element);
             }
             player.showFormWindow(custom, LAND_ALL_DEFAULT_SETTING);
         }

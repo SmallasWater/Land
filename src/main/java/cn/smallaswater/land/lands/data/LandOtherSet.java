@@ -12,40 +12,37 @@ import java.util.Map;
  */
 public class LandOtherSet {
 
-    private LinkedHashMap<String,Boolean> otherLandSetting = new LinkedHashMap<>();
+    private LinkedHashMap<String, Boolean> otherLandSetting = new LinkedHashMap<>();
 
-    public LandOtherSet(){
-        for(OtherLandSetting setting: OtherLandSetting.values()){
-            otherLandSetting.put(setting.getName(),true);
+    public LandOtherSet() {
+        for (OtherLandSetting setting : OtherLandSetting.values()) {
+            otherLandSetting.put(setting.getName(), true);
         }
     }
 
-    public LandOtherSet(LinkedHashMap<String,Boolean> otherLandSetting){
+    public LandOtherSet(LinkedHashMap<String, Boolean> otherLandSetting) {
         this.otherLandSetting = otherLandSetting;
     }
 
-    public boolean isOpen(OtherLandSetting set){
-        if(otherLandSetting.containsKey(set.getName())){
-            return otherLandSetting.get(set.getName());
-        }
-        return true;
+    public boolean isOpen(OtherLandSetting set) {
+        return otherLandSetting.getOrDefault(set.getName(), true);
     }
 
-    public void setOpen(OtherLandSetting otherLandSetting,boolean value){
-        this.otherLandSetting.put(otherLandSetting.getName(),value);
+    public void setOpen(OtherLandSetting otherLandSetting, boolean value) {
+        this.otherLandSetting.put(otherLandSetting.getName(), value);
     }
 
     public LinkedHashMap<String, Boolean> getOtherLandSetting() {
         return otherLandSetting;
     }
 
-    public static LandOtherSet getLandOtherSetByMap(Map map){
-        LinkedHashMap<String,Boolean> otherLandSetting = new LinkedHashMap<>();
-        for(OtherLandSetting setting: OtherLandSetting.values()){
-            if(map.containsKey(setting.getName())) {
+    public static LandOtherSet getLandOtherSetByMap(Map map) {
+        LinkedHashMap<String, Boolean> otherLandSetting = new LinkedHashMap<>();
+        for (OtherLandSetting setting : OtherLandSetting.values()) {
+            if (map.containsKey(setting.getName())) {
                 otherLandSetting.put(setting.getName(), Boolean.parseBoolean(map.get(setting.getName()).toString()));
-            }else{
-                otherLandSetting.put(setting.getName(),true);
+            } else {
+                otherLandSetting.put(setting.getName(), true);
             }
         }
         return new LandOtherSet(otherLandSetting);

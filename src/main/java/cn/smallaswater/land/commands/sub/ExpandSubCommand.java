@@ -8,10 +8,10 @@ import cn.nukkit.level.Position;
 import cn.smallaswater.land.commands.base.BaseSubCommand;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
+import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.utils.Language;
 import cn.smallaswater.land.utils.Vector;
-import cn.smallaswater.land.module.LandModule;
 
 
 /**
@@ -43,9 +43,8 @@ public class ExpandSubCommand extends BaseSubCommand {
                 }
                 LandData data = DataTool.getPlayerLandData(((Player) commandSender).getPosition());
                 if(data != null) {
-                    Vector vector;
                     commandSender.sendMessage(title+language.translateString("mathLandMoney"));
-                    vector = newLandDataVector((Player) commandSender,i,data.getVector().clone());
+                    Vector vector = newLandDataVector((Player) commandSender,i,data.getVector().clone());
                     LandData name = DataTool.checkOverlap(vector);
                     if(data instanceof LandSubData) {
                         LandData in = DataTool.inLandAll(vector);
@@ -144,7 +143,7 @@ public class ExpandSubCommand extends BaseSubCommand {
             }
 
         }
-        return vector.deSort();
+        return vector.sort();
     }
 
     @Override

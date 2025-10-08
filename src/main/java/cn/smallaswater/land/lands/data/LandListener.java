@@ -64,7 +64,7 @@ public class LandListener implements Listener {
     }
 
     @EventHandler
-    public void onCultivatedLandProtect(BlockFromToEvent event) {
+    public void onBlockFromTo(BlockFromToEvent event) {
         LandData fromData = DataTool.getPlayerLandData(event.getFrom());
         if (fromData != null) {
             if (!fromData.getLandOtherSet().isOpen(OtherLandSetting.BLOCK_UPDATE)) {
@@ -74,7 +74,24 @@ public class LandListener implements Listener {
         }
         LandData toData = DataTool.getPlayerLandData(event.getTo());
         if (toData != null) {
-            if (!toData.getLandOtherSet().isOpen(OtherLandSetting.BLOCK_UPDATE)) {
+            LandOtherSet landOtherSet = toData.getLandOtherSet();
+            if (!landOtherSet.isOpen(OtherLandSetting.BLOCK_UPDATE)) {
+                event.setCancelled();
+            }
+            if (!landOtherSet.isOpen(OtherLandSetting.WATER_OUT)) {
+                if (event.getTo() instanceof BlockLiquid) {
+                    event.setCancelled();
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onLiquidFlow(LiquidFlowEvent event) {
+        LandData data = DataTool.getPlayerLandData(event.getSource());
+        LandData toData = DataTool.getPlayerLandData(event.getTo());
+        if (toData != null && (data == null || data != toData)) {
+            if (!toData.getLandOtherSet().isOpen(OtherLandSetting.WATER_OUT)) {
                 event.setCancelled();
             }
         }
@@ -383,7 +400,7 @@ public class LandListener implements Listener {
                 event.setCancelled();
             }
             if (!data.getLandOtherSet().isOpen(OtherLandSetting.WATER)) {
-                if ((event.getBlock().getName().contains("Water")) || (event.getBlock().getName().contains("Lava"))) {
+                if (event.getBlock() instanceof BlockLiquid) {
                     event.setCancelled();
                 }
             }

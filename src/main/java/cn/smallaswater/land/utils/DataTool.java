@@ -61,6 +61,15 @@ public class DataTool {
         return data;
     }
 
+    /**
+     * 根据区域获取领地数据（检查重叠）
+     *
+     * @param vector 区域
+     */
+    public static LandData checkOverlap(Vector vector) {
+        return checkOverlap(vector, null);
+    }
+
     public static LandData checkOverlap(Vector vector, LandData sub) {
         vector = vector.clone();
         vector.sort();
@@ -78,15 +87,6 @@ public class DataTool {
             }
         }
         return null;
-    }
-
-    /**
-     * 根据区域获取领地数据（检查重叠）
-     *
-     * @param vector 区域
-     */
-    public static LandData checkOverlap(Vector vector) {
-        return checkOverlap(vector, null);
     }
 
     public static double getLandMoney(Vector vector, boolean sub) {
@@ -130,7 +130,7 @@ public class DataTool {
                 continue;
             }
             data.add(data1);
-            if (data1.getSubData().size() > 0) {
+            if (!data1.getSubData().isEmpty()) {
                 data.addAll(data1.getSubData());
             }
         }
