@@ -45,7 +45,6 @@ public class ExpandSubCommand extends BaseSubCommand {
                 if(data != null) {
                     commandSender.sendMessage(title+language.translateString("mathLandMoney"));
                     Vector vector = newLandDataVector((Player) commandSender,i,data.getVector().clone());
-                    LandData name = DataTool.checkOverlap(vector);
                     if(data instanceof LandSubData) {
                         LandData in = DataTool.inLandAll(vector);
                         if(in != null && in.getLandName().equalsIgnoreCase(((LandSubData) data).getMasterData().getLandName())){
@@ -53,12 +52,18 @@ public class ExpandSubCommand extends BaseSubCommand {
                                 commandSender.sendMessage(title + language.translateString("notHavePermission"));
                                 return true;
                             }
+                            LandData subOverlap = DataTool.checkOverlap(vector, ((LandSubData) data).getMasterData(), data);
+                            if (subOverlap != null) {
+                                commandSender.sendMessage(title + language.translateString("playerBuyLandErrorLandInArray").replace("%name%", subOverlap.getLandName()));
+                                return true;
+                            }
                         }else{
                             commandSender.sendMessage(language.translateString("subInMaster").replace("%name%",((LandSubData) data).getMasterData().getLandName()));
                             return true;
                         }
                     }else{
-                        if (name != null && !name.equals(data)) {
+                        LandData name = DataTool.checkOverlap(vector, null, data);
+                        if (name != null) {
                             commandSender.sendMessage(title + language.translateString("playerBuyLandErrorLandInArray").replace("%name%", name.getLandName()));
                             return true;
                         }

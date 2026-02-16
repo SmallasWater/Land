@@ -75,16 +75,33 @@ public class DataTool {
     }
 
     public static LandData checkOverlap(Vector vector, LandData sub) {
+        return checkOverlap(vector, sub, null);
+    }
+
+    /**
+     * 检查区域重叠，支持排除指定领地（用于扩展时排除自身）
+     *
+     * @param vector  待检测区域
+     * @param sub     父领地（非null时检测子领地间重叠），null时检测主领地间重叠
+     * @param exclude 需要排除的领地（通常是正在扩展的自身）
+     */
+    public static LandData checkOverlap(Vector vector, LandData sub, LandData exclude) {
         vector = vector.clone();
         vector.sort();
         if (sub == null) {
             for (LandData overlap : LandModule.getModule().getList().getData()) {
+                if (overlap.equals(exclude)) {
+                    continue;
+                }
                 if (checkIt(vector, overlap)) {
                     return overlap;
                 }
             }
         } else {
             for (LandSubData data : sub.getSubData()) {
+                if (data.equals(exclude)) {
+                    continue;
+                }
                 if (checkIt(vector, data)) {
                     return data;
                 }
