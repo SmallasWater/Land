@@ -246,7 +246,7 @@ public class LandData  {
     }
 
     public void removeSubLand(String landName){
-        for(LandSubData data:subData){
+        for(LandSubData data : new LinkedList<>(subData)){
             if(data.getLandName().equalsIgnoreCase(landName)){
                 data.close();
             }
@@ -407,6 +407,7 @@ public class LandData  {
             return;
         }
         if(LandModule.getModule().getList().contains(this)){
+            LandModule.getModule().getList().removeFromChunkIndex(this);
             LandModule.getModule().getList().getData().remove(this);
         }
         File file = new File(LandModule.getModule().getModuleInfo().getDataFolder()+"/lands/"+landName+".yml");
@@ -443,7 +444,7 @@ public class LandData  {
 
     @Override
     public int hashCode() {
-        return getLandName().hashCode();
+        return getLandName().toLowerCase().hashCode();
     }
 
 }

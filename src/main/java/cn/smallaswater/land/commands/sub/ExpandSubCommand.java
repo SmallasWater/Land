@@ -66,7 +66,9 @@ public class ExpandSubCommand extends BaseSubCommand {
                     double money = DataTool.getLandMoney(vector) - DataTool.getLandMoney(data.getVector());
                     if(LandModule.getModule().getMoney().myMoney(commandSender.getName()) >= money){
                         LandModule.getModule().getMoney().reduceMoney(commandSender.getName(),money);
+                        LandModule.getModule().getList().removeFromChunkIndex(data);
                         data.setVector(vector);
+                        LandModule.getModule().getList().addToChunkIndex(data);
                         commandSender.sendMessage(title+language.translateString("expandNeedSuccess")
                                 .replace("%count%",i+"").replace("%name%",data.getLandName()).replace("%money%",money+""));
                         return true;

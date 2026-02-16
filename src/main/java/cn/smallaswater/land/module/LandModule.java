@@ -287,6 +287,7 @@ public class LandModule {
 
 
             landList = new LandList(sqrtLand(data));
+            landList.buildChunkIndex();
         }
         return landList;
 

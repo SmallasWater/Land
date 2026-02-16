@@ -4,9 +4,9 @@ import cn.nukkit.Server;
 import cn.nukkit.level.Position;
 import cn.smallaswater.land.event.land.LandCloseEvent;
 import cn.smallaswater.land.lands.data.LandData;
-import cn.smallaswater.land.players.MemberSetting;
-import cn.smallaswater.land.module.LandModule;
 import cn.smallaswater.land.lands.settings.LandSetting;
+import cn.smallaswater.land.module.LandModule;
+import cn.smallaswater.land.players.MemberSetting;
 import cn.smallaswater.land.players.PlayerSetting;
 import cn.smallaswater.land.utils.Vector;
 
@@ -122,6 +122,6 @@ public class LandSubData extends LandData{
 
     @Override
     public int hashCode() {
-        return getLandName().hashCode() + masterData.hashCode();
+        return getLandName().toLowerCase().hashCode() + masterData.toLowerCase().hashCode();
     }
 }
