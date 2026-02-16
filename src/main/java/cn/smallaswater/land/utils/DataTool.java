@@ -21,7 +21,8 @@ import java.util.*;
  */
 public class DataTool {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static final ThreadLocal<SimpleDateFormat> DATE_FORMAT =
+        ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
 
     private static boolean checkIt(Vector vector, LandData overlap) {
         if (vector != null && overlap != null) {
@@ -361,13 +362,13 @@ public class DataTool {
     }
 
     public static String getDateToString(Date date) {
-        return DATE_FORMAT.format(date);
+        return DATE_FORMAT.get().format(date);
     }
 
     //转换String为Date
     public static Date getDate(String format) {
         try {
-            return DATE_FORMAT.parse(format);
+            return DATE_FORMAT.get().parse(format);
         } catch (ParseException e) {
             return null;
         }
