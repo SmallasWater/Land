@@ -123,7 +123,7 @@ public class WindowListener implements Listener {
             }
             if(player1 != null){
                 PlayerGetLandEvent event1 = new PlayerGetLandEvent(player1,data,p.getName());
-                Server.getInstance().getPluginManager().callEvent(event);
+                Server.getInstance().getPluginManager().callEvent(event1);
                 if(event1.isCancelled()){
                     return;
                 }

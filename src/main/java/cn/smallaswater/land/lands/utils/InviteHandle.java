@@ -7,8 +7,8 @@ import cn.smallaswater.land.event.player.PlayerDenyLandInviteEvent;
 import cn.smallaswater.land.event.player.PlayerInviteTimeOutEvent;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
-import cn.smallaswater.land.utils.DataTool;
 import cn.smallaswater.land.module.LandModule;
+import cn.smallaswater.land.utils.DataTool;
 
 import java.util.LinkedList;
 
@@ -149,7 +149,7 @@ public class InviteHandle {
         m = Server.getInstance().getPlayer(member);
         if(m != null) {
             m.sendMessage(LandModule.getModule().getConfig().getTitle()+LandModule.getModule().getLanguage().translateString("denyMessageMember")
-                    .replace("%p%", member).replace("%name%", this.data.getLandName()));
+                    .replace("%p%", master).replace("%name%", this.data.getLandName()));
         }
         this.close();
     }
