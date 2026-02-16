@@ -99,12 +99,22 @@ public class LandListener implements Listener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
+        // 玩家只是转头时不需要查询领地
+        Location from = event.getFrom();
+        Location to = event.getTo();
+        if (from.getFloorX() == to.getFloorX()
+                && from.getFloorY() == to.getFloorY()
+                && from.getFloorZ() == to.getFloorZ()) {
+            return;
+        }
+
         Player player = event.getPlayer();
         LandData data = DataTool.getPlayerLandData(player);
 
         if (data != null) {
-
-            if (notHasPermission(player, player.getPosition(), LandSetting.MOVE)) {
+            // 直接复用已查到的 data 检查权限，避免二次全量扫描
+            if (!data.hasPermission(player.getName(), LandSetting.MOVE)) {
+                sendNoPermission(player, LandSetting.MOVE);
                 event.setCancelled();
                 player.knockBack(player, 0, (player.x - player.getLocation().x), (player.z - player.getLocation().z), 0.8);
                 return;
@@ -181,12 +191,7 @@ public class LandListener implements Listener {
 
     @EventHandler
     public void onPlayer(BlockPlaceEvent event) {
-        Player player = event.getPlayer();
-        if (notCancel(player, event.getBlock())) {
-            if (notHasPermission(player, event.getBlock(), LandSetting.PLACE)) {
-                event.setCancelled();
-            }
-        } else {
+        if (!checkPermission(event.getPlayer(), event.getBlock(), LandSetting.PLACE)) {
             event.setCancelled();
         }
     }
@@ -219,13 +224,7 @@ public class LandListener implements Listener {
 
     @EventHandler
     public void onBreak(BlockBreakEvent event) {
-        Player player = event.getPlayer();
-
-        if (notCancel(player, event.getBlock())) {
-            if (notHasPermission(player, event.getBlock(), LandSetting.BREAK)) {
-                event.setCancelled();
-            }
-        } else {
+        if (!checkPermission(event.getPlayer(), event.getBlock(), LandSetting.BREAK)) {
             event.setCancelled();
         }
     }
@@ -252,6 +251,37 @@ public class LandListener implements Listener {
             }
         }
         return true;
+    }
+
+    /**
+     * 合并 notCancel + notHasPermission 的权限检查，只做一次领地查询
+     *
+     * @return true=允许, false=应取消
+     */
+    private boolean checkPermission(Player player, Position position, LandSetting setting) {
+        if (position instanceof Block && ((Block) position).getId() == BlockID.AIR) {
+            return true;
+        }
+        LandData data = DataTool.getPlayerTouchArea(position);
+        if (LandModule.getModule().getConfig().getProtectList().contains(position.level.getFolderName())) {
+            if (data == null && !player.isOp()) {
+                if (LandMainClass.MAIN_CLASS.getModule().getConfig().isEchoProtectListMessage()) {
+                    player.sendMessage(LandModule.getModule().getConfig().getTitle() + LandModule.getModule().getLanguage().translateString("protectLevel"));
+                }
+                return false;
+            }
+        }
+        if (data != null && !data.hasPermission(player.getName(), setting)) {
+            sendNoPermission(player, setting);
+            return false;
+        }
+        return true;
+    }
+
+    private void sendNoPermission(Player player, LandSetting setting) {
+        player.sendMessage(LandModule.getModule().getConfig().getTitle() + LandModule.getModule().getLanguage().translateString("notHavePermission")
+                .replace("%title%", LandModule.getModule().getConfig().getTitle())
+                .replace("%setting%", setting.getName()));
     }
 
     private boolean notHasPermission(Player player, Position position, LandSetting setting) {
@@ -308,50 +338,73 @@ public class LandListener implements Listener {
     @EventHandler
     public void onUseChest(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (notCancel(player, event.getBlock())) {
-            Item item = event.getItem();
-            if (item == null) {
-                item = Item.get(0);
-            }
-            if (this.hasBlockBarrelClass) {
-                if (event.getBlock() instanceof BlockBarrel) {
-                    if (notHasPermission(player, event.getBlock(), LandSetting.LOCK_CHEST)) {
-                        event.setCancelled();
-                    }
-                }
-            }
+        Block block = event.getBlock();
 
-            if (event.getBlock() instanceof BlockChest || event.getBlock() instanceof BlockShulkerBox || event.getBlock() instanceof BlockUndyedShulkerBox) {
-                if (notHasPermission(player, event.getBlock(), LandSetting.LOCK_CHEST)) {
-                    event.setCancelled();
-                }
-            }
-            if (event.getBlock() instanceof BlockFurnaceBurning) {
-                if (notHasPermission(player, event.getBlock(), LandSetting.FRAME)) {
-                    event.setCancelled();
-                }
-            }
-            if (item instanceof ItemBucket) {
-                if (notHasPermission(player, event.getBlock(), LandSetting.BUCKET)) {
-                    event.setCancelled();
-                }
+        // 空气方块忽略
+        if (block.getId() == BlockID.AIR) {
+            return;
+        }
 
-            }
-            if (item instanceof ItemFlintSteel) {
-                if (notHasPermission(player, event.getBlock(), LandSetting.IGNITE)) {
-                    event.setCancelled();
+        // 一次性查询领地数据
+        LandData data = DataTool.getPlayerTouchArea(block);
+
+        // 保护世界检查
+        if (LandModule.getModule().getConfig().getProtectList().contains(block.level.getFolderName())) {
+            if (data == null && !player.isOp()) {
+                if (LandMainClass.MAIN_CLASS.getModule().getConfig().isEchoProtectListMessage()) {
+                    player.sendMessage(LandModule.getModule().getConfig().getTitle() + LandModule.getModule().getLanguage().translateString("protectLevel"));
                 }
-
+                event.setCancelled();
+                return;
             }
-            if (event.getBlock() instanceof BlockItemFrame) {
-                if (notHasPermission(player, event.getBlock(), LandSetting.SHOW_ITEM)) {
-                    event.setCancelled();
-                }
+        }
 
+        // 不在领地内，无需权限检查
+        if (data == null) {
+            return;
+        }
+
+        String playerName = player.getName();
+        Item item = event.getItem();
+        if (item == null) {
+            item = Item.get(0);
+        }
+
+        if (this.hasBlockBarrelClass && block instanceof BlockBarrel) {
+            if (!data.hasPermission(playerName, LandSetting.LOCK_CHEST)) {
+                sendNoPermission(player, LandSetting.LOCK_CHEST);
+                event.setCancelled();
             }
-
-        } else {
-            event.setCancelled();
+        }
+        if (block instanceof BlockChest || block instanceof BlockShulkerBox || block instanceof BlockUndyedShulkerBox) {
+            if (!data.hasPermission(playerName, LandSetting.LOCK_CHEST)) {
+                sendNoPermission(player, LandSetting.LOCK_CHEST);
+                event.setCancelled();
+            }
+        }
+        if (block instanceof BlockFurnaceBurning) {
+            if (!data.hasPermission(playerName, LandSetting.FRAME)) {
+                sendNoPermission(player, LandSetting.FRAME);
+                event.setCancelled();
+            }
+        }
+        if (item instanceof ItemBucket) {
+            if (!data.hasPermission(playerName, LandSetting.BUCKET)) {
+                sendNoPermission(player, LandSetting.BUCKET);
+                event.setCancelled();
+            }
+        }
+        if (item instanceof ItemFlintSteel) {
+            if (!data.hasPermission(playerName, LandSetting.IGNITE)) {
+                sendNoPermission(player, LandSetting.IGNITE);
+                event.setCancelled();
+            }
+        }
+        if (block instanceof BlockItemFrame) {
+            if (!data.hasPermission(playerName, LandSetting.SHOW_ITEM)) {
+                sendNoPermission(player, LandSetting.SHOW_ITEM);
+                event.setCancelled();
+            }
         }
     }
 
@@ -502,7 +555,7 @@ public class LandListener implements Listener {
     public void onQuitLandEvent(PlayerQuitLandEvent event) {
         LandData data = event.getData();
         Player player = event.getPlayer();
-        for (LandSubData subData : data.getSubData()) {
+        for (LandSubData subData : new ArrayList<>(data.getSubData())) {
             if (subData.getMaster().equalsIgnoreCase(player.getName())) {
                 subData.close();
             }
@@ -562,13 +615,13 @@ public class LandListener implements Listener {
         if (this.canNotTnt(event.getEntity())) {
             event.setCancelled(true);
         } else {
-            List<Block> blockList = new ArrayList<>(event.getBlockList());
+            List<Block> filtered = new ArrayList<>();
             for (Block block : event.getBlockList()) {
-                if (this.canNotTnt(block)) {
-                    blockList.remove(block);
+                if (!this.canNotTnt(block)) {
+                    filtered.add(block);
                 }
             }
-            event.setBlockList(blockList);
+            event.setBlockList(filtered);
         }
     }
 

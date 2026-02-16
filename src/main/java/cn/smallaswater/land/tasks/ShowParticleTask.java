@@ -106,6 +106,17 @@ public class ShowParticleTask extends PluginTask<LandMainClass> {
             }
         }
 
+        // 粒子数量上限，超出时等间隔采样
+        int maxParticles = 2000;
+        if (posList.size() > maxParticles) {
+            ArrayList<Vector3> sampled = new ArrayList<>(maxParticles);
+            double step = (double) posList.size() / maxParticles;
+            for (int idx = 0; idx < maxParticles; idx++) {
+                sampled.add(posList.get((int) (idx * step)));
+            }
+            posList = sampled;
+        }
+
         //获取中心
         int cx = (vector.getEndX() - vector.getStartX())/2 + vector.getStartX();
         int cy = (vector.getEndY() - vector.getStartY())/2 + vector.getStartY();

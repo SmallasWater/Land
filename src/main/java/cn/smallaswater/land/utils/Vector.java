@@ -239,6 +239,13 @@ public class Vector implements Cloneable {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int result = level != null ? level.getFolderName().toLowerCase().hashCode() : 0;
+        result = 31 * result + startX;
+        result = 31 * result + endX;
+        result = 31 * result + startY;
+        result = 31 * result + endY;
+        result = 31 * result + startZ;
+        result = 31 * result + endZ;
+        return result;
     }
 }

@@ -5,6 +5,7 @@ import cn.nukkit.Server;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.Vector3;
+import cn.smallaswater.land.lands.LandList;
 import cn.smallaswater.land.lands.data.LandData;
 import cn.smallaswater.land.lands.data.sub.LandSubData;
 import cn.smallaswater.land.lands.utils.ScreenSetting;
@@ -19,6 +20,9 @@ import java.util.*;
  * @author 若水
  */
 public class DataTool {
+
+    private static final ThreadLocal<SimpleDateFormat> DATE_FORMAT =
+        ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
 
     private static boolean checkIt(Vector vector, LandData overlap) {
         if (vector != null && overlap != null) {
@@ -71,16 +75,33 @@ public class DataTool {
     }
 
     public static LandData checkOverlap(Vector vector, LandData sub) {
+        return checkOverlap(vector, sub, null);
+    }
+
+    /**
+     * 检查区域重叠，支持排除指定领地（用于扩展时排除自身）
+     *
+     * @param vector  待检测区域
+     * @param sub     父领地（非null时检测子领地间重叠），null时检测主领地间重叠
+     * @param exclude 需要排除的领地（通常是正在扩展的自身）
+     */
+    public static LandData checkOverlap(Vector vector, LandData sub, LandData exclude) {
         vector = vector.clone();
         vector.sort();
         if (sub == null) {
             for (LandData overlap : LandModule.getModule().getList().getData()) {
+                if (overlap.equals(exclude)) {
+                    continue;
+                }
                 if (checkIt(vector, overlap)) {
                     return overlap;
                 }
             }
         } else {
             for (LandSubData data : sub.getSubData()) {
+                if (data.equals(exclude)) {
+                    continue;
+                }
                 if (checkIt(vector, data)) {
                     return data;
                 }
@@ -186,23 +207,20 @@ public class DataTool {
      */
     @Nullable
     public static LandData getPlayerTouchArea(Position position, boolean isMaster) {
-        if (!LandModule.getModule().getList().getData().isEmpty()) {
-            Vector vector;
-            for (LandData areaClass : LandModule.getModule().getList().getData()) {
-                if (!isMaster) {
-                    for (LandSubData subData : areaClass.getSubData()) {
-                        vector = subData.getVector().clone();
-                        vector.sort();
-                        if (isEquals(position, vector)) {
-                            return subData;
-                        }
+        if (position == null || position.level == null) return null;
+        List<LandData> candidates = LandModule.getModule().getList()
+            .getChunkLands(position.level.getFolderName(),
+                position.getFloorX() >> 4, position.getFloorZ() >> 4);
+        for (LandData areaClass : candidates) {
+            if (!isMaster) {
+                for (LandSubData subData : areaClass.getSubData()) {
+                    if (isEquals(position, subData.getVector())) {
+                        return subData;
                     }
                 }
-                vector = areaClass.getVector().clone();
-                vector.sort();
-                if (isEquals(position, vector)) {
-                    return areaClass;
-                }
+            }
+            if (isEquals(position, areaClass.getVector())) {
+                return areaClass;
             }
         }
         return null;
@@ -217,17 +235,25 @@ public class DataTool {
      */
     public static LinkedList<LandData> getAroundLandData(Position position, int size) {
         LinkedList<LandData> landDataList = new LinkedList<>();
-        for (LandData landData : LandModule.getModule().getList().getData()) {
-            Vector vector = landData.getVector().clone();
-            vector.addStartX(-size);
-            vector.addStartY(-size);
-            vector.addStartZ(-size);
-            vector.addEndX(size);
-            vector.addEndY(size);
-            vector.addEndZ(size);
-            vector.sort();
-            if (isEquals(position, vector)) {
-                landDataList.add(landData);
+        String world = position.level.getFolderName();
+        int px = position.getFloorX();
+        int py = position.getFloorY();
+        int pz = position.getFloorZ();
+        int minCX = (px - size) >> 4, maxCX = (px + size) >> 4;
+        int minCZ = (pz - size) >> 4, maxCZ = (pz + size) >> 4;
+        Set<LandData> seen = new HashSet<>();
+        LandList list = LandModule.getModule().getList();
+        for (int cx = minCX; cx <= maxCX; cx++) {
+            for (int cz = minCZ; cz <= maxCZ; cz++) {
+                for (LandData landData : list.getChunkLands(world, cx, cz)) {
+                    if (!seen.add(landData)) continue;
+                    Vector vector = landData.getVector();
+                    if (px >= vector.getStartX() - size && px <= vector.getEndX() + size
+                            && py >= vector.getStartY() - size && py <= vector.getEndY() + size
+                            && pz >= vector.getStartZ() - size && pz <= vector.getEndZ() + size) {
+                        landDataList.add(landData);
+                    }
+                }
             }
         }
         return landDataList;
@@ -353,16 +379,13 @@ public class DataTool {
     }
 
     public static String getDateToString(Date date) {
-        SimpleDateFormat lsdStrFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return lsdStrFormat.format(date);
+        return DATE_FORMAT.get().format(date);
     }
-
 
     //转换String为Date
     public static Date getDate(String format) {
-        SimpleDateFormat lsdStrFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            return lsdStrFormat.parse(format);
+            return DATE_FORMAT.get().parse(format);
         } catch (ParseException e) {
             return null;
         }
@@ -387,7 +410,7 @@ public class DataTool {
         cal.setTime(new Date());
         long time2 = cal.getTimeInMillis();
         long betweenDays = (time2 - time1) / (1000 * 3600 * 24);
-        return Integer.parseInt(String.valueOf(betweenDays)) + 1;
+        return (int) betweenDays + 1;
     }
 
     public static String getQuery(String target) {
@@ -466,6 +489,7 @@ public class DataTool {
                             }
                         }
                     }
+                    break;
                 case 4:
                     if (screenSetting.getText().matches(DataTool.getDateToString(data.getCreateTime()))) {
                         if (screenSetting.isShowSell()) {
